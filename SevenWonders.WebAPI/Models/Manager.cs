@@ -9,10 +9,11 @@
 
 namespace SevenWonders.WebAPI.Models
 {
+    using Interfaces;
     using System;
     using System.Collections.Generic;
-    
-    public partial class Manager
+
+    public partial class Manager: IManager
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Manager()
