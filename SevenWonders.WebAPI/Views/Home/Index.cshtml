@@ -1,24 +1,124 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿@model SevenWonders.Models.SearchModel
+
+@{
+    ViewBag.Title = "7 wonders";
+}
+<script src="../Content/js/chat.js" language="javascript" type="text/javascript"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+
+<div>
+    <header id="header1">
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Find the best deal for you</h1>
+                <hr>
+                <div id="searchForm">
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="services" class="bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Why Choose Us?</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-hand-o-up text-primary sr-icons"></i>
+                        <h3>Customizable tours</h3>
+                        <p class="text-muted">Build your perfect tour yourself.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-building-o text-primary sr-icons"></i>
+                        <h3>Luxury hotels</h3>
+                        <p class="text-muted">Top-grade suites for the most demanding travelers.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-plane text-primary sr-icons"></i>
+                        <h3>Best flights</h3>
+                        <p class="text-muted">Choose flights that satisfy tour demands.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-heart text-primary sr-icons"></i>
+                        <h3>Good impressions</h3>
+                        <p class="text-muted">Great memories after journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">We've got what you need!</h2>
+                    <hr class="light">
+                    <p class="text-faded">
+                        Since our establishment, we have shown consistent commitment to excellent hospitality and dedication to the quality of touring services. We have many more supporters & recommendations from our valued clients
+                        around the world. One of the advantages of dealing with us yourself is you can design a trip just to meet your own requirements.
+                    </p>
+                    <a href="#page-top" class="page-scroll btn btn-default btn-xl sr-button">Search tour!</a>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+
+<script>
+  function FillCity(countryId, cityField) {
+    $.ajax({
+        url: '@Url.Content("~/Home/FillCity")',
+        type: "GET",
+        dataType: "JSON",
+        data: { countryId: countryId},
+        success: function (cities) {
+            $(cityField).html(""); // clear before appending new list
+            $(cityField).append(
+                    $('<option></option>').val(0).html("Select city"));
+            $.each(cities, function (i, city) {
+                $(cityField).append(
+                    $('<option></option>').val(city.Value).html(city.Text));
+            });
+        }
+    });
+  }
+
+    function FillHotel(cityId) {
+        $('#replaceClientModal').modal('show', { backdrop: 'static' });
+      $.ajax({
+          url: '@Url.Content("~/Home/FillHotel")',
+          type: "GET",
+          dataType: "JSON",
+          data: { cityId: cityId },
+          success: function (hotels) {
+              $("#Hotel").html(""); // clear before appending new list
+              $("#Hotel").append(
+                      $('<option></option>').val(0).html("Select hotel"));
+              $.each(hotels, function (i, hotel) {
+                  $("#Hotel").append(
+                      $('<option></option>').val(hotel.Value).html(hotel.Text));
+              });
+          }
+      });
+  }
+
+</script>
+
+@Scripts.Render("~/scripts/jquery-1.12.4.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")

@@ -54,5 +54,11 @@ namespace SevenWonders.Controllers
             WorkWithCustomer workWithCustomer = new WorkWithCustomer();
             return workWithCustomer.FindPersons(db, search).AsEnumerable().ToList();
         }
+
+        [HttpGet]
+        public int GetSomeValue()
+        {
+            return 25;
+        }
     }
 }

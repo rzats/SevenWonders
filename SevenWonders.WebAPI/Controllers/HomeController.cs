@@ -14,5 +14,13 @@ namespace SevenWonders.WebAPI.Controllers
 
             return View();
         }
+
+        public ActionResult Customers()
+        {
+            string apiUri = Url.HttpRouteUrl("API Default", new { controller = "CustomersManagement" });
+            ViewBag.ApiUrl = new Uri(Request.Url, apiUri).AbsoluteUri.ToString();
+
+            return View();
+        }
     }
 }
