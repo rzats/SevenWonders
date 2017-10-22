@@ -77,5 +77,19 @@ namespace SevenWonders.Controllers
                 return null;
             }
         }
+
+        public IHttpActionResult ChangeManagerStatus(int id)
+        {
+            var workWithCustomer = new WorkWithManager();
+            workWithCustomer.ChangePersonStatus(db, id);
+            return Ok();
+        }
+
+        [HttpGet]
+        public List<Country> GetCountries()
+        {
+            var countries = db.Countries.Where(a => a.IsDeleted == false).ToList();
+            return countries;
+        }
     }
 }

@@ -1,0 +1,251 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Customers</title>
+</head>
+<body onload="myFunction()">
+    <table class="table table-striped table-bordered" id="table" cellspacing="0" style="display:none;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Date Of birth</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tablebody"></tbody>
+    </table>
+    <button class="btn btn-primary" onclick="showmodal()"> Add manager </button>
+</body>
+</html>
+
+<br />
+<br />
+<div class="col-md-4">
+</div>
+<div id="mymodal" class="modal">
+<div id="addmanagerdiv" class="container col-md-4 modal-content">
+    <div class="well well-sm col-md-9 col-md-offset-1">
+            <legend class="text-center"><i class="glyphicon glyphicon-user"></i>Manager</legend>
+            <div align="center">
+                <div class="text-danger"><small></small></div>
+                <div>
+                    First name: <input type="text" id="firstname"> 
+                </div>
+                <br />
+                <div>
+                    Last name: <input type="text" id="lastname">
+                </div>
+                <br />
+                <div>
+                    Date of birth: <input type="date" id="bithdate">
+                </div>
+                <br />
+                <div>
+                    Phone number: <input type="text" id="phonenumber">
+                </div>
+                <br />
+                <div>
+                    Email: <input type="text" id="email">
+                </div>
+                <br />
+                <div>
+                    Password: <input type="password" id="password">
+                </div>
+                <div>
+                    <br />
+                    <div class="text-center">Countries:</div>
+                    <div>
+                        <select class="form-control" id="country"></select>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div>
+                <div class="text-center">
+                    <input type="submit" value="Add" class="btn btn-primary" onclick="addmanager()"/>
+                </div>
+            </div>
+                        
+    </div>
+
+</div>
+    </div>
+
+<div class="col-md-4">
+</div>
+
+    <script>
+    $("#table").show();
+    $(document).ready(
+                $(function () {
+                    $(".datepicker").datepicker();
+                }));
+    function addmanager()
+    {
+        var firstname = $('#firstname').val();
+        var lastname = $('#lastname').val();
+        var birthdate = $('#birthdate').val();
+        var phonenumber = $('#phonenumber').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var country = $('#country').val();
+
+        var postObject =
+            {
+                manager:
+                    {
+                        FirstName: firstname,
+                        LastName: lastname,
+                        DateOfBirth: birthdate,
+                        PhoneNumber: phonenumber,
+                        Email: email,
+                        Password: password
+                    },
+                countries: [country]
+            };
+        $.ajax({
+            type: "POST",
+            url: "../api/ManagersManagement/AddManager",
+            data: postObject,
+            success: function()
+            {
+                alert('ADDED!');
+            },
+            error: function()
+        {
+                alert('failed');
+        }
+            });
+    }
+    function editManager(id)
+    {
+        var modal = document.getElementById('mymodal');
+        modal.style.display = "block";
+        getCountries();
+
+        var searchParam = id;
+        var MyRows = $('table#table').find('tbody').find('tr');
+        for (var i = 0; i < MyRows.length; i++) {
+            var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
+            if (MyIndexValue == id)
+            {
+                var firstName = $(MyRows[i]).find('td:eq(1)').html();
+                var lastName = $(MyRows[i]).find('td:eq(2)').html();
+                var phoneNumber = $(MyRows[i]).find('td:eq(3)').html();
+                var email = $(MyRows[i]).find('td:eq(4)').html();
+                var dateOfBirth = $(MyRows[i]).find('td:eq(5)').html();
+
+                $('#firstname').val(firstName);
+                $('#lastname').val(lastName);
+                $('#birthdate').val(dateOfBirth);
+                $('#phonenumber').val(phoneNumber);
+                $('#email').val(email);
+
+
+            }
+        }
+
+    }
+    function showmodal() {
+        var modal = document.getElementById('mymodal');
+        modal.style.display = "block";
+        getCountries();
+    }
+    function myFunction() {
+        $.ajax({
+            type: "GET",
+            url: "../api/ManagersManagement/GetManagers",
+            dataType: "json",
+            data: {},
+            success: function (responce) {
+                //document.getElementById('t').value = responce;
+                var tableData = '';
+                $.each(responce, function (i, item) {
+                    var active = "<td class='text-success'>Active</td>"
+                    var deleted = "<td class='text-danger'>Deleted</td>"
+                    var status;
+                    if (responce[i].IsDeleted) {
+                        status = deleted;
+                    }
+                    else {
+                        status = active;
+                    }
+
+                    tableData += '<tr><td>' + responce[i].Id +
+                        '</td><td>' + responce[i].FirstName +
+                        '</td><td>' + responce[i].LastName +
+                        '</td><td>' + responce[i].PhoneNumber +
+                        '</td><td>' + responce[i].Email +
+                        '</td><td>' + responce[i].DateOfBirth +
+                        '</td>' + status +
+                        '<td> <button class=\'btn btn-primary\' onclick=\"changeStatus(' + responce[i].Id + ')\"> Change status </button> </td>' +
+                        '<td> <button class=\'btn btn-primary\' onclick=\"editManager(' + responce[i].Id + ')\"> Edit manager </button> </td>' +
+                        '</tr>';
+                });
+                $('#tablebody').append(tableData);
+            },
+
+            error: function () {
+                alert('failed to get data');
+            }
+        });
+    }
+
+    function changeStatus(id) {
+        $.ajax({
+            type: "POST",
+            url: "../api/ManagersManagement/ChangeManagerStatus/" + id,
+            success: function () {
+                var searchParam = id;
+                var MyRows = $('table#table').find('tbody').find('tr');
+                var fuckingRes;
+                for (var i = 0; i < MyRows.length; i++) {
+                    var MyIndexValue = $(MyRows[i]).find('td:eq(0)').html();
+                    var resValue = $(MyRows[i]).find('td:eq(6)');
+                    if (MyIndexValue == id) {
+                        fuckingRes = resValue;
+                    }
+                }
+                if (fuckingRes.html() == "Deleted") {
+                    fuckingRes.html("Active");
+                    fuckingRes.css('color', 'green');
+                }
+                else {
+                    fuckingRes.html("Deleted");
+                    fuckingRes.css('color', 'darkred');
+                }
+
+            },
+            error: function () {
+                alert('failed to change status');
+            }
+        });
+    }
+    function getCountries() {
+        $.ajax({
+            type: "GET",
+            url: "../api/ManagersManagement/GetCountries",
+            success: function (result) {
+                $.each(result, function (key, value) {
+                    $("#country").append($("<option></option>").val(value.Id).html(value.Name));
+                });
+            },
+            error: function () {
+                alert('failed to get countries');
+            }
+        })
+
+
+    }
+    </script>
+@Styles.Render("~/Content/themes/base/all.css")
+

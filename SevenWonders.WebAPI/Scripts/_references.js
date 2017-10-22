@@ -1,6 +1,7 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../content/js/chat.js" />
 /// <reference path="../content/js/chatmanager.js" />
+/// <reference path="../content/vendor/bootstrap/js/bootstrap.min.js" />
 /// <reference path="../content/vendor/jquery/jquery.js" />
 /// <reference path="../content/vendor/magnific-popup/jquery.magnific-popup.js" />
 /// <reference path="../content/vendor/scrollreveal/scrollreveal.js" />
