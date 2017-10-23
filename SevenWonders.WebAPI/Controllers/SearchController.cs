@@ -1,4 +1,5 @@
 ﻿//using SevenWonders.DAL.Context;
+//using SevenWonders.Models;
 //using SevenWonders.WebAPI.Models;
 //using System;
 //using System.Collections.Generic;
@@ -6,6 +7,7 @@
 //using System.Net;
 //using System.Net.Http;
 //using System.Web.Http;
+//using System.Web.WebPages.Html;
 
 //namespace SevenWonders.WebAPI.Controllers
 //{
@@ -33,38 +35,16 @@
 
 //        }
 
-//        public List<City> FillCity(int countryId)
-//        {
-//            var cities = db.Cities.Where(c => (c.IsDeleted == false && c.Country.Id == countryId))
-//                .Select(p => new SelectListItem
-//                {
-//                    Text = p.Name,
-//                    Value = p.Id.ToString()
-//                }).OrderBy(p => p.Text);
-
-//            return Json(cities, JsonRequestBehavior.AllowGet);
-//        }
-
-//        public ActionResult FillHotel(int cityId)
-//        {
-//            var hotels = db.Hotels.Where(c => (c.IsDeleted == false && c.City.Id == cityId))
-//                           .Select(p => new SelectListItem
-//                           {
-//                               Text = p.Name,
-//                               Value = p.Id.ToString()
-//                           }).OrderBy(p => p.Text);
-
-//            return Json(hotels, JsonRequestBehavior.AllowGet);
-//        }
+        
 
 //        [HttpPost]
-//        public ActionResult SearchTours(SearchModel model)
+//        public List<ReservationModel> SearchTours(SearchModel model)
 //        {
 //            string error = "Sorry, but there are no tours, which match to your requirements. Try to change some information.";
 //            List<Flight> leaveFlights = FlightsSearch(model.CityFrom, model.CityTo, model.DapartureDay, model.PeopleNumber, true, ref error);
 //            List<Flight> returnFlights = FlightsSearch(model.CityTo, model.CityFrom, model.DapartureDay.AddDays(model.Duration), model.PeopleNumber, false, ref error);
 //            List<Room> rooms = HotelsSearch(model.CityTo, model.DapartureDay, model.DapartureDay.AddDays(model.Duration), model.PeopleNumber, ref error, model.Hotel, model.FoodType);
-//            ViewBag.ErrorMessage = error;
+            
 
 //            List<Reservation> reservations = new List<Reservation>();
 //            for (int i = 0; i < leaveFlights.Count; ++i)
@@ -142,7 +122,7 @@
 //            if (model.PriceFrom != 0 || model.PriceTo != 0)
 //                resModels = PriceRangeReservations(resModels, model.PriceFrom, model.PriceTo);
 
-//            return View(resModels);
+//            return resModels;
 //        }
 
 //        private List<ReservationModel> PricesCalculating(List<ReservationModel> list)
@@ -356,216 +336,6 @@
 //            return rooms;
 //        }
 
-//        public ActionResult HotelInfo(int id)
-//        {
-//            return PartialView(db.Hotels.Where(p => p.Id == id).FirstOrDefault());
-//        }
-
-//        public ActionResult RoomInfo(int id)
-//        {
-//            return PartialView(db.Rooms.Where(p => p.Id == id).FirstOrDefault());
-//        }
-
-//        public ActionResult FlightsInfo(int leaveFlightId, int returnFlightId, DateTime leaveDate, DateTime returnDate)
-//        {
-//            FlightsInfoModel model = new FlightsInfoModel();
-//            model.LeaveDate = leaveDate;
-//            model.ReturnDate = returnDate;
-//            model.LeaveFlight = db.Flights.Where(p => p.Id == leaveFlightId).FirstOrDefault();
-//            model.ReturnFlight = db.Flights.Where(p => p.Id == returnFlightId).FirstOrDefault();
-//            model.LeaveSchedule = db.Schedule.Where(s => (s.Flight.Id == model.LeaveFlight.Id) && (s.DayOfWeek == leaveDate.DayOfWeek)).FirstOrDefault();
-//            model.ReturnSchedule = db.Schedule.Where(s => (s.Flight.Id == model.ReturnFlight.Id) && (s.DayOfWeek == returnDate.DayOfWeek)).FirstOrDefault();
-//            return PartialView(model);
-//        }
-
-//        public ActionResult HotelsReviews(int id)
-//        {
-//            return PartialView(db.Feedbacks.Where(h => h.Hotel.Id == id).ToList().OrderBy(p => p.CreationDate).Reverse().ToList());
-//        }
-
-//        [Authorize(Roles = "customer")]
-//        public ActionResult ConfirmTour(int leaveFlightId, int returnFlightId, DateTime leaveDate, DateTime returnDate, int personsAmount, int roomId, bool foodInclude, decimal totalPrice, int duration)
-//        {
-//            return View(CreateBookInfo(leaveFlightId, returnFlightId, leaveDate, returnDate, personsAmount, roomId, foodInclude, totalPrice));
-//        }
-
-//        public ActionResult GeneratePDF(int leaveFlightId, int returnFlightId, DateTime leaveDate, DateTime returnDate, int personsAmount, int roomId, bool foodInclude, decimal totalPrice)
-//        {
-//            ConfirmTour data = new ConfirmTour();
-
-//            int userId = User.Identity.GetUserId<int>();
-//            string userEmail = db.Users.Where(p => p.Id == userId).Select(p => p.Email).FirstOrDefault();
-//            data.Customer = db.Customers.Where(p => p.Email == userEmail).FirstOrDefault();
-//            data.DateTime = DateTime.Now;
-//            data.BookInfo = CreateBookInfo(leaveFlightId, returnFlightId, leaveDate, returnDate, personsAmount, roomId, foodInclude, totalPrice);
-//            data.BookInfo.TourId = db.Tours.OrderByDescending(u => u.Id).FirstOrDefault().Id;
-
-//            string fileName = "BookingConfirmation" + data.BookInfo.TourId;
-//            Response.ContentType = "application/pdf";
-//            Response.AppendHeader(
-//              "Content-Disposition",
-//              "attachment; filename=BookingConfirmation.pdf"
-//            );
-//            string toPdf = RenderViewToString("DocumentTourInfo", data);
-//            using (Document document = new Document())
-//            {
-//                using (var writer = PdfWriter.GetInstance(document, Response.OutputStream))
-//                {
-//                    document.Open();
-//                    string example_css = System.IO.File.ReadAllText(Server.MapPath(@"~/Content/bootstrap.css"));
-//                    using (var msCss = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(example_css)))
-//                    {
-//                        using (var msHtml = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(toPdf)))
-//                        {
-//                            //Parse the HTML
-//                            iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, msHtml, msCss);
-//                        }
-//                    }
-//                }
-//            }
-
-//            return View("ConfirmTour", CreateBookInfo(leaveFlightId, returnFlightId, leaveDate, returnDate, personsAmount, roomId, foodInclude, totalPrice));
-//        }
-
-//        public string RenderViewToString(string viewName, object model)
-//        {
-//            ViewData.Model = model;
-//            using (var sw = new StringWriter())
-//            {
-//                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-//                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
-//                viewResult.View.Render(viewContext, sw);
-//                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-//                return sw.GetStringBuilder().ToString();
-//            }
-//        }
-
-//        public BookInfo CreateBookInfo(int leaveFlightId, int returnFlightId, DateTime leaveDate, DateTime returnDate, int personsAmount, int roomId, bool foodInclude, decimal totalPrice)
-//        {
-//            int duration = Convert.ToInt32(Math.Ceiling((double)(returnDate - leaveDate).Hours / 24));
-
-//            int userId = User.Identity.GetUserId<int>();
-//            string userEmail = db.Users.Where(p => p.Id == userId).Select(p => p.Email).FirstOrDefault();
-//            Customer customer = db.Customers.Where(p => p.Email == userEmail).FirstOrDefault();
-//            Reservation reservation = new Reservation();
-//            reservation.LeaveDate = leaveDate;
-//            reservation.ReturnDate = returnDate;
-//            reservation.LeaveFlight = db.Flights.Where(p => p.Id == leaveFlightId).FirstOrDefault();
-//            reservation.ReturnFlight = db.Flights.Where(p => p.Id == returnFlightId).FirstOrDefault();
-//            reservation.PersonAmount = personsAmount;
-//            reservation.Room = db.Rooms.Where(r => r.Id == roomId).FirstOrDefault();
-//            reservation.WithoutFood = !foodInclude;
-
-//            BookInfo model = new BookInfo();
-//            model.Discount = customer.Discount;
-//            if (foodInclude == true)
-//            {
-//                model.TotalPrice = totalPrice;
-//            }
-//            else
-//            {
-//                model.TotalPrice = totalPrice - personsAmount * reservation.Room.Hotel.FoodPrice * duration;
-//            }
-//            model.Flights.LeaveFlight = reservation.LeaveFlight;
-//            model.Flights.ReturnFlight = reservation.ReturnFlight;
-//            model.Flights.LeaveSchedule = db.Schedule.Where(p => (p.Flight.Id == leaveFlightId && p.DayOfWeek == leaveDate.DayOfWeek)).FirstOrDefault();
-//            model.Flights.ReturnSchedule = db.Schedule.Where(p => (p.Flight.Id == returnFlightId && p.DayOfWeek == returnDate.DayOfWeek)).FirstOrDefault();
-//            model.Reservation = reservation;
-//            model.CustomerId = customer.Id;
-
-//            return model;
-//        }
-
-//        [Authorize(Roles = "customer")]
-//        public ActionResult BookTour(int leaveFlightId, int returnFlightId, DateTime leaveDate, DateTime returnDate, int personsAmount, int roomId, bool foodInclude, decimal totalPrice, int customerId)
-//        {
-//            Reservation reservation = new Reservation();
-//            reservation.LeaveFlight = db.Flights.Where(p => p.Id == leaveFlightId).FirstOrDefault();
-//            reservation.ReturnFlight = db.Flights.Where(p => p.Id == returnFlightId).FirstOrDefault();
-//            Schedule schedule = db.Schedule.Where(p => (p.Flight.Id == leaveFlightId && p.DayOfWeek == leaveDate.DayOfWeek)).FirstOrDefault();
-//            DateTime date = new DateTime(leaveDate.Year, leaveDate.Month, leaveDate.Day, schedule.DepartureTime.Hour, schedule.DepartureTime.Minute, schedule.DepartureTime.Second);
-//            reservation.LeaveDate = date;
-//            schedule = db.Schedule.Where(p => (p.Flight.Id == returnFlightId && p.DayOfWeek == returnDate.DayOfWeek)).FirstOrDefault();
-//            date = new DateTime(returnDate.Year, returnDate.Month, returnDate.Day, schedule.DepartureTime.Hour, schedule.DepartureTime.Minute, schedule.DepartureTime.Second);
-//            reservation.ReturnDate = date;
-//            reservation.PersonAmount = personsAmount;
-//            reservation.Room = db.Rooms.Where(r => r.Id == roomId).FirstOrDefault();
-//            reservation.WithoutFood = !foodInclude;
-//            db.Reservations.Add(reservation);
-//            db.SaveChanges();
-//            Tour tour = new Tour();
-//            tour.CreationDate = DateTime.Now.ToUniversalTime();
-//            tour.Customer = db.Customers.Find(customerId);
-//            tour.IsDeleted = false;
-//            tour.TourState = db.TourStates.Find(1);
-//            tour.TotalPrice = totalPrice;
-//            tour.Reservation = reservation;
-
-//            Manager manager = tour.Reservation.Room.Hotel.City.Country.Manager;
-//            db.Tours.Add(tour);
-//            db.SaveChanges();
-
-//            Utils utils = new Utils();
-//            string body = string.Format("Dear " + tour.Customer.FirstName + " " + tour.Customer.LastName + "," +
-//                   "<br/>thank you for your booking. You have successfully booked tour in <b>{0}</b>. <br/> Leave date: <b>{1}</b>. <br/>Return date: <b>{2}</b>.<br/>Total price: <b>${3}</b>.<br/> Please make payment for this tour in 48 hours, otherwise we will cancel this booking.<br/>You can find all details about this tour in your Cabinet on our site.<br/>Have a nice trip!<br/><br/>Best regards, <br/>7wonders.com",
-//                   tour.Reservation.Room.Hotel.Name, tour.Reservation.LeaveDate.ToLongDateString(), tour.Reservation.ReturnDate.ToLongDateString(), tour.TotalPrice);
-//            var message = utils.GenerateMessage(tour.Customer.Email, "7wonders", "Tours booking", body, true);
-//            utils.SendEmail(message);
-
-//            if (manager != null)
-//            {
-//                manager.Tour.Add(tour);
-//                //Send email to manager
-//                body = string.Format("<h2>New booking</h2><br/><p>Customer: <b>{0}</b> <br/> Country: <b>{1}</b><br/>City: <b>{2}</b><br/> Hotel: <b>{3}</b><br/> Leave date: <b>{4}</b> <br/>Return date: <b>{5}</b><br/>Total price: <b>${6}</b> <br/>Customers email: <b>{7}</b> <br/>Customers phone number: <b>{8}</b>",
-//                       tour.Customer.FirstName + tour.Customer.LastName, tour.Reservation.Room.Hotel.City.Country.Name, tour.Reservation.Room.Hotel.City.Name, tour.Reservation.Room.Hotel.Name, tour.Reservation.LeaveDate.ToLongDateString(), tour.Reservation.ReturnDate.ToLongDateString(), tour.TotalPrice, tour.Customer.Email, tour.Customer.PhoneNumber);
-//                message = utils.GenerateMessage(manager.Email, "7wonders", "New booking", body, true);
-//                utils.SendEmail(message);
-//            }
-
-//            return View();
-//        }
-
-//        public ActionResult SuccessMessage()
-//        {
-//            return RedirectToAction("Index");
-//        }
-
-
-//        [HttpGet]
-//        public ActionResult GetHotelDetailModal(int hotelId)
-//        {
-//            Hotel model = db.Hotels.FirstOrDefault(Hotel => Hotel.Id == hotelId);
-//            return PartialView("~/Views/Home/Partials/HotelDetailsModal.cshtml", model);
-//        }
-
-//        [HttpGet]
-//        public ActionResult GetRoomDetailModal(int roomId)
-//        {
-//            Room model = db.Rooms.FirstOrDefault(room => room.Id == roomId);
-//            return PartialView("~/Views/Home/Partials/RoomDetailsModal.cshtml", model);
-//        }
-
-//        [HttpGet]
-//        public ActionResult GetFlightDetailModal(int leaveFlightId, int returnFlightId, string leaveDate, string returnDate)
-//        {
-//            var leaveD = DateTime.Parse(leaveDate);
-//            var returnD = DateTime.Parse(returnDate);
-
-//            FlightsInfoModel model = new FlightsInfoModel();
-//            model.LeaveDate = leaveD;
-//            model.ReturnDate = returnD;
-//            model.LeaveFlight = db.Flights.Where(p => p.Id == leaveFlightId).FirstOrDefault();
-//            model.ReturnFlight = db.Flights.Where(p => p.Id == returnFlightId).FirstOrDefault();
-//            model.LeaveSchedule = db.Schedule.Where(s => (s.Flight.Id == model.LeaveFlight.Id) && (s.DayOfWeek == leaveD.DayOfWeek)).FirstOrDefault();
-//            model.ReturnSchedule = db.Schedule.Where(s => (s.Flight.Id == model.ReturnFlight.Id) && (s.DayOfWeek == returnD.DayOfWeek)).FirstOrDefault();
-//            return PartialView("~/Views/Home/Partials/FlightDetailsModal.cshtml", model);
-//        }
-
-//        [HttpGet]
-//        public ActionResult GetHotelReviewsModal(int hotelId)
-//        {
-//            Hotel model = db.Hotels.FirstOrDefault(Hotel => Hotel.Id == hotelId);
-//            return PartialView("~/Views/Home/Partials/HotelReviewsModal.cshtml", model);
-//        }
+        
 //    }
 //}
