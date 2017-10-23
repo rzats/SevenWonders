@@ -1,4 +1,5 @@
-﻿using SevenWonders.Interfaces;
+﻿using SevenWonders.DAL.Context;
+using SevenWonders.Interfaces;
 using SevenWonders.ViewModels;
 using SevenWonders.WebAPI.Models;
 using System;
@@ -10,12 +11,12 @@ namespace SevenWonders.Models
 {
     public class WorkWithManager : WorkWithAutorizedPerson<Manager>
     {
-        public override IEnumerable<IAuthorizedPerson> FindPersons(SevenWondersEntities db, SearchViewModel search)
+        public override IEnumerable<IAuthorizedPerson> FindPersons(SevenWondersContext db, SearchViewModel search)
         {
             return base.FindPersons(db, search);
         }
 
-        private void AddCountriesForManager(SevenWondersEntities db, Manager manager, int[] countries)
+        private void AddCountriesForManager(SevenWondersContext db, Manager manager, int[] countries)
         {
             
             if (manager.Countries != null)
@@ -32,7 +33,7 @@ namespace SevenWonders.Models
                 var length = countries.Length;
                 for (int i = 0; i < length; i++)
                 {
-                    var country = db.Countries.Find(countries[i]);
+                    var country = db.Coutries.Find(countries[i]);
                     country.ManagerId = manager.Id;
                     db.Entry(country).State = EntityState.Modified;
                 }
@@ -40,7 +41,7 @@ namespace SevenWonders.Models
             db.SaveChanges();
         }
 
-        public void AddFullManager(SevenWondersEntities db, FullManagerViewModel user, int[] countries)
+        public void AddFullManager(SevenWondersContext db, FullManagerViewModel user, int[] countries)
         {
             if (db.Users.Any(x => x.Email == user.Email))
             {
@@ -55,7 +56,7 @@ namespace SevenWonders.Models
             AddCountriesForManager(db, manager, countries);
         }
 
-        public void EditFullManager(SevenWondersEntities db, FullManagerViewModel user, int[] countries)
+        public void EditFullManager(SevenWondersContext db, FullManagerViewModel user, int[] countries)
         {
 
             Manager manager = db.Managers.Find(user.Id);
@@ -79,7 +80,7 @@ namespace SevenWonders.Models
             db.SaveChanges();
         }
 
-        public FullManagerViewModel GetFullManager(SevenWondersEntities db, int Id)
+        public FullManagerViewModel GetFullManager(SevenWondersContext db, int Id)
         {
             var manager = db.Managers.Find(Id);
             var usermanager = db.Users.FirstOrDefault(x => x.Email == manager.Email);

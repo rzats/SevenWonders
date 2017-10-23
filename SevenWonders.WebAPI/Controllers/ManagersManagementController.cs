@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SevenWonders.DAL.Context;
 using SevenWonders.Models;
 using SevenWonders.ViewModels;
 using SevenWonders.WebAPI.Models;
@@ -14,7 +15,7 @@ namespace SevenWonders.Controllers
 {
     public class ManagersManagementController : ApiController
     {
-        SevenWondersEntities db = new SevenWondersEntities();
+        SevenWondersContext db = new SevenWondersContext();
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET api/<controller>
@@ -48,8 +49,8 @@ namespace SevenWonders.Controllers
                     if (db.Users.Any(x => x.Email == manager.Email))
                     {
                         ModelState.AddModelError("", "Manager with this email already exists");
-                        var _countries = db.Countries.Where(x => (x.ManagerId == null || x.Manager.IsDeleted) && !x.IsDeleted).ToList();
-                        var ctr = db.Countries.ToList();
+                        var _countries = db.Coutries.Where(x => (x.ManagerId == null || x.Manager.IsDeleted) && !x.IsDeleted).ToList();
+                        var ctr = db.Coutries.ToList();
                     }
                     else
                     {
@@ -88,7 +89,7 @@ namespace SevenWonders.Controllers
         [HttpGet]
         public List<Country> GetCountries()
         {
-            var countries = db.Countries.Where(a => a.IsDeleted == false).ToList();
+            var countries = db.Coutries.Where(a => a.IsDeleted == false).ToList();
             return countries;
         }
     }

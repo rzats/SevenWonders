@@ -9,11 +9,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using SevenWonders.DAL.Context;
+
 namespace SevenWonders.Controllers
 {
     public class CustomersManagementController : ApiController
     {
-        SevenWondersEntities db = new SevenWondersEntities();
+        SevenWondersContext db = new SevenWondersContext();
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public CustomersManagementController()
@@ -21,7 +23,7 @@ namespace SevenWonders.Controllers
 
         }
 
-        public CustomersManagementController(SevenWondersEntities context)
+        public CustomersManagementController(SevenWondersContext context)
         {
             db = context;
         }

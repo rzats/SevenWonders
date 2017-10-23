@@ -1,4 +1,5 @@
 ﻿
+using SevenWonders.DAL.Context;
 using SevenWonders.Interfaces;
 using SevenWonders.ViewModels;
 using SevenWonders.WebAPI.Models;
@@ -12,7 +13,7 @@ namespace SevenWonders.Models
 {
     public abstract class WorkWithAutorizedPerson<T> where T : class, IAuthorizedPerson
     {
-        public virtual IEnumerable<IAuthorizedPerson> FindPersons(SevenWondersEntities db, SearchViewModel search)
+        public virtual IEnumerable<IAuthorizedPerson> FindPersons(SevenWondersContext db, SearchViewModel search)
         {
             DbSet<T> dbSet = db.Set<T>();
             var query = (from person in dbSet
@@ -30,7 +31,7 @@ namespace SevenWonders.Models
             return query;
         }
 
-        public virtual bool ChangePersonStatus(SevenWondersEntities db, int id)
+        public virtual bool ChangePersonStatus(SevenWondersContext db, int id)
         {
             DbSet<T> dbSet = db.Set<T>();
             var result = false;
