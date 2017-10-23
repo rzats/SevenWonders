@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -29,61 +28,61 @@
 
 <br />
 <br />
+
 <div class="col-md-4">
 </div>
 <div id="mymodal" class="modal">
-<div id="addmanagerdiv" class="container col-md-4 modal-content">
-    <div class="well well-sm col-md-9 col-md-offset-1">
-            <legend class="text-center"><i class="glyphicon glyphicon-user"></i>Manager</legend>
-            <div align="center">
-                <div class="text-danger"><small></small></div>
-                <div>
-                    First name: <input type="text" id="firstname"> 
-                </div>
-                <br />
-                <div>
-                    Last name: <input type="text" id="lastname">
-                </div>
-                <br />
-                <div>
-                    Date of birth: <input type="date" id="bithdate">
-                </div>
-                <br />
-                <div>
-                    Phone number: <input type="text" id="phonenumber">
-                </div>
-                <br />
-                <div>
-                    Email: <input type="text" id="email">
-                </div>
-                <br />
-                <div>
-                    Password: <input type="password" id="password">
-                </div>
-                <div>
-                    <br />
-                    <div class="text-center">Countries:</div>
-                    <div>
-                        <select class="form-control" id="country"></select>
-                    </div>
-                </div>
-                <br />
-            </div>
-            <div>
-                <div class="text-center">
-                    <input type="submit" value="Add" class="btn btn-primary" onclick="addmanager()"/>
-                </div>
-            </div>
+	<div id="addmanagerdiv" class="container col-md-4 modal-content">
+		<div class="well well-sm col-md-9 col-md-offset-1">
+				<legend class="text-center"><i class="glyphicon glyphicon-user"></i>Manager</legend>
+				<div align="center">
+					<div class="text-danger"><small></small></div>
+					<div>
+						First name: <input type="text" id="firstname"> 
+					</div>
+					<br />
+					<div>
+						Last name: <input type="text" id="lastname">
+					</div>
+					<br />
+					<div>
+						Date of birth: <input type="date" id="bithdate">
+					</div>
+					<br />
+					<div>
+						Phone number: <input type="text" id="phonenumber">
+					</div>
+					<br />
+					<div>
+						Email: <input type="text" id="email">
+					</div>
+					<br />
+					<div>
+						Password: <input type="password" id="password">
+					</div>
+					<div>
+						<br />
+						<div class="text-center">Countries:</div>
+						<div>
+							<select class="form-control" id="country"></select>
+						</div>
+					</div>
+					<br />
+				</div>
+				<div>
+					<div class="text-center">
+						<input type="submit" value="Add" class="btn btn-primary" onclick="addmanager()"/>
+					</div>
+				</div>
                         
-    </div>
-
+		</div>
+	</div>
 </div>
-    </div>
 
 <div class="col-md-4">
 </div>
 
-    <script>
+<script>
     $("#table").show();
     $(document).ready(
                 $(function () {
@@ -199,7 +198,6 @@
             }
         });
     }
-
     function changeStatus(id) {
         $.ajax({
             type: "POST",
@@ -246,6 +244,7 @@
 
 
     }
-    </script>
+</script>
+
 @Styles.Render("~/Content/themes/base/all.css")
 

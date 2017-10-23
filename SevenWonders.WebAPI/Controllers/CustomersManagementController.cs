@@ -28,11 +28,12 @@ namespace SevenWonders.Controllers
             db = context;
         }
 
-        [HttpGet]
-        public IEnumerable<Interfaces.IAuthorizedPerson> GetCustomers()
+        [HttpPost]
+        public IHttpActionResult GetCustomers()
         {
             WorkWithCustomer workWithCustomer = new WorkWithCustomer();
-            return workWithCustomer.FindPersons(db, new SearchViewModel()).AsEnumerable().ToList();
+            var result= workWithCustomer.FindPersons(db, new SearchViewModel()).AsEnumerable().ToList();
+            return Ok(result);
         }
 
         [HttpGet]
@@ -55,12 +56,6 @@ namespace SevenWonders.Controllers
         {
             WorkWithCustomer workWithCustomer = new WorkWithCustomer();
             return workWithCustomer.FindPersons(db, search).AsEnumerable().ToList();
-        }
-
-        [HttpGet]
-        public int GetSomeValue()
-        {
-            return 25;
         }
     }
 }

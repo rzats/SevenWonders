@@ -18,7 +18,6 @@ namespace SevenWonders.Controllers
         SevenWondersContext db = new SevenWondersContext();
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        // GET api/<controller>
         [HttpGet]
         public IEnumerable<Interfaces.IAuthorizedPerson> GetManagers()
         {
