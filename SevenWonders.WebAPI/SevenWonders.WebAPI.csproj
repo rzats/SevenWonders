@@ -221,8 +221,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
+    <Compile Include="DTO\ReservationModel.cs" />
     <Compile Include="DTO\SearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
     <Compile Include="DTO\Utils.cs" />
@@ -236,7 +236,6 @@
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IManager.cs" />
     <Compile Include="Interfaces\IPerson.cs" />
-    <Compile Include="Interfaces\ISubscriber.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\Airplane.cs" />
     <Compile Include="Models\Airport.cs" />
@@ -268,11 +267,8 @@
     <Compile Include="Models\TourState.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CustomerDetailInfo.cs" />
     <Compile Include="ViewModels\FullManagerViewModel.cs" />
-    <Compile Include="ViewModels\ManagerReportViewModel.cs" />
     <Compile Include="ViewModels\ManagersSearchViewModel.cs" />
-    <Compile Include="ViewModels\ManagerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\SevenWondersOld.mdf" />
