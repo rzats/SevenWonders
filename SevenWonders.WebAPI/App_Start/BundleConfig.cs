@@ -29,7 +29,9 @@ namespace SevenWonders.WebAPI
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/select2.js"
+                      ));
 
 
 

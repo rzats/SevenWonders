@@ -2,6 +2,7 @@
 using SevenWonders.DAL.Context;
 using SevenWonders.Models;
 using SevenWonders.ViewModels;
+using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace SevenWonders.Controllers
         SevenWondersContext db = new SevenWondersContext();
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [HttpGet]
-        public IEnumerable<Interfaces.IAuthorizedPerson> GetManagers()
+        [HttpPost]
+        public IHttpActionResult GetManagers()
         {
             try
             {
                 WorkWithManager workWithManager = new WorkWithManager();
                 var result = workWithManager.FindPersons(db, new SearchViewModel()).AsEnumerable().ToList();
-                return result;
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -63,21 +64,6 @@ namespace SevenWonders.Controllers
             }
         }
 
-        [HttpPost]
-        public IEnumerable<Interfaces.IAuthorizedPerson> SearchManagers(SearchViewModel search)
-        {
-            try
-            {
-                WorkWithManager workWithManager = new WorkWithManager();
-                return workWithManager.FindPersons(db, search).AsEnumerable().ToList();
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex.Message);
-                return null;
-            }
-        }
-
         public IHttpActionResult ChangeManagerStatus(int id)
         {
             var workWithCustomer = new WorkWithManager();
@@ -86,10 +72,69 @@ namespace SevenWonders.Controllers
         }
 
         [HttpGet]
-        public List<Country> GetCountries()
+        public IHttpActionResult EditManager(int Id)
         {
-            var countries = db.Coutries.Where(a => a.IsDeleted == false).ToList();
+
+            var countries = db.Coutries.Where(c=>!c.IsDeleted).ToList();
+            var managerCountriesIds = countries.Where(x => x.ManagerId == Id).Select(x => x.Id).ToList();
+            WorkWithManager workWithManager = new WorkWithManager();
+            var manager = workWithManager.GetFullManager(db, Id);
+
+            var result = convertToManagerEditModel(manager,countries, managerCountriesIds);
+            return Ok(result);
+        }
+
+        private List<DropDownListItem> getCountries(List<Country> allCountries, List<int> selectedCountries)
+        {
+            List<DropDownListItem> countries = new List<DropDownListItem>();
+            allCountries.ForEach(c =>
+            {
+                if (selectedCountries.Contains(c.Id))
+                {
+                    countries.Add(new DropDownListItem()
+                    {
+                        Id = c.Id.ToString(),
+                        Text = c.Name,
+                        IsChecked = true
+                    });
+                }
+                else
+                {
+                    countries.Add(new DropDownListItem()
+                    {
+                        Id = c.Id.ToString(),
+                        Text = c.Name,
+                        IsChecked = false
+                    });
+                }
+            });
+
             return countries;
+        }
+
+        private ManagerEditModel convertToManagerEditModel(FullManagerViewModel manager, List<Country> allCountries, List<int>selectedCountries)
+        {
+            ManagerEditModel managerEditModel = new ManagerEditModel()
+            {
+                Id = manager.Id,
+                FirstName = manager.FirstName,
+                LastName = manager.LastName,
+                DateOfBirth = manager.DateOfBirth.Date,
+                PhoneNumber=manager.PhoneNumber,
+                Email=manager.Email,
+                Password=manager.Password
+            };
+            managerEditModel.Countries = getCountries(allCountries, selectedCountries);
+            return managerEditModel;
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetCountries()
+        {
+            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
+            var selectedCountries = new List<int>();
+            var result = getCountries(countries, selectedCountries);
+            return Ok(result);
         }
     }
 }

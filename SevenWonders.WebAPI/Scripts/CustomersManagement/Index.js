@@ -15,7 +15,7 @@
 					else {
 						$('td', row).eq(5).html('<span style="color: rgb(0, 128, 0);" data-customer-id="' + item.Id + '">Active</span>');
 					}
-					var buttonCss = "<button class='btn btn-primary' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
+					var buttonCss = "<button class='btn btn-warning' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
 					$('td', row).eq(6).html(buttonCss);
 				},
 				"columns": [

@@ -15,5 +15,5 @@
 /// <reference path="jquery-ui-1.12.0.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="respond.js" />
-/// <reference path="statistic.js" />
 /// <reference path="table.js" />
+<reference path="select2.js" />

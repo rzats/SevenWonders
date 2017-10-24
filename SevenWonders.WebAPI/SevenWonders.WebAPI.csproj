@@ -221,6 +221,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="DTO\DropDownListItem.cs" />
+    <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
     <Compile Include="DTO\SearchModel.cs" />
@@ -400,9 +402,10 @@
     <Content Include="Content\img\tour2.jpg" />
     <Content Include="Content\img\tour3.jpg" />
     <Content Include="Content\img\tour4.jpeg" />
-    <Content Include="Content\js\chat.js" />
-    <Content Include="Content\js\chatManager.js" />
+    <Content Include="Content\ManagersManagement\Index.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\select2.css" />
+    <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\star-off.svg" />
     <Content Include="Content\star-on.svg" />
@@ -549,9 +552,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\ManagersManagement\Index.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\Statistic.js" />
     <Content Include="Scripts\Table.js" />
     <None Include="Scripts\_references.js" />
