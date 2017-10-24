@@ -136,5 +136,12 @@ namespace SevenWonders.Controllers
             var result = getCountries(countries, selectedCountries);
             return Ok(result);
         }
+
+        [HttpGet]
+        public List<Country> GetCountriesForSearch()
+        {
+            var countries = db.Coutries.Where(a => a.IsDeleted == false).ToList();
+            return countries;
+        }
     }
 }

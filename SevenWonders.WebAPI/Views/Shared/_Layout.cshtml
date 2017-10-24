@@ -24,12 +24,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Hot tours", "Index", "HotTours")</li>
-                    <li>@Html.ActionLink("Contact", "Index", "Contact")</li>
+                    @*<li>@Html.ActionLink("Hot tours", "Index", "HotTours")</li>
+                    <li>@Html.ActionLink("Contact", "Index", "Contact")</li>*@
+                    <li>@Html.ActionLink("Customers", "Customers", "Home")</li>
+                    <li>@Html.ActionLink("Managers", "Managers", "Home")</li>
                     @if (User.IsInRole("admin"))
                     {
-                        <li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-                        <li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>
+
                         <li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>
 
                         <li class="dropdown ">
