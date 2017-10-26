@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "7 wonders";
 }
+<script src="../Content/js/chat.js" language="javascript" type="text/javascript"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
 
 <div>
@@ -12,6 +13,103 @@
                 <h1 id="homeHeading">Find the best deal for you</h1>
                 <hr>
                 <div id="searchForm">
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4"> From: </label>
+                        <div class="col-md-8" align="center">
+                            <select class="form-control dropdownlist" id="countryFrom" style="width:100%; max-width:300px"
+                                    onchange="FillCity($('#countryFrom').val(), '#cityFrom')"></select>
+                        </div>
+                        <div class="col-md-8 col-md-offset-4" align="center">
+                            <select class="form-control col-md-6 dropdownlist" id="cityFrom" style="width:100%; max-width:300px"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4"> To: </label>
+                        <div class="col-md-8" align="center">
+                            <select class="form-control dropdownlist" id="countryTo" style="width:100%; max-width:300px"
+                                    onchange="FillCity($('#countryTo').val(), '#cityTo')"></select>
+                        </div>
+                        <div class="col-md-8 col-md-offset-4" align="center">
+                            <select class="form-control col-md-6 dropdownlist" id="cityTo" style="width:100%; max-width:300px"
+                                    onchange="FillHotel($('#cityTo').val())"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4"> Hotel: </label>
+                        <div class="col-md-8" align="center">
+                            <select class="form-control dropdownlist" id="hotel" style="width:100%; max-width:300px"></select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-md-4"> Food type: </label>
+                        <div class="col-md-8" align="center">
+                            <select class="form-control col-md-6 dropdownlist" id="foodType" style="width:100%; max-width:300px"></select>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4  col-md-offset-2 text-right"> People: </label>
+                        <div class="col-md-4" align="center">
+                            <input style="width:100%; max-width:300px"
+                                   class="form-control"
+                                   min="1"
+                                   type="number" id="peopleNumber">
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4  col-md-offset-2 text-right"> Departure day: </label>
+                        <div class="col-md-4" align="center">
+                            <input style="width:100%; max-width:300px"
+                                   class="form-control"
+                                   type="date" id="departureDay">
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4  col-md-offset-2 text-right"> Duration, days: </label>
+                        <div class="col-md-4" align="center">
+                            <input style="width:100%; max-width:300px"
+                                   class="form-control"
+                                   min="1"
+                                   type="number" id="duration">
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label> Total price </label>
+                        <br />
+                        <div class="col-md-5 col-md-offset-1" align="center">
+                            <label class="control-label"> From: </label>
+                            <div>
+                                <input style="width:100%; max-width:300px"
+                                       class="form-control"
+                                       min="0"
+                                       type="number" id="priceFrom">
+                            </div>
+                        </div>
+                        <div class="col-md-5" align="center">
+                            <label class="control-label"> To: </label>
+                            <div>
+                                <input style="width:100%; max-width:300px"
+                                       class="form-control"
+                                       min="0"
+                                       type="number" id="priceTo">
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+
+                    <button id="btnSearch" type="submit" class="btn btn-primary col-md-6 col-md-offset-3" onClick="document.getElementById('foundedTours').scrollIntoView();" style="display:none;"><span class="glyphicon glyphicon-search"></span>Search</button>
+                    <button type="button" class="btn btn-primary col-md-6 col-md-offset-3" onClick="validateForm()"><span class="glyphicon glyphicon-search"></span>Search</button>
 
                 </div>
             </div>
@@ -78,46 +176,6 @@
     </section>
 </div>
 
-
-<script>
-  function FillCity(countryId, cityField) {
-    $.ajax({
-        url: '@Url.Content("~/Home/FillCity")',
-        type: "GET",
-        dataType: "JSON",
-        data: { countryId: countryId},
-        success: function (cities) {
-            $(cityField).html(""); // clear before appending new list
-            $(cityField).append(
-                    $('<option></option>').val(0).html("Select city"));
-            $.each(cities, function (i, city) {
-                $(cityField).append(
-                    $('<option></option>').val(city.Value).html(city.Text));
-            });
-        }
-    });
-  }
-
-    function FillHotel(cityId) {
-        $('#replaceClientModal').modal('show', { backdrop: 'static' });
-      $.ajax({
-          url: '@Url.Content("~/Home/FillHotel")',
-          type: "GET",
-          dataType: "JSON",
-          data: { cityId: cityId },
-          success: function (hotels) {
-              $("#Hotel").html(""); // clear before appending new list
-              $("#Hotel").append(
-                      $('<option></option>').val(0).html("Select hotel"));
-              $.each(hotels, function (i, hotel) {
-                  $("#Hotel").append(
-                      $('<option></option>').val(hotel.Value).html(hotel.Text));
-              });
-          }
-      });
-  }
-
-</script>
-
 @Scripts.Render("~/scripts/jquery-1.12.4.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+@Scripts.Render("~/scripts/Search/Index.js")

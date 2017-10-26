@@ -1,9 +1,8 @@
 ﻿$(document).ready(function () {
 	loadManagersTable();
 });
-var table;
 function loadManagersTable() {
-	table = $("#managersTable")
+	 $("#managersTable")
 		.on('init.dt', function () {
 			$('#managersTable').on('click', '.edit', EditManagerHandler);
 		})
@@ -158,7 +157,16 @@ function addManager(event) {
 		function (html) {
 			$('#editManagerModal').modal('show', { backdrop: 'static' });
 			$('#editManagerModal').on('shown.bs.modal', function () {
-				$('#id').val(0);
+			    $('#id').val(0);
+                $('#firstname').val("");
+			    $('#lastname').val("");
+			    $('#dateOfBirth').val(new Date());
+
+			    $('#phonenumber').val("");
+			    $('#email').val("");
+			    $('#password').val("");
+
+			    $("#countries").empty();
 				$('#countries').
 					select2({
 						placeholder: 'Select countries',
