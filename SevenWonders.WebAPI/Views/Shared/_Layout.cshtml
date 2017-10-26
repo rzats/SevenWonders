@@ -26,10 +26,12 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Hot tours", "Index", "HotTours")</li>
                     <li>@Html.ActionLink("Contact", "Index", "Contact")</li>
+
+					<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>
+
                     @if (User.IsInRole("admin"))
                     {
-                        <li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-                        <li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>
                         <li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>
 
                         <li class="dropdown ">

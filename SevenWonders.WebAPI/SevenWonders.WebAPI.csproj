@@ -218,6 +218,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CustomersManagementController.cs" />
+    <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -225,6 +226,8 @@
     <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
+    <Compile Include="DTO\ScheduleItem.cs" />
+    <Compile Include="DTO\SearchFlight.cs" />
     <Compile Include="DTO\SearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
     <Compile Include="DTO\Utils.cs" />
@@ -576,6 +579,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Customers.cshtml" />
     <Content Include="Views\Home\Managers.cshtml" />
+    <Content Include="Views\Home\Flights.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\Hotels\Hotel17\" />
