@@ -30,10 +30,11 @@ namespace SevenWonders.WebAPI.Controllers
 
             return View();
         }
-
-        public ActionResult Tours()
+        public ActionResult Contact()
         {
             return View();
-        }
-    }
+        }public ActionResult Tours()
+        {
+            return View();
+        }    }
 }

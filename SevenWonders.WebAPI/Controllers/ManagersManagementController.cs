@@ -17,7 +17,6 @@ namespace SevenWonders.Controllers
     public class ManagersManagementController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
-        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [HttpPost]
         public IHttpActionResult GetManagers()
@@ -30,7 +29,6 @@ namespace SevenWonders.Controllers
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex.Message);
                 return null;
             }
         }
