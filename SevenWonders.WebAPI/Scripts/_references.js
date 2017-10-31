@@ -19,4 +19,5 @@
 /// <reference path="select2.js" />
 /// <reference path="Statistic.js" />
 /// <reference path="table.js" />
+/// <reference path="tours/index.js" />
 <reference path="select2.js" />

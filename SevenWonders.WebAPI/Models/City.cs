@@ -14,6 +14,7 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public string Name { get; set; }
         [ForeignKey("CountryId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Country Country { get; set; }
         public bool IsDeleted { get; set; }
 

@@ -16,6 +16,7 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public string Name { get; set; }
         [ForeignKey("CityId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual City City { get; set; }
         [Required]
         public int? CityId { get; set; }

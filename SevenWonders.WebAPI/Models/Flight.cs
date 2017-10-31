@@ -14,10 +14,13 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public string Number { get; set; }
         [ForeignKey("AirplaneId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Airplane Airplane { get; set; }
         [ForeignKey("DepartureAirportId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Airport DepartureAirport { get; set; }
         [ForeignKey("ArrivalAirportId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Airport ArrivalAirport { get; set; }
         [Required]
         public decimal Price { get; set; }

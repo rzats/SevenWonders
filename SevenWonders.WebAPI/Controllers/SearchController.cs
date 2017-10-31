@@ -278,6 +278,7 @@ namespace SevenWonders.WebAPI.Controllers
                 {
                     reservedSeats += item;
                 }
+                //need proxies
                 if (flights[i].Airplane.SeatsAmount - reservedSeats < peopleNumber)
                 {
                     flights.RemoveAt(i);

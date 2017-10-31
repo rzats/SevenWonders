@@ -108,7 +108,7 @@
                         </div>
                     </div>
 
-                    <button id="btnSearch" type="submit" class="btn btn-primary col-md-6 col-md-offset-3" onClick="document.getElementById('foundedTours').scrollIntoView();" style="display:none;"><span class="glyphicon glyphicon-search"></span>Search</button>
+                    <button id="btnSearch" type="submit" class="btn btn-primary col-md-6 col-md-offset-3" onClick="searchTours()" style="display:none;"><span class="glyphicon glyphicon-search"></span>Search</button>
                     <button type="button" class="btn btn-primary col-md-6 col-md-offset-3" onClick="validateForm()"><span class="glyphicon glyphicon-search"></span>Search</button>
 
                 </div>
@@ -179,3 +179,4 @@
 @Scripts.Render("~/scripts/jquery-1.12.4.min.js")
 @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
 @Scripts.Render("~/scripts/Search/Index.js")
+@Scripts.Render("~/scripts/Tours/Index.js")

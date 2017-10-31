@@ -1,6 +1,49 @@
 ﻿$(document).ready(function () {
     getCountries();
 });
+
+function searchTours()
+{
+    var countryFrom = $('#countryFrom').val();
+    var cityFrom = $('#cityFrom').val();
+    var countryTo = $('#countryTo').val();
+    var cityTo = $('#cityTo').val();
+    var departureDay = $('#departureDay').val();
+    var hotel = $('#hotel').val();
+    var foodType = $('#foodType').val();
+    var peopleNumber = $('#peopleNumber').val();
+    var duration = $('#duration').val();
+    var priceFrom = $('#priceFrom').val();
+    var priceTo = $('#priceTo').val();
+        $.ajax({
+        type: "POST",
+        url: "../api/Search/SearchTours",
+        data: {
+            CountryFrom: countryFrom,
+            CountryTo: countryTo,
+            CityFrom: cityFrom,
+            CityTo: cityTo,
+            Hotel: hotel,
+            DapartureDay: departureDay,
+            FoodType: foodType,
+            PeopleNumber: peopleNumber,
+            PriceFrom: priceFrom,
+            PriceTo: priceTo,
+            Duration: duration
+        },
+        success: function(responce)
+        {
+            console.log(responce);
+            window.location.href = "../Home/Tours";
+            initializeToursList(responce);
+        },
+        error: function(err)
+        {
+            alert(err);
+        }
+    });
+}
+
 function validateForm() {
     var isValid = true;
     var countryFrom = document.getElementById('countryFrom');
@@ -106,3 +149,4 @@ function getCountries() {
         }
     })
 }
+

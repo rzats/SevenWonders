@@ -9,7 +9,7 @@ namespace SevenWonders.DAL.Context
     {
         public SevenWondersContext() : base("SevenWondersContext")
         {
-            Configuration.ProxyCreationEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
         }
         public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Airplane> Airplanes { get; set; }
@@ -41,7 +41,7 @@ namespace SevenWonders.DAL.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+           modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
     }
 

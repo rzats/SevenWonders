@@ -13,6 +13,7 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public string Password { get; set; }
         [ForeignKey("RoleId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Role Role { get; set; }
 
         [Required]

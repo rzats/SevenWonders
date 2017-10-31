@@ -14,6 +14,7 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public string photoLink { get; set; }
         [ForeignKey("RoomId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Room Room { get; set; }
 
         public int? RoomId { get; set; }

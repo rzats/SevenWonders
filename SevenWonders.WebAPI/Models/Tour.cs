@@ -12,8 +12,10 @@ namespace SevenWonders.WebAPI.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("ReservationId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Reservation Reservation { get; set; }
         [ForeignKey("CustomerId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Customer Customer { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
@@ -21,6 +23,7 @@ namespace SevenWonders.WebAPI.Models
         public decimal? TotalPrice { get; set; }
 
         [ForeignKey("TourStateId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual TourState TourState { get; set; }
         public bool IsDeleted { get; set; }
 

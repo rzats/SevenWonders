@@ -12,6 +12,7 @@ namespace SevenWonders.WebAPI.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<Room> Rooms { get; set; }
 
     }

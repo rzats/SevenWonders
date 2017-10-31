@@ -12,6 +12,7 @@ namespace SevenWonders.WebAPI.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("CustomerId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Customer Customer { get; set; }
         [Required]
         public string Text { get; set; }

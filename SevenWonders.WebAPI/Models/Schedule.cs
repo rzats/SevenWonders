@@ -18,6 +18,7 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public DateTime ArrivalTime { get; set; }
         [ForeignKey("FlightId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Flight Flight { get; set; }
         public bool IsDeleted { get; set; }
 

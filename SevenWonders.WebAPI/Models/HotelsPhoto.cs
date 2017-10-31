@@ -12,6 +12,7 @@ namespace SevenWonders.WebAPI.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("HotelId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Hotel Hotel { get; set; }
         [Required]
         public string PhotoLink { get; set; }

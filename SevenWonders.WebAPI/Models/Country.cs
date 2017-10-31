@@ -15,6 +15,7 @@ namespace SevenWonders.WebAPI.Models
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
         [ForeignKey("ManagerId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Manager Manager { get; set; }
         public int? ManagerId { get; set; }
     }

@@ -7,6 +7,7 @@ using System.Web;
 
 namespace SevenWonders.WebAPI.Models
 {
+    //JSON IGNORE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class Message
     {
         [BsonId]

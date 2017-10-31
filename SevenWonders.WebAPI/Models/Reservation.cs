@@ -12,12 +12,15 @@ namespace SevenWonders.WebAPI.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("RoomId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Room Room { get; set; }
         [Required]
         public int PersonAmount { get; set; }
         [ForeignKey("LeaveFlightId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Flight LeaveFlight { get; set; }
         [ForeignKey("ReturnFlightId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Flight ReturnFlight { get; set; }
         [Required]
         [DataType(DataType.Date)]

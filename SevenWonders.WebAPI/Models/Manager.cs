@@ -21,7 +21,9 @@ namespace SevenWonders.WebAPI.Models
         public string Email { get; set; }
         public bool IsDeleted { get; set; }
 
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<Country> Countries { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<Tour> Tour { get; set; }
     }
 }

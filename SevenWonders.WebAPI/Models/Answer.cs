@@ -17,8 +17,10 @@ namespace SevenWonders.WebAPI.Models
         public string Text { get; set; }
 
         [ForeignKey("ManagerId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Manager Manager { get; set; }
         [ForeignKey("QuestionId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Question Question { get; set; }
 
         [Required]

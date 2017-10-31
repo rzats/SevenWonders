@@ -12,8 +12,10 @@ namespace SevenWonders.WebAPI.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("HotelId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual Hotel Hotel { get; set; }
         [ForeignKey("RoomTypeId")]
+        [Newtonsoft.Json.JsonIgnore]
         public virtual RoomType RoomType { get; set; }
         [Required]
         public int MaxPeople { get; set; }
@@ -22,11 +24,13 @@ namespace SevenWonders.WebAPI.Models
         public decimal Price { get; set; }
         public bool IsDeleted { get; set; }
 
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<Equipment> Equipments { get; set; }
         [Required]
         public int? HotelId { get; set; }
         [Required]
         public int? RoomTypeId { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<RoomsPhoto> RoomsPhotos { get; set; }
     }
 }

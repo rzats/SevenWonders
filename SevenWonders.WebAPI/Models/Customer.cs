@@ -29,6 +29,7 @@ namespace SevenWonders.WebAPI.Models
         public int? CityId { get; set; }
         public decimal TotalPayment { get; set; }
         public int Discount { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
         public virtual List<Tour> Tours { get; set; }
     }
 }
