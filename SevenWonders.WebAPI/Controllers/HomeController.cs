@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Owin.Security;
 
 namespace SevenWonders.WebAPI.Controllers
 {
@@ -33,8 +34,27 @@ namespace SevenWonders.WebAPI.Controllers
         public ActionResult Contact()
         {
             return View();
-        }public ActionResult Tours()
+        }
+
+        public ActionResult Tours()
         {
             return View();
-        }    }
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }
