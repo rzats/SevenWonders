@@ -593,7 +593,6 @@
     <Content Include="Scripts\Table.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Home\HomePage.html" />
-    <Content Include="Views\myPage.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Tours\Index.js" />
     <Content Include="Web.Debug.config">
