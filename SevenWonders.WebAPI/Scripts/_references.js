@@ -12,14 +12,16 @@
 /// <reference path="jquery-1.10.2.js" />
 /// <reference path="jquery-1.12.4.js" />
 /// <reference path="jquery-ui-1.12.0.js" />
+/// <reference path="knockout-3.1.0.js" />
 /// <reference path="login/index.js" />
 /// <reference path="ManagersManagement/Index.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="register/index.js" />
 /// <reference path="respond.js" />
+/// <reference path="sammy-0.7.5.min.js" />
 /// <reference path="search/index.js" />
 /// <reference path="select2.js" />
 /// <reference path="Statistic.js" />
 /// <reference path="table.js" />
 /// <reference path="tours/index.js" />
-<reference path="select2.js" />
+/// <reference path="sammy-0.7.5.js" />

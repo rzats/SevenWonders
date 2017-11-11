@@ -576,18 +576,24 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-3.1.0.debug.js" />
+    <Content Include="Scripts\knockout-3.1.0.js" />
     <Content Include="Scripts\Login\Index.js" />
     <Content Include="Scripts\ManagersManagement\Index.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Register\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\sammy-0.7.5.js" />
+    <Content Include="Scripts\sammy-0.7.5.min.js" />
     <Content Include="Scripts\Search\Index.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\Statistic.js" />
     <Content Include="Scripts\Table.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Home\HomePage.html" />
+    <Content Include="Views\myPage.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Tours\Index.js" />
     <Content Include="Web.Debug.config">
@@ -601,11 +607,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Customers.cshtml" />
     <Content Include="Views\Home\Managers.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Register.html" />
+    <Content Include="Views\Home\Login.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\Hotels\Hotel17\" />
@@ -628,6 +633,7 @@
     <Folder Include="Content\img\Rooms\Room74\" />
     <Folder Include="Scripts\cldr\" />
     <Folder Include="Scripts\globalize\" />
+    <Folder Include="Scripts\KnockoutHelpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,4 +1,8 @@
-﻿function register()
+﻿$(function () {
+    $(".datepicker").datepicker();
+});
+
+function register()
 {
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();

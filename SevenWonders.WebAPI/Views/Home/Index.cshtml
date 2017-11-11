@@ -5,178 +5,170 @@
 }
 <script src="../Content/js/chat.js" language="javascript" type="text/javascript"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<script src="../../Scripts/jquery-1.12.4.min.js"></script>
+<script src="../../Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="../../Scripts/Search/Index.js"></script>
+<script src="../../Scripts/Tours/Index.js"></script>
+<script src="../../Scripts/Home/Index.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
 
-<div>
-    <header id="header1">
-        <div class="header-content">
-            <div class="header-content-inner">
-                <h1 id="homeHeading">Find the best deal for you</h1>
-                <hr>
-                <div id="searchForm">
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4"> From: </label>
-                        <div class="col-md-8" align="center">
-                            <select class="form-control dropdownlist" id="countryFrom" style="width:100%; max-width:300px"
-                                    onchange="FillCity($('#countryFrom').val(), '#cityFrom')"></select>
-                        </div>
-                        <div class="col-md-8 col-md-offset-4" align="center">
-                            <select class="form-control col-md-6 dropdownlist" id="cityFrom" style="width:100%; max-width:300px"></select>
-                        </div>
-                    </div>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4"> To: </label>
-                        <div class="col-md-8" align="center">
-                            <select class="form-control dropdownlist" id="countryTo" style="width:100%; max-width:300px"
-                                    onchange="FillCity($('#countryTo').val(), '#cityTo')"></select>
-                        </div>
-                        <div class="col-md-8 col-md-offset-4" align="center">
-                            <select class="form-control col-md-6 dropdownlist" id="cityTo" style="width:100%; max-width:300px"
-                                    onchange="FillHotel($('#cityTo').val())"></select>
-                        </div>
-                    </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4"> Hotel: </label>
-                        <div class="col-md-8" align="center">
-                            <select class="form-control dropdownlist" id="hotel" style="width:100%; max-width:300px"></select>
+</head>
 
-                        </div>
-                    </div>
+<body id="page-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div id="mainNav1" class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#/home">7 wonders</a>
+            </div>
 
-                    <div class="form-group col-md-6">
-                        <label class="control-label col-md-4"> Food type: </label>
-                        <div class="col-md-8" align="center">
-                            <select class="form-control col-md-6 dropdownlist" id="foodType" style="width:100%; max-width:300px"></select>
-                            <br />
-                        </div>
-                    </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#/home" id="homeLink">Home</a></li>
+                    @*<li>@Html.ActionLink("Hot tours", "Index", "HotTours")</li>*@
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Customers", "Customers", "Home")</li>
+                    <li>@Html.ActionLink("Managers", "Managers", "Home")</li>
 
-                    <div class="form-group col-md-12">
-                        <label class="control-label col-md-4  col-md-offset-2 text-right"> People: </label>
-                        <div class="col-md-4" align="center">
-                            <input style="width:100%; max-width:300px"
-                                   class="form-control"
-                                   min="1"
-                                   type="number" id="peopleNumber">
-                            <br />
-                        </div>
-                    </div>
+                    @*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+                        <li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
 
-                    <div class="form-group col-md-12">
-                        <label class="control-label col-md-4  col-md-offset-2 text-right"> Departure day: </label>
-                        <div class="col-md-4" align="center">
-                            <input style="width:100%; max-width:300px"
-                                   class="form-control"
-                                   type="date" id="departureDay">
-                            <br />
-                        </div>
-                    </div>
+                    @if (User.IsInRole("admin"))
+                    {
 
-                    <div class="form-group col-md-12">
-                        <label class="control-label col-md-4  col-md-offset-2 text-right"> Duration, days: </label>
-                        <div class="col-md-4" align="center">
-                            <input style="width:100%; max-width:300px"
-                                   class="form-control"
-                                   min="1"
-                                   type="number" id="duration">
-                            <br />
-                        </div>
-                    </div>
+                        <li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>
 
-                    <div class="form-group col-md-12">
-                        <label> Total price </label>
-                        <br />
-                        <div class="col-md-5 col-md-offset-1" align="center">
-                            <label class="control-label"> From: </label>
-                            <div>
-                                <input style="width:100%; max-width:300px"
-                                       class="form-control"
-                                       min="0"
-                                       type="number" id="priceFrom">
-                            </div>
-                        </div>
-                        <div class="col-md-5" align="center">
-                            <label class="control-label"> To: </label>
-                            <div>
-                                <input style="width:100%; max-width:300px"
-                                       class="form-control"
-                                       min="0"
-                                       type="number" id="priceTo">
-                            </div>
-                            <br />
-                        </div>
-                    </div>
+                        <li class="dropdown ">
+                            <a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
+                                <li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>
 
-                    <button id="btnSearch" type="submit" class="btn btn-primary col-md-6 col-md-offset-3" onClick="searchTours()" style="display:none;"><span class="glyphicon glyphicon-search"></span>Search</button>
-                    <button type="button" class="btn btn-primary col-md-6 col-md-offset-3" onClick="validateForm()"><span class="glyphicon glyphicon-search"></span>Search</button>
+                            </ul>
+                        </li>
+                    }
+                    else if (User.IsInRole("manager"))
+                    {
+                        <li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+                        <li>@Html.ActionLink("Cities", "Index", "Cities")</li>
+                        <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
+                        <li>@Html.ActionLink("Airports", "Index", "Airports")</li>
+                        <li>@Html.ActionLink("Flights", "Index", "Flights")</li>
+                        <li>@Html.ActionLink("Tours", "Index", "Tours")</li>
+                    }
+                </ul>
+                <div style="margin-right:1%">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
 
+                            <ul class="nav navbar-nav navbar-right">
+                                @if (User.IsInRole("customer"))
+                                {
+                                    <li>
+                                        @Html.ActionLink("Cabinet", "Info", "Customer", new { email = User.Identity.Name.ToString() }, null)
+                                    </li>
+                                }
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#/register" id="registerLink">Register</a></li>
+                            <li><a href="#/login" id="loginLink">Log in</a></li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
+    <div id="mainDiv">
+        
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/Statistic")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@RenderSection("scripts", required: false)*@
 
-    <section id="services" class="bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Why Choose Us?</h2>
-                    <hr class="primary">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-hand-o-up text-primary sr-icons"></i>
-                        <h3>Customizable tours</h3>
-                        <p class="text-muted">Build your perfect tour yourself.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-building-o text-primary sr-icons"></i>
-                        <h3>Luxury hotels</h3>
-                        <p class="text-muted">Top-grade suites for the most demanding travelers.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-plane text-primary sr-icons"></i>
-                        <h3>Best flights</h3>
-                        <p class="text-muted">Choose flights that satisfy tour demands.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-heart text-primary sr-icons"></i>
-                        <h3>Good impressions</h3>
-                        <p class="text-muted">Great memories after journey.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="bg-primary" id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">We've got what you need!</h2>
-                    <hr class="light">
-                    <p class="text-faded">
-                        Since our establishment, we have shown consistent commitment to excellent hospitality and dedication to the quality of touring services. We have many more supporters & recommendations from our valued clients
-                        around the world. One of the advantages of dealing with us yourself is you can design a trip just to meet your own requirements.
-                    </p>
-                    <a href="#page-top" class="page-scroll btn btn-default btn-xl sr-button">Search tour!</a>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
+</body>
+</html>
 
-@Scripts.Render("~/scripts/jquery-1.12.4.min.js")
-@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
-@Scripts.Render("~/scripts/Search/Index.js")
-@Scripts.Render("~/scripts/Tours/Index.js")
+<script src="../../Scripts/sammy-0.7.5.js"></script>
+<script>
+    (function ($) {
+        var app = $.sammy('#mainDiv', function () {
+            this.debug = true;
+            var form_fields = null;
+
+            this.get('#/', function () {
+                this.app.swap('Click form!');
+            });
+
+            this.get('#/home', function () {
+                this.partial('/Views/Home/HomePage.html');
+            });
+
+            this.get('#/register', function () {
+                this.partial('/Views/Home/Register.html');
+            });
+
+            this.get('#/login', function () {
+                this.partial('/Views/Home/Login.html');
+            });
+
+        });
+
+        $(function () {
+            app.run('#/home');
+        });
+
+    })(jQuery);
+
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+
+
+    $(window).on('resize', function () {
+
+        var width = $(window).width();
+
+        if (width < 975) {
+            $('header').height('1200px');
+        }
+        else {
+            $('header').height('840px');
+        }
+
+        if ($('#mainNav').height() == 100) {
+            document.body.style.paddingTop = '100px'
+        }
+        else if ($('#mainNav').height() == 150) {
+            document.body.style.paddingTop = '150px'
+        }
+        else if ($('#mainNav').height() == 200) {
+            document.body.style.paddingTop = '200px'
+        }
+        else {
+            document.body.style.paddingTop = '50px'
+        }
+    }).trigger('resize');
+    </script>
