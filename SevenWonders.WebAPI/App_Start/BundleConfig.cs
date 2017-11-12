@@ -11,11 +11,6 @@ namespace SevenWonders.WebAPI
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/Statistic").Include(
-                        "~/scripts/Statistic.js",
-                        "~/Scripts/Table.js"));
-
-
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
             "~/Scripts/jquery-ui-{version}.js"));
 
@@ -33,14 +28,16 @@ namespace SevenWonders.WebAPI
                       "~/Scripts/select2.js"
                       ));
 
-
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/vendor/font-awesome/css/font-awesome.min.css",
                       "~/Content/vendor/magnific-popup/magnific-popup.css",
                       "~/Content/creative.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Statistic").Include(
+                "~/scripts/Statistic.js",
+                "~/Scripts/Table.js"));
         }
     }
 }

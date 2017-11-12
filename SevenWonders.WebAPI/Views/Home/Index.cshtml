@@ -3,25 +3,18 @@
 @{
     ViewBag.Title = "7 wonders";
 }
-<script src="../Content/js/chat.js" language="javascript" type="text/javascript"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
-<script src="../../Scripts/jquery-1.12.4.min.js"></script>
-<script src="../../Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="../../Scripts/Search/Index.js"></script>
-<script src="../../Scripts/Tours/Index.js"></script>
-<script src="../../Scripts/Home/Index.js"></script>
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/bootstrap")
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
-
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-
 </head>
 
 <body id="page-top">
@@ -33,40 +26,35 @@
                 </button>
                 <a class="navbar-brand page-scroll" href="#/home">7 wonders</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#/home" id="homeLink">Home</a></li>
-                    @*<li>@Html.ActionLink("Hot tours", "Index", "HotTours")</li>*@
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Customers", "Customers", "Home")</li>
-                    <li>@Html.ActionLink("Managers", "Managers", "Home")</li>
+                    <li><a href="#/home">Home</a></li>
+					<li><a href="#/contact">Contact</a></li>
+					<li><a href="#/customers">Customers</a></li>
+					<li><a href="#/managers">Managers</a></li>
 
-                    @*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-                        <li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
+					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
 
                     @if (User.IsInRole("admin"))
                     {
-
-                        <li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>
-
+                        @*<li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>*@
                         <li class="dropdown ">
                             <a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
-                                <li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>
-
+                                @*<li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
+                                <li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>*@
                             </ul>
                         </li>
                     }
                     else if (User.IsInRole("manager"))
                     {
-                        <li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+                        @*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
                         <li>@Html.ActionLink("Cities", "Index", "Cities")</li>
                         <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
                         <li>@Html.ActionLink("Airports", "Index", "Airports")</li>
                         <li>@Html.ActionLink("Flights", "Index", "Flights")</li>
-                        <li>@Html.ActionLink("Tours", "Index", "Tours")</li>
+                        <li>@Html.ActionLink("Tours", "Index", "Tours")</li>*@
                     }
                 </ul>
                 <div style="margin-right:1%">
@@ -80,7 +68,7 @@
                                 @if (User.IsInRole("customer"))
                                 {
                                     <li>
-                                        @Html.ActionLink("Cabinet", "Info", "Customer", new { email = User.Identity.Name.ToString() }, null)
+                                        @*@Html.ActionLink("Cabinet", "Info", "Customer", new { email = User.Identity.Name.ToString() }, null)*@
                                     </li>
                                 }
                                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
@@ -98,20 +86,17 @@
             </div>
         </div>
     </nav>
-    <div id="mainDiv">
-        
+    <div id="mainDiv">        
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/Statistic")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
-    @*@RenderSection("scripts", required: false)*@
-
-
 </body>
 </html>
 
+<script src="../../Scripts/Search/Index.js"></script>
+<script src="../../Scripts/Tours/Index.js"></script>
+<script src="../../Scripts/Home/Index.js"></script>
+
 <script src="../../Scripts/sammy-0.7.5.js"></script>
+
 <script>
     (function ($) {
         var app = $.sammy('#mainDiv', function () {
@@ -127,12 +112,24 @@
             });
 
             this.get('#/register', function () {
-                this.partial('/Views/Home/Register.html');
+                this.partial('/Views/Account/Register.html');
             });
 
             this.get('#/login', function () {
-                this.partial('/Views/Home/Login.html');
-            });
+				this.partial('/Views/Account/Login.html');
+			});
+
+			this.get('#/contact', function () {
+				this.partial('/Views/Home/Contact.html');
+			});
+
+			this.get('#/customers', function () {
+				this.partial('/Views/CustomersManagement/Index.html');
+			});
+
+			this.get('#/managers', function () {
+				this.partial('/Views/ManagersManagement/Index.html');
+			});
 
         });
 
@@ -144,8 +141,7 @@
 
     $(document).ready(function () {
         $('.dropdown-toggle').dropdown();
-    });
-
+	});
 
     $(window).on('resize', function () {
 
