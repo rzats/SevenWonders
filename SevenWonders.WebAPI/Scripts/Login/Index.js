@@ -15,7 +15,7 @@
                     RememberMe: rememberMe
                 },
             success: function () {
-                window.location.href = "../Home/Index";
+                window.location.href = "#/home";
             },
             error: function (err) {
                 console.log(err);

@@ -1,8 +1,4 @@
-﻿$(function () {
-    $(".datepicker").datepicker();
-});
-
-function register()
+﻿function register()
 {
     var firstName = $('#firstName').val();
     var lastName = $('#lastName').val();
@@ -27,7 +23,7 @@ function register()
                     ConfirmPassword: confirmedPassword
                 },
             success: function () {
-                window.location.href = "../Home/Login";
+                window.location.href = "#/login";
             },
             error: function (err) {
                 console.log(getErrors(err.responseJSON));
