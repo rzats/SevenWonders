@@ -1,4 +1,5 @@
-﻿using SevenWonders.DAL.Context;
+﻿using Newtonsoft.Json.Linq;
+using SevenWonders.DAL.Context;
 using SevenWonders.Models;
 using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.Models;
@@ -18,13 +19,13 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetFlights(int pageIndex, int pageSize)
         {
-            var data = db.Flights.Where(p2 => p2.IsDeleted == false
-            && p2.ArrivalAirport.IsDeleted == false
-            && p2.ArrivalAirport.City.IsDeleted == false
-            && p2.ArrivalAirport.City.Country.IsDeleted == false
-            && p2.DepartureAirport.IsDeleted == false
-            && p2.DepartureAirport.City.IsDeleted == false
-            && p2.DepartureAirport.City.Country.IsDeleted == false);
+            var data = db.Flights.Where(p2 => ! p2.IsDeleted
+            && !p2.ArrivalAirport.IsDeleted
+            && !p2.ArrivalAirport.City.IsDeleted
+            && !p2.ArrivalAirport.City.Country.IsDeleted
+            && !p2.DepartureAirport.IsDeleted
+            && !p2.DepartureAirport.City.IsDeleted
+            && !p2.DepartureAirport.City.Country.IsDeleted);
 
             int dataCount = data.Count();
 
@@ -61,6 +62,31 @@ namespace SevenWonders.WebAPI.Controllers
             };
         }
 
+        [HttpPost]
+        public void AddFlight([FromBody]JObject model)
+        {
+            int i = 5 + 3;
+            //var manager = model["manager"].ToObject<FullManagerViewModel>();
+            //var countries = model["countries"].ToObject<int[]>();
+
+            //if (ModelState.IsValid)
+            //{
+            //    db.Flights.Add(flight);
+            //    db.Airplanes.Add(flight.Airplane);
+            //    db.SaveChanges();
+            //}
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetAirports()
+        {
+            var data = db.Airports.Where(x => !x.IsDeleted
+            && !x.City.IsDeleted
+            && !x.City.Country.IsDeleted);
+
+            List<DropDownListItem> countries = new List<DropDownListItem>();
+            return Ok();
+        }
         //public ActionResult Create()
         //{
         //    var aireplanes = db.Airplanes.Where(p2 => p2.IsDeleted == false).OrderBy(pq => pq.Model).ToList().Select(s => new

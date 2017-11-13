@@ -61,10 +61,64 @@
 		self.pageIndex(index);
 		self.loadTable();
 	};
+}
 
-	self.AddFilght = function () {
-		alert("Hello");
+function CreateViewModel(reservationsViewModel) {
+	var self = this;
+	self.Number = ko.observable();
+	self.Price = ko.observable();
+	self.AirplaneModel = ko.observable();
+	self.AirplaneCompany = ko.observable();
+	self.SeatsAmount = ko.observable();
+	self.ArrivalAirports = ko.observableArray([]);
+
+	self.updateViewModel = function () {
+		self.Number(undefined);
+		self.Price(undefined);
+		self.AirplaneModel(undefined);
+		self.AirplaneCompany(undefined);
+		self.SeatsAmount(undefined);
+	}
+	self.loadArrivalAirports =  = function () {
+		$.ajax("../api/Flights/GetAirports", {
+			type: "get",
+			contentType: "application/json",
+			success: function (result) {
+				self.ArrivalAirports(result);
+			}
+		});
+	}
+	self.addFlight = function () {
+		self.updateViewModel();
+		$('#editFlightModal').modal();
+	}
+	self.saveFlight = function () {
+		$.ajax("../api/Flights/AddFlight", {
+			type: "post",
+			data: {
+				number: self.Number(),
+				price: self.Price(),
+				airplaneModel: self.AirplaneModel(),
+				airplaneCompany: self.AirplaneCompany(),
+				seatsAmount: self.SeatsAmount()
+			},
+			contentType: "application/json",
+			success: function (result) {
+				reservationsViewModel.loadTable();
+				$('#editFlightModal').modal('hide');
+			}
+		});
 	}
 }
 
-ko.applyBindings(new ReservationsViewModel());
+var reservationsViewModel = new ReservationsViewModel();
+var MainViewModel = {
+	ReservationsViewModel: reservationsViewModel,
+	CreateViewModel: new CreateViewModel(reservationsViewModel)
+};
+
+ko.applyBindings(MainViewModel);
+
+$(document).ready(function () {
+
+});

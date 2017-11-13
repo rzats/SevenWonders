@@ -3,97 +3,169 @@
 <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
 	<h2 class="text-center">Flights</h2>
 	<br />
-	<div class="row" style="margin-bottom:6px;">
-		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-			<button data-bind="click:AddFilght" class="btn btn-warning" type="button" id="addHotel">Add flight</button>
-		</div>
-	</div>
-	<div class="row">
-		<table class="table">
-			<tbody data-bind="foreach: flights">
-				<tr>
-					<td>
-						<div class="panel panel-default" style="margin-bottom: 0;">
-							<div class="panel-heading col-md-12">
-								<div class="row">
-									<div class="panelHeadingItem headCustomerName col-md-4">
-										<h3 class="panel-title">
-											<b data-bind="text: Number"></b>
-										</h3>
-									</div>
-									<div class="panelHeadingItem pull-right" style="padding-right:15px;">
-										<button class="btn btn-xs" type="button" style="padding:5px">
-											<div class="glyphicon glyphicon-pencil"></div>
-										</button>
-										<button class="btn btn-xs" type="button" style="padding:5px">
-											<div class="glyphicon glyphicon-list-alt"></div>
-										</button>
-										<button class="btn btn-xs" type="button" style="padding:5px">
-											<div class="glyphicon glyphicon-remove"></div>
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="panel-body">
-								<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-								</div>
-								<div class="col-xs-12 col-sm-10 col-md-10 col-lg-100 ">
-									<div class="row">
-										<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left:0px;">
-											<dl style="margin-bottom:0px;">
-												<dt>Departure:</dt>
-												<dd>
-													<span data-bind="text: DepartureAirportCode"></span>
-													<span data-bind="text: DepartureAirportName"></span>
-													<span data-bind="text: DepartureAirportCityName"></span>
-													<span data-bind="text: DepartureAirportCountryName"></span>
-												</dd>
-											</dl>
-										</div>
-										<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
-											<dl style="margin-bottom:0px;">
-												<dt>Arrival:</dt>
-												<dd>
-													<span data-bind="text: ArrivalAirportCode"></span>
-													<span data-bind="text: ArrivalAirportName"></span>
-													<span data-bind="text: ArrivalAirportCityName"></span>
-													<span data-bind="text: ArrivalAirportCountryName"></span>
-												</dd>
-											</dl>
-										</div>
-									</div>
-									<div class="row">
-										<dl style="margin-bottom:0px;">
-											<dt>Aireplane:</dt>
-											<dd>
-												<span data-bind="text: AirplaneModel"></span>
-												<span> ,</span>
-												<span data-bind="text: AirplaneCompany"></span>
-											<dt>Seats amount:</dt>
-											<dd>
-												<span data-bind="text: AirplaneSeatsAmount"></span>
-											</dd>
-											<dt>Ticket price:</dt>
-											<dd>
-												<span data-bind="text: Price"></span>
-											</dd>
-										</dl>
-									</div>
-								</div>
-							</div>
+	<!-- Add flight-->
+	<div class="modal fade" data-bind="with: CreateViewModel" id="editFlightModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center">Flight</h4>
+				</div>
+				<div class="modal-body">
+
+					<!--@Html.EditorFor(model => model.Number, new { htmlAttributes = new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "number" } })
+					@Html.ValidationMessageFor(model => model.Number, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "numberErrorMessage" })
+
+					@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "price" } })
+					@Html.ValidationMessageFor(model => model.Price, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "priceErrorMessage" })
+
+					@Html.DropDownList("DepartureAirportId", null, htmlAttributes: new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "departure"})
+					@Html.ValidationMessageFor(model => model.DepartureAirportId, "", new { @style = "width:100%; max-width:500px", @class = "text-danger" })
+
+					@Html.DropDownList("ArrivalAirportId", null, htmlAttributes: new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "arrival" })
+					@Html.ValidationMessageFor(model => model.ArrivalAirportId, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "arrivalErrorMessage"})
+
+					@Html.EditorFor(model => model.Airplane.Model, new { htmlAttributes = new { @id = "model", @class = "form-control", @style = "width:100%; max-width:500px" } })
+					@Html.ValidationMessageFor(model => model.Airplane.Model, "", new { @id = "modelErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })
+
+					@Html.EditorFor(model => model.Airplane.Company, new { htmlAttributes = new { @id = "company", @class = "form-control", @style = "width:100%; max-width:500px" } })
+					@Html.ValidationMessageFor(model => model.Airplane.Company, "", new { @id = "companyErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })
+
+					@Html.EditorFor(model => model.Airplane.SeatsAmount, new { htmlAttributes = new { @id = "seatsAmount", @class = "form-control", @style = "width:100%; max-width:500px", @type = "number", @min = 1 } })
+					@Html.ValidationMessageFor(model => model.Airplane.Company, "", new { @id = "seatsAmountErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })-->
+
+
+					<div align="center">
+						<input type="hidden" id="id">
+						<div class="form-group" >
+							<label for="number">Number</label>
+							<input id="number" type="text" maxlength="6" pattern="([0-9]|[0-9]|[0-9]|[0-9]|[0-9]|[0-9])" class="form-control" data-bind="value: Number" placeholder="Enter number">
 						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="row" data-bind="visible: pageCount()>1">
-		<div class="col-sm-5">
-			<div class="dataTables_info" id="managersTable_info" role="status" aria-live="polite">
-				Showing <span data-bind="text: indexOfFirst"></span> to <span data-bind="text: indexOfLast"></span> of <span data-bind="text: dataCount"></span> entries
+						<div class="form-group">
+							<label for="price">Ticket price</label>
+							<input type="number" step="0.01" min="0.01" max="99" class="form-control" data-bind="value: Price" placeholder="Enter ticket price">
+						</div>
+
+						<div class="form-group">
+							<label for="arrivalAirport">Airplane model</label>
+							<input type="text" class="form-control" data-bind="options: ArrivalAirports, optionsText: 'Text', optionsValue: 'Id'" placeholder="Enter arrival airport">
+						</div>
+
+						<div class="form-group">
+							<label for="airplaneModel">Airplane model</label>
+							<input type="text" maxlength="15" class="form-control" data-bind="value: AirplaneModel" placeholder="Enter airplane model">
+						</div>
+						<div class="form-group">
+							<label for="airplaneCompany">Airplane company</label>
+							<input type="text" maxlength="15" class="form-control" data-bind="value: AirplaneCompany" placeholder="Enter airplane company">
+						</div>
+						<div class="form-group">
+							<label for="seatsAmount">Seats amount</label>
+							<input type="number" max="500" class="form-control" data-bind="value: SeatsAmount" placeholder="Enter seats amount">
+						</div>
+						<br />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning" data-bind="click: saveFlight">Save</button>
+					<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+				</div>
 			</div>
 		</div>
-		<div class="col-sm-7">
+	</div>
+
+	<div class="row" style="margin-bottom:6px;" data-bind="with: CreateViewModel">
+		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+			<button class="btn btn-warning" type="button" data-bind="click: addFlight">Add flight</button>
+		</div>
+	</div>
+	<div data-bind="with: ReservationsViewModel">
+		<div class="row">
+			<table class="table">
+				<tbody data-bind="foreach: flights">
+					<tr>
+						<td>
+							<div class="panel panel-default" style="margin-bottom: 0;">
+								<div class="panel-heading col-md-12">
+									<div class="row">
+										<div class="panelHeadingItem headCustomerName col-md-4">
+											<h3 class="panel-title">
+												<b data-bind="text: Number"></b>
+											</h3>
+										</div>
+										<div class="panelHeadingItem pull-right" style="padding-right:15px;">
+											<button class="btn btn-xs" type="button" style="padding:5px">
+												<div class="glyphicon glyphicon-pencil"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px">
+												<div class="glyphicon glyphicon-list-alt"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px">
+												<div class="glyphicon glyphicon-remove"></div>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+									</div>
+									<div class="col-xs-12 col-sm-10 col-md-10 col-lg-100 ">
+										<div class="row">
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left:0px;">
+												<dl style="margin-bottom:0px;">
+													<dt>Departure:</dt>
+													<dd>
+														<span data-bind="text: DepartureAirportCode"></span>
+														<span data-bind="text: DepartureAirportName"></span>
+														<span data-bind="text: DepartureAirportCityName"></span>
+														<span data-bind="text: DepartureAirportCountryName"></span>
+													</dd>
+												</dl>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+												<dl style="margin-bottom:0px;">
+													<dt>Arrival:</dt>
+													<dd>
+														<span data-bind="text: ArrivalAirportCode"></span>
+														<span data-bind="text: ArrivalAirportName"></span>
+														<span data-bind="text: ArrivalAirportCityName"></span>
+														<span data-bind="text: ArrivalAirportCountryName"></span>
+													</dd>
+												</dl>
+											</div>
+										</div>
+										<div class="row">
+											<dl style="margin-bottom:0px;">
+												<dt>Aireplane:</dt>
+												<dd>
+													<span data-bind="text: AirplaneModel"></span>
+													<span> ,</span>
+													<span data-bind="text: AirplaneCompany"></span>
+												<dt>Seats amount:</dt>
+												<dd>
+													<span data-bind="text: AirplaneSeatsAmount"></span>
+												</dd>
+												<dt>Ticket price:</dt>
+												<dd>
+													<span data-bind="text: Price"></span>
+												</dd>
+											</dl>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row" data-bind="visible: pageCount()>1">
+			<div class="col-sm-5">
+				<div class="dataTables_info" id="managersTable_info" role="status" aria-live="polite">
+					Showing <span data-bind="text: indexOfFirst"></span> to <span data-bind="text: indexOfLast"></span> of <span data-bind="text: dataCount"></span> entries
+				</div>
+			</div>
+			<div class="col-sm-7">
 				<ul class="pagination">
 					<li class="page-item">
 						<a class="page-link" data-bind="click: previousPage, css: {'disabled': pageIndex()<=0}">Previous</a>
@@ -109,8 +181,10 @@
 						<a class="page-link" data-bind="click: nextPage, css: {'disabled': pageIndex() >= pageCount()-1}">Next</a>
 					</li>
 				</ul>
+			</div>
 		</div>
 	</div>
+
 </div>
 
 
