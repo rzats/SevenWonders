@@ -214,6 +214,7 @@
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="DTO\DropDownListItem.cs" />
+    <Compile Include="DTO\FlightModel.cs" />
     <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
@@ -398,6 +399,7 @@
     <Content Include="Content\img\tour2.jpg" />
     <Content Include="Content\img\tour3.jpg" />
     <Content Include="Content\img\tour4.jpeg" />
+    <Content Include="Content\Flights\Index.css" />
     <Content Include="Content\ManagersManagement\Index.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\select2.css" />
@@ -464,7 +466,7 @@
     <Content Include="Content\vendor\scrollreveal\scrollreveal.js" />
     <Content Include="Content\vendor\scrollreveal\scrollreveal.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -474,6 +476,7 @@
     <EmbeddedResource Include="Scripts\CustomersManagement\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -547,6 +550,7 @@
     <Content Include="Scripts\Statistic.js" />
     <Content Include="Scripts\Table.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Tours\Index.js" />
@@ -589,13 +593,13 @@
     <Folder Include="Scripts\KnockoutHelpers\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,0 +1,118 @@
+﻿<link type="text/css" rel="stylesheet" href="../../Content/Flights/Index.css" />
+
+<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+	<h2 class="text-center">Flights</h2>
+	<br />
+	<div class="row" style="margin-bottom:6px;">
+		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+			<button data-bind="click:AddFilght" class="btn btn-warning" type="button" id="addHotel">Add flight</button>
+		</div>
+	</div>
+	<div class="row">
+		<table class="table">
+			<tbody data-bind="foreach: flights">
+				<tr>
+					<td>
+						<div class="panel panel-default" style="margin-bottom: 0;">
+							<div class="panel-heading col-md-12">
+								<div class="row">
+									<div class="panelHeadingItem headCustomerName col-md-4">
+										<h3 class="panel-title">
+											<b data-bind="text: Number"></b>
+										</h3>
+									</div>
+									<div class="panelHeadingItem pull-right" style="padding-right:15px;">
+										<button class="btn btn-xs" type="button" style="padding:5px">
+											<div class="glyphicon glyphicon-pencil"></div>
+										</button>
+										<button class="btn btn-xs" type="button" style="padding:5px">
+											<div class="glyphicon glyphicon-list-alt"></div>
+										</button>
+										<button class="btn btn-xs" type="button" style="padding:5px">
+											<div class="glyphicon glyphicon-remove"></div>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+								</div>
+								<div class="col-xs-12 col-sm-10 col-md-10 col-lg-100 ">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left:0px;">
+											<dl style="margin-bottom:0px;">
+												<dt>Departure:</dt>
+												<dd>
+													<span data-bind="text: DepartureAirportCode"></span>
+													<span data-bind="text: DepartureAirportName"></span>
+													<span data-bind="text: DepartureAirportCityName"></span>
+													<span data-bind="text: DepartureAirportCountryName"></span>
+												</dd>
+											</dl>
+										</div>
+										<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+											<dl style="margin-bottom:0px;">
+												<dt>Arrival:</dt>
+												<dd>
+													<span data-bind="text: ArrivalAirportCode"></span>
+													<span data-bind="text: ArrivalAirportName"></span>
+													<span data-bind="text: ArrivalAirportCityName"></span>
+													<span data-bind="text: ArrivalAirportCountryName"></span>
+												</dd>
+											</dl>
+										</div>
+									</div>
+									<div class="row">
+										<dl style="margin-bottom:0px;">
+											<dt>Aireplane:</dt>
+											<dd>
+												<span data-bind="text: AirplaneModel"></span>
+												<span> ,</span>
+												<span data-bind="text: AirplaneCompany"></span>
+											<dt>Seats amount:</dt>
+											<dd>
+												<span data-bind="text: AirplaneSeatsAmount"></span>
+											</dd>
+											<dt>Ticket price:</dt>
+											<dd>
+												<span data-bind="text: Price"></span>
+											</dd>
+										</dl>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row" data-bind="visible: pageCount()>1">
+		<div class="col-sm-5">
+			<div class="dataTables_info" id="managersTable_info" role="status" aria-live="polite">
+				Showing <span data-bind="text: indexOfFirst"></span> to <span data-bind="text: indexOfLast"></span> of <span data-bind="text: dataCount"></span> entries
+			</div>
+		</div>
+		<div class="col-sm-7">
+				<ul class="pagination">
+					<li class="page-item">
+						<a class="page-link" data-bind="click: previousPage, css: {'disabled': pageIndex()<=0}">Previous</a>
+					</li>
+				</ul>
+				<ul class="pagination" data-bind="foreach: allPages">
+					<li class="page-item" data-bind="css: { active: $data.pageNumber == ($parent.pageIndex()+1) }">
+						<a href="#" class="page-link" data-bind="text: $data.pageNumber, click: function() { $parent.moveToPage($data.pageNumber-1); }"></a>
+					</li>
+				</ul>
+				<ul class="pagination">
+					<li class="page-item">
+						<a class="page-link" data-bind="click: nextPage, css: {'disabled': pageIndex() >= pageCount()-1}">Next</a>
+					</li>
+				</ul>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
+<script type="text/javascript" src="../../Scripts/Flights/Index.js"></script>

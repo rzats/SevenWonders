@@ -1,5 +1,6 @@
 ﻿using SevenWonders.DAL.Context;
 using SevenWonders.Models;
+using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,52 @@ namespace SevenWonders.WebAPI.Controllers
     public class FlightsController : ApiController
     {
         private SevenWondersContext db = new SevenWondersContext();
+
+        [HttpGet]
+        public IHttpActionResult GetFlights(int pageIndex, int pageSize)
+        {
+            var data = db.Flights.Where(p2 => p2.IsDeleted == false
+            && p2.ArrivalAirport.IsDeleted == false
+            && p2.ArrivalAirport.City.IsDeleted == false
+            && p2.ArrivalAirport.City.Country.IsDeleted == false
+            && p2.DepartureAirport.IsDeleted == false
+            && p2.DepartureAirport.City.IsDeleted == false
+            && p2.DepartureAirport.City.Country.IsDeleted == false);
+
+            int dataCount = data.Count();
+
+            data=data.OrderBy(x=>x.Number)
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize);
+
+            List<FlightModel> flights = new List<FlightModel>();
+            data.ToList().ForEach(x =>
+              {
+                  flights.Add(ConvertToFlightModel(x));
+              });
+            return Ok(new { flights = flights, dataCount = dataCount });
+        }
+
+        public FlightModel ConvertToFlightModel(Flight flight)
+        {
+            return new FlightModel()
+            {
+                Id = flight.Id,
+                Number = flight.Number,
+                DepartureAirportCode = flight.DepartureAirport.Code,
+                DepartureAirportName = flight.DepartureAirport.Name,
+                DepartureAirportCityName = flight.DepartureAirport.City.Name,
+                DepartureAirportCountryName = flight.DepartureAirport.City.Country.Name,
+                ArrivalAirportCode = flight.ArrivalAirport.Code,
+                ArrivalAirportName = flight.ArrivalAirport.Name,
+                ArrivalAirportCityName = flight.ArrivalAirport.City.Name,
+                ArrivalAirportCountryName = flight.ArrivalAirport.City.Country.Name,
+                Price = flight.Price,
+                AirplaneSeatsAmount = flight.Airplane.SeatsAmount,
+                AirplaneCompany = flight.Airplane.Company,
+                AirplaneModel = flight.Airplane.Model
+            };
+        }
 
         //public ActionResult Create()
         //{
@@ -112,16 +159,6 @@ namespace SevenWonders.WebAPI.Controllers
         //    return RedirectToAction("Index", filters);
 
         //}
-
-        [HttpGet]
-        public IHttpActionResult SearchFlight()
-        {
-            List<Flight> data = db.Flights.Where(p2 => p2.IsDeleted == false && p2.ArrivalAirport.IsDeleted == false
-            && p2.ArrivalAirport.City.IsDeleted == false && p2.ArrivalAirport.City.Country.IsDeleted == false
-            && p2.DepartureAirport.IsDeleted == false && p2.DepartureAirport.City.IsDeleted == false && p2.DepartureAirport.City.Country.IsDeleted == false).ToList();
-
-            return Ok(data);
-        }
 
         //[HttpGet]
         //public ActionResult Schedule(int? id)
