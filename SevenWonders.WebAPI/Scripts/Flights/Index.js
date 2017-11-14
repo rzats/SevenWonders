@@ -61,6 +61,34 @@
 		self.pageIndex(index);
 		self.loadTable();
 	};
+
+	self.idOfDeletedFlight=ko.observable();
+	self.showModalDeleteFlight = function (flight) {
+		self.idOfDeletedFlight(flight.Id);
+		$('#deleteFlightModal').modal();
+	};
+
+	self.deleteFlight = function () {		
+		var id = self.idOfDeletedFlight();
+		$.ajax({
+			type: "POST",
+			url: '../api/Flights/DeleteFlight',
+			data: JSON.stringify(id),
+			contentType: "application/json",
+			success: function (result) {
+				//check if page is not empty in feature
+				self.dataCount(self.dataCount()-1);
+				if (self.pageIndex() + 1 > self.pageCount()) {
+					self.pageIndex(self.pageCount() - 1);
+				}
+
+				self.loadTable();
+				$('#deleteFlightModal').modal('hide');
+
+			}
+		});
+
+	}
 }
 
 ko.validation.rules['isNumberUnique'] = {
@@ -84,7 +112,6 @@ ko.validation.rules['isNumberUnique'] = {
 }; 
 ko.validation.rules['isDifference'] = {
 	validator: function (val, otherVal) {
-		debugger;
 		return !(val === otherVal);
 	},
 	message: 'Departure and Arrival airports should be different!'
@@ -97,7 +124,7 @@ ko.validation.init({
 
 function CreateViewModel(reservationsViewModel) {
 	var self = this;
-
+	self.Index = ko.observable()
 	self.Number = ko.observable().extend({
 		required: true, minLength: 4, maxLength: 4, pattern: {
 			message: 'This field should contain only digits.',
@@ -149,7 +176,6 @@ function CreateViewModel(reservationsViewModel) {
 	}
 
 	self.saveFlight = function () {
-		debugger;
 		self.errors= ko.validation.group(self, { deep: true });
 		if (self.errors().length === 0) {
 			var model = {
