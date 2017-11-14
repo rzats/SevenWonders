@@ -2,6 +2,7 @@
 using SevenWonders.DAL.Context;
 using SevenWonders.Models;
 using SevenWonders.WebAPI.DTO;
+using SevenWonders.WebAPI.DTO.Flights;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -63,18 +64,28 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
-        public void AddFlight([FromBody]JObject model)
+        public void AddFlight([FromBody]EditFlightModel model)
         {
-            int i = 5 + 3;
-            //var manager = model["manager"].ToObject<FullManagerViewModel>();
-            //var countries = model["countries"].ToObject<int[]>();
+            Airplane airplane = new Airplane()
+            {
+                Model = model.airplaneModel,
+                Company = model.airplaneCompany,
+                SeatsAmount = model.seatsAmount,
+                IsDeleted = false
+            };
 
-            //if (ModelState.IsValid)
-            //{
-            //    db.Flights.Add(flight);
-            //    db.Airplanes.Add(flight.Airplane);
-            //    db.SaveChanges();
-            //}
+            Flight flight = new Flight()
+            {
+                Number = model.number,
+                Price = model.price,
+                DepartureAirportId = model.departureAirportId,
+                ArrivalAirportId = model.arrivalAirportId,
+                Airplane = airplane,
+                AirplaneId=airplane.Id
+            };
+            db.Airplanes.Add(flight.Airplane);
+            db.Flights.Add(flight);
+            db.SaveChanges();
         }
 
         [HttpGet]
@@ -82,10 +93,34 @@ namespace SevenWonders.WebAPI.Controllers
         {
             var data = db.Airports.Where(x => !x.IsDeleted
             && !x.City.IsDeleted
-            && !x.City.Country.IsDeleted);
+            && !x.City.Country.IsDeleted).ToList();
 
-            List<DropDownListItem> countries = new List<DropDownListItem>();
-            return Ok();
+            List<DropDownListItem> airports = new List<DropDownListItem>();
+            data.ForEach(x =>
+            {
+                airports.Add(new DropDownListItem()
+                {
+                    Id = x.Id.ToString(),
+                    Text = x.Name,
+                    IsChecked = false
+                });
+            });
+            return Ok(airports);
+        }
+
+
+        [HttpGet]
+        public IHttpActionResult IsNumberValid(string number)
+        {
+            bool isValid = db.Flights.Where(p2 => !p2.IsDeleted
+           && !p2.ArrivalAirport.IsDeleted
+           && !p2.ArrivalAirport.City.IsDeleted
+           && !p2.ArrivalAirport.City.Country.IsDeleted
+           && !p2.DepartureAirport.IsDeleted
+           && !p2.DepartureAirport.City.IsDeleted
+           && !p2.DepartureAirport.City.Country.IsDeleted).Any(x=>x.Number==number);
+
+            return Ok(!isValid);
         }
         //public ActionResult Create()
         //{

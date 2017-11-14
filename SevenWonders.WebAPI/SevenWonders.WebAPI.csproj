@@ -214,7 +214,8 @@
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="DTO\DropDownListItem.cs" />
-    <Compile Include="DTO\FlightModel.cs" />
+    <Compile Include="DTO\Flights\EditFlightModel.cs" />
+    <Compile Include="DTO\Flights\FlightModel.cs" />
     <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
@@ -536,6 +537,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-3.1.0.debug.js" />
     <Content Include="Scripts\knockout-3.1.0.js" />
+    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\knockout.validation.min.js" />
     <Content Include="Scripts\Login\Index.js" />
     <Content Include="Scripts\ManagersManagement\Index.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -549,6 +552,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\Statistic.js" />
     <Content Include="Scripts\Table.js" />
+    <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />

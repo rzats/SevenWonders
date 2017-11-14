@@ -12,45 +12,24 @@
 					<h4 class="modal-title text-center">Flight</h4>
 				</div>
 				<div class="modal-body">
-
-					<!--@Html.EditorFor(model => model.Number, new { htmlAttributes = new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "number" } })
-					@Html.ValidationMessageFor(model => model.Number, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "numberErrorMessage" })
-
-					@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "price" } })
-					@Html.ValidationMessageFor(model => model.Price, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "priceErrorMessage" })
-
-					@Html.DropDownList("DepartureAirportId", null, htmlAttributes: new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "departure"})
-					@Html.ValidationMessageFor(model => model.DepartureAirportId, "", new { @style = "width:100%; max-width:500px", @class = "text-danger" })
-
-					@Html.DropDownList("ArrivalAirportId", null, htmlAttributes: new { @style = "width:100%; max-width:500px", @class = "form-control", @id = "arrival" })
-					@Html.ValidationMessageFor(model => model.ArrivalAirportId, "", new { @style = "width:100%; max-width:500px", @class = "text-danger", @id = "arrivalErrorMessage"})
-
-					@Html.EditorFor(model => model.Airplane.Model, new { htmlAttributes = new { @id = "model", @class = "form-control", @style = "width:100%; max-width:500px" } })
-					@Html.ValidationMessageFor(model => model.Airplane.Model, "", new { @id = "modelErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })
-
-					@Html.EditorFor(model => model.Airplane.Company, new { htmlAttributes = new { @id = "company", @class = "form-control", @style = "width:100%; max-width:500px" } })
-					@Html.ValidationMessageFor(model => model.Airplane.Company, "", new { @id = "companyErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })
-
-					@Html.EditorFor(model => model.Airplane.SeatsAmount, new { htmlAttributes = new { @id = "seatsAmount", @class = "form-control", @style = "width:100%; max-width:500px", @type = "number", @min = 1 } })
-					@Html.ValidationMessageFor(model => model.Airplane.Company, "", new { @id = "seatsAmountErrorMessage", @class = "text-danger", @style = "width:100%; max-width:500px" })-->
-
-
 					<div align="center">
 						<input type="hidden" id="id">
 						<div class="form-group" >
 							<label for="number">Number</label>
-							<input id="number" type="text" maxlength="6" pattern="([0-9]|[0-9]|[0-9]|[0-9]|[0-9]|[0-9])" class="form-control" data-bind="value: Number" placeholder="Enter number">
+							<input id="number" type="text" maxlength="4" class="form-control" data-bind="value: Number" placeholder="Enter number">
 						</div>
 						<div class="form-group">
-							<label for="price">Ticket price</label>
-							<input type="number" step="0.01" min="0.01" max="99" class="form-control" data-bind="value: Price" placeholder="Enter ticket price">
+							<label for="price">Ticket price ($)</label>
+							<input type="number" step="0.01" min="0.01" max="1000" class="form-control" data-bind="value: Price" placeholder="Enter ticket price">
 						</div>
-
 						<div class="form-group">
-							<label for="arrivalAirport">Airplane model</label>
-							<input type="text" class="form-control" data-bind="options: ArrivalAirports, optionsText: 'Text', optionsValue: 'Id'" placeholder="Enter arrival airport">
+							<label for="departureAirport">Departure airport</label>
+							<select class="form-control" data-bind="options: DepartureAirports, optionsText: 'Text', optionsValue: 'Id', value: selectedChoiceDeparture, optionsCaption: 'Choose departure airport'"></select>
 						</div>
-
+						<div class="form-group">
+							<label for="arrivalAirport">Arrival airport</label>
+							<select class="form-control" data-bind="options: ArrivalAirports, optionsText: 'Text', optionsValue: 'Id', value: selectedChoiceArrival, optionsCaption: 'Choose arrival airport'"></select>
+						</div>
 						<div class="form-group">
 							<label for="airplaneModel">Airplane model</label>
 							<input type="text" maxlength="15" class="form-control" data-bind="value: AirplaneModel" placeholder="Enter airplane model">
@@ -61,7 +40,7 @@
 						</div>
 						<div class="form-group">
 							<label for="seatsAmount">Seats amount</label>
-							<input type="number" max="500" class="form-control" data-bind="value: SeatsAmount" placeholder="Enter seats amount">
+							<input type="number" min ="1" max="1000" class="form-control" data-bind="value: SeatsAmount" placeholder="Enter seats amount">
 						</div>
 						<br />
 					</div>
@@ -187,6 +166,8 @@
 
 </div>
 
-
+<script type="text/javascript" src="../../Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
 <script type="text/javascript" src="../../Scripts/Flights/Index.js"></script>
