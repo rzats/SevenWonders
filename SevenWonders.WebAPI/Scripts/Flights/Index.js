@@ -63,80 +63,60 @@
 	};
 }
 
+ko.validation.rules['isNumberUnique'] = {
+	validator: function (val, param) {
+		var isValid = true;
+		$.ajax({
+			async: false,
+			url: '../api/Flights/IsNumberValid',
+			type: 'Get',
+			data: { number: val },
+			success: function (response) {
+				isValid = response === true;
+			},
+			error: function () {
+				isValid = false; //however you would like to handle this              
+			}
+		});
+		return isValid;
+	},
+	message: 'The Email is not unique'
+}; 
+ko.validation.rules['isDifference'] = {
+	validator: function (val, otherVal) {
+		debugger;
+		return !(val === otherVal);
+	},
+	message: 'Departure and Arrival airports should be different!'
+}; 
+ko.validation.init({
+	insertMessages: true,
+	messagesOnModified: true,
+	errorClass: 'validationMessage'
+});
+
 function CreateViewModel(reservationsViewModel) {
 	var self = this;
-	self.validateNow = ko.observable(false);
 
-	self.Number = ko.observable()
-		.extend({
-			number: {
-				message: "Number should contain only numbers!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			},
-			minLength: {
-				params: 4,
-				message: "Number should contain 4 numbers!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			},
-			maxLength: {
-				params: 4,
-				message: "Number should contain 4 numbers!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			}
-		});
-	self.Price = ko.observable();
-	self.AirplaneCompany = ko.observable()
-		.extend({
-			minLength: {
-				params: 4,
-				message: "Number should contain 4 numbers!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			},
-			maxLength: {
-				params: 20,
-				message: "Number should contain 4 numbers!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			}
-		});
-	self.AirplaneModel = ko.observable()
-		.extend({
-			minLength: {
-				params: 1,
-				message: "Airplane model cannot be empty!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			},
-		});
-	self.SeatsAmount = ko.observable()
-		.extend({
-			required: {
-				message: "First name cannot be empty!",
-				onlyIf: function () {
-					return self.validateNow();
-				}
-			}
-		});
-
-	self.errors = ko.observable();
-	self.errors = ko.validation.group(self);
+	self.Number = ko.observable().extend({
+		required: true, minLength: 4, maxLength: 4, pattern: {
+			message: 'This field should contain only digits.',
+			params: /\b\d{4}\b/g
+		}, isNumberUnique: {
+			message: 'Flight number should be unique!'
+		} 
+	});
+	self.Price = ko.observable().extend({ required: true, numeric: 2 , max:1000 });
+	self.AirplaneCompany = ko.observable().extend({ required: true, minLength: 4, maxLength: 20 })
+	self.AirplaneModel = ko.observable().extend({ required: true, minLength: 4, maxLength: 20 })
+	self.SeatsAmount = ko.observable().extend({ required: true, numeric: 0, min:1, max: 1000 });;
 
 	self.DepartureAirports = ko.observableArray([]);
 	self.selectedChoiceDeparture = ko.observable()
-		.extend({ required: true });
+		.extend({ required: true});
 	self.ArrivalAirports = ko.observableArray([]);
 	self.selectedChoiceArrival = ko.observable()
-		.extend({ required: true });
+		.extend({ required: true, isDifference: self.selectedChoiceDeparture });
 	self.loadArrivalAirports = function () {
 		$.ajax("../api/Flights/GetAirports", {
 			type: "get",
@@ -149,6 +129,8 @@ function CreateViewModel(reservationsViewModel) {
 	}
 	self.loadArrivalAirports();
 
+	self.errors = ko.observable();
+
 	self.updateViewModel = function () {
 		self.Number(undefined);
 		self.Price(undefined);
@@ -157,6 +139,9 @@ function CreateViewModel(reservationsViewModel) {
 		self.SeatsAmount(undefined);
 		self.selectedChoiceDeparture(undefined);
 		self.selectedChoiceArrival(undefined);
+
+		self.errors = ko.validation.group(self, { deep: true });
+		self.errors.showAllMessages(false);
 	}
 	self.addFlight = function () {
 		self.updateViewModel();
@@ -164,7 +149,8 @@ function CreateViewModel(reservationsViewModel) {
 	}
 
 	self.saveFlight = function () {
-		self.validateNow(true);
+		debugger;
+		self.errors= ko.validation.group(self, { deep: true });
 		if (self.errors().length === 0) {
 			var model = {
 				number: self.Number(),
@@ -185,6 +171,9 @@ function CreateViewModel(reservationsViewModel) {
 				}
 			});
 		}
+		else {
+			self.errors.showAllMessages(true);
+		}
 	}
 }
 
@@ -194,11 +183,7 @@ var MainViewModel = {
 	CreateViewModel: new CreateViewModel(reservationsViewModel)
 };
 
-ko.validation.init({
-	errorElementClass: "wrong-field",
-	decorateElement: true,
-	errorClass: 'wrong-field'
-}, true);
+
 ko.applyBindings(MainViewModel);
 $(document).ready(function () {
 

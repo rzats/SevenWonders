@@ -107,7 +107,21 @@ namespace SevenWonders.WebAPI.Controllers
             });
             return Ok(airports);
         }
-       
+
+
+        [HttpGet]
+        public IHttpActionResult IsNumberValid(string number)
+        {
+            bool isValid = db.Flights.Where(p2 => !p2.IsDeleted
+           && !p2.ArrivalAirport.IsDeleted
+           && !p2.ArrivalAirport.City.IsDeleted
+           && !p2.ArrivalAirport.City.Country.IsDeleted
+           && !p2.DepartureAirport.IsDeleted
+           && !p2.DepartureAirport.City.IsDeleted
+           && !p2.DepartureAirport.City.Country.IsDeleted).Any(x=>x.Number==number);
+
+            return Ok(!isValid);
+        }
         //public ActionResult Create()
         //{
         //    var aireplanes = db.Airplanes.Where(p2 => p2.IsDeleted == false).OrderBy(pq => pq.Model).ToList().Select(s => new
