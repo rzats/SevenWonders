@@ -65,12 +65,89 @@
 
 function CreateViewModel(reservationsViewModel) {
 	var self = this;
-	self.Number = ko.observable();
+	self.validateNow = ko.observable(false);
+
+	self.Number = ko.observable()
+		.extend({
+			number: {
+				message: "Number should contain only numbers!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			},
+			minLength: {
+				params: 4,
+				message: "Number should contain 4 numbers!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			},
+			maxLength: {
+				params: 4,
+				message: "Number should contain 4 numbers!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			}
+		});
 	self.Price = ko.observable();
-	self.AirplaneModel = ko.observable();
-	self.AirplaneCompany = ko.observable();
-	self.SeatsAmount = ko.observable();
+	self.AirplaneCompany = ko.observable()
+		.extend({
+			minLength: {
+				params: 4,
+				message: "Number should contain 4 numbers!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			},
+			maxLength: {
+				params: 20,
+				message: "Number should contain 4 numbers!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			}
+		});
+	self.AirplaneModel = ko.observable()
+		.extend({
+			minLength: {
+				params: 1,
+				message: "Airplane model cannot be empty!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			},
+		});
+	self.SeatsAmount = ko.observable()
+		.extend({
+			required: {
+				message: "First name cannot be empty!",
+				onlyIf: function () {
+					return self.validateNow();
+				}
+			}
+		});
+
+	self.errors = ko.observable();
+	self.errors = ko.validation.group(self);
+
+	self.DepartureAirports = ko.observableArray([]);
+	self.selectedChoiceDeparture = ko.observable()
+		.extend({ required: true });
 	self.ArrivalAirports = ko.observableArray([]);
+	self.selectedChoiceArrival = ko.observable()
+		.extend({ required: true });
+	self.loadArrivalAirports = function () {
+		$.ajax("../api/Flights/GetAirports", {
+			type: "get",
+			contentType: "application/json",
+			success: function (result) {
+				self.DepartureAirports(result);
+				self.ArrivalAirports(result);
+			}
+		});
+	}
+	self.loadArrivalAirports();
 
 	self.updateViewModel = function () {
 		self.Number(undefined);
@@ -78,36 +155,36 @@ function CreateViewModel(reservationsViewModel) {
 		self.AirplaneModel(undefined);
 		self.AirplaneCompany(undefined);
 		self.SeatsAmount(undefined);
-	}
-	self.loadArrivalAirports =  = function () {
-		$.ajax("../api/Flights/GetAirports", {
-			type: "get",
-			contentType: "application/json",
-			success: function (result) {
-				self.ArrivalAirports(result);
-			}
-		});
+		self.selectedChoiceDeparture(undefined);
+		self.selectedChoiceArrival(undefined);
 	}
 	self.addFlight = function () {
 		self.updateViewModel();
 		$('#editFlightModal').modal();
 	}
+
 	self.saveFlight = function () {
-		$.ajax("../api/Flights/AddFlight", {
-			type: "post",
-			data: {
+		self.validateNow(true);
+		if (self.errors().length === 0) {
+			var model = {
 				number: self.Number(),
 				price: self.Price(),
+				departureAirportId: self.selectedChoiceDeparture(),
+				arrivalAirportId: self.selectedChoiceArrival(),
 				airplaneModel: self.AirplaneModel(),
 				airplaneCompany: self.AirplaneCompany(),
 				seatsAmount: self.SeatsAmount()
-			},
-			contentType: "application/json",
-			success: function (result) {
-				reservationsViewModel.loadTable();
-				$('#editFlightModal').modal('hide');
-			}
-		});
+			};
+			$.ajax("../api/Flights/AddFlight", {
+				type: "post",
+				data: JSON.stringify(model),
+				contentType: "application/json",
+				success: function (result) {
+					reservationsViewModel.loadTable();
+					$('#editFlightModal').modal('hide');
+				}
+			});
+		}
 	}
 }
 
@@ -117,8 +194,12 @@ var MainViewModel = {
 	CreateViewModel: new CreateViewModel(reservationsViewModel)
 };
 
+ko.validation.init({
+	errorElementClass: "wrong-field",
+	decorateElement: true,
+	errorClass: 'wrong-field'
+}, true);
 ko.applyBindings(MainViewModel);
-
 $(document).ready(function () {
 
 });
