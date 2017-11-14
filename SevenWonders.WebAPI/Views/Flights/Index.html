@@ -3,8 +3,8 @@
 <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
 	<h2 class="text-center">Flights</h2>
 	<br />
-	<!-- Add flight-->
-	<div class="modal fade" data-bind="with: CreateViewModel" id="editFlightModal" tabindex="-1" role="dialog">
+	<!-- Add-Edit flight-->
+	<div class="modal fade" data-bind="with: FlightModifyViewModel" id="editFlightModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -13,7 +13,7 @@
 				</div>
 				<div class="modal-body">
 					<div align="center">
-						<input type="hidden" id="id">
+						<hidden data-bind="value: Id"></hidden>
 						<div class="form-group" >
 							<label for="number">Number</label>
 							<input id="number" type="text" maxlength="4" class="form-control" data-bind="value: Number" placeholder="Enter number">
@@ -42,11 +42,10 @@
 							<label for="seatsAmount">Seats amount</label>
 							<input type="number" min ="1" max="1000" class="form-control" data-bind="value: SeatsAmount" placeholder="Enter seats amount">
 						</div>
-						<br />
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-bind="click: saveFlight">Save</button>
+					<button type="button" class="btn btn-warning" data-bind="click: saveChanges">Save</button>
 					<button type="button" class="btn" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
@@ -54,7 +53,7 @@
 	</div>
 
 	<!-- Delete flight-->
-	<div class="modal fade" data-bind="with: ReservationsViewModel" id="deleteFlightModal"  role="dialog">
+	<div class="modal fade" data-bind="with: FlightsTableViewModel" id="deleteFlightModal"  role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -64,9 +63,9 @@
 				<div class="modal-body">
 					<h5 class="text-center">Are you sure you want to delete this flight?</h5>
 				</div>
-					<div class="modal-footer">
+				<div class="modal-footer">
 						<hidden data-bind="value: idOfDeletedFlight"></hidden>
-						<button type="button" class="btn btn-warning" data-bind="click: deleteFlight">Save</button>
+						<button type="button" class="btn btn-warning" data-bind="click: deleteFlight">Delete</button>
 						<button type="button" class="btn" data-dismiss="modal">Cancel</button>
 					</div>
 			</div>
@@ -74,12 +73,12 @@
 		</div>
 	</div>
 
-	<div class="row" style="margin-bottom:6px;" data-bind="with: CreateViewModel">
+	<div class="row" style="margin-bottom:6px;" data-bind="with: FlightModifyViewModel">
 		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
 			<button class="btn btn-warning" type="button" data-bind="click: addFlight">Add flight</button>
 		</div>
 	</div>
-	<div data-bind="with: ReservationsViewModel">
+	<div data-bind="with: FlightsTableViewModel">
 		<div class="row">
 			<table class="table">
 				<tbody data-bind="foreach: flights">
@@ -95,7 +94,7 @@
 										</div>
 										<div class="panelHeadingItem pull-right" style="padding-right:15px;">
 											<button class="btn btn-xs" type="button" style="padding:5px">
-												<div class="glyphicon glyphicon-pencil"></div>
+												<div class="glyphicon glyphicon-pencil" data-bind="click: $parent.showModalEditFlight"></div>
 											</button>
 											<button class="btn btn-xs" type="button" style="padding:5px">
 												<div class="glyphicon glyphicon-list-alt"></div>
@@ -110,6 +109,8 @@
 									<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
 									</div>
 									<div class="col-xs-12 col-sm-10 col-md-10 col-lg-100 ">
+										<hidden data-bind="value: DepartureAirportId"></hidden>
+										<hidden data-bind="value: ArrivalAirportId"></hidden>
 										<div class="row">
 											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left:0px;">
 												<dl style="margin-bottom:0px;">
@@ -184,7 +185,6 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 
 <script type="text/javascript" src="../../Scripts/jquery-1.12.4.min.js"></script>

@@ -49,10 +49,12 @@ namespace SevenWonders.WebAPI.Controllers
             {
                 Id = flight.Id,
                 Number = flight.Number,
+                DepartureAirportId = flight.DepartureAirport.Id,
                 DepartureAirportCode = flight.DepartureAirport.Code,
                 DepartureAirportName = flight.DepartureAirport.Name,
                 DepartureAirportCityName = flight.DepartureAirport.City.Name,
                 DepartureAirportCountryName = flight.DepartureAirport.City.Country.Name,
+                ArrivalAirportId = flight.ArrivalAirport.Id,
                 ArrivalAirportCode = flight.ArrivalAirport.Code,
                 ArrivalAirportName = flight.ArrivalAirport.Name,
                 ArrivalAirportCityName = flight.ArrivalAirport.City.Name,
@@ -89,6 +91,37 @@ namespace SevenWonders.WebAPI.Controllers
             db.SaveChanges();
         }
 
+        [HttpPost]
+        public void EditFlight([FromBody]EditFlightModel model)
+        {
+            Flight flight = db.Flights.FirstOrDefault(x => x.Id == model.id);
+            flight.Number = model.number;
+            flight.Price = model.price;
+            flight.DepartureAirportId = model.departureAirportId;
+            flight.ArrivalAirportId = model.arrivalAirportId;
+
+            flight.Airplane.Model = model.airplaneModel;
+            flight.Airplane.Company = model.airplaneCompany;
+            flight.Airplane.SeatsAmount = model.seatsAmount;
+
+            db.Entry(flight).State = EntityState.Modified;
+            db.Entry(flight.Airplane).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteFlight([FromBody]int id)
+        {
+            Flight flight = db.Flights.Find(id);
+            flight.IsDeleted = true;
+
+            db.Entry(flight).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Ok();
+
+        }
+
         [HttpGet]
         public IHttpActionResult GetAirports()
         {
@@ -109,132 +142,19 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok(airports);
         }
 
-
         [HttpGet]
-        public IHttpActionResult IsNumberValid(string number)
+        public IHttpActionResult IsNumberValid(int id, string number)
         {
-            bool isValid = db.Flights.Where(p2 => !p2.IsDeleted
+            bool contain = db.Flights.Where(p2 => !p2.IsDeleted
            && !p2.ArrivalAirport.IsDeleted
            && !p2.ArrivalAirport.City.IsDeleted
            && !p2.ArrivalAirport.City.Country.IsDeleted
            && !p2.DepartureAirport.IsDeleted
            && !p2.DepartureAirport.City.IsDeleted
-           && !p2.DepartureAirport.City.Country.IsDeleted).Any(x=>x.Number==number);
+           && !p2.DepartureAirport.City.Country.IsDeleted).Any(x=>x.Number==number && x.Id!=id);
 
-            return Ok(!isValid);
+            return Ok(!contain);
         }
-
-        [HttpPost]
-        public IHttpActionResult DeleteFlight([FromBody]int id)
-        {
-            Flight flight = db.Flights.Find(id);
-            flight.IsDeleted = true;
-
-            db.Entry(flight).State = EntityState.Modified;
-            db.SaveChanges();
-
-            return Ok();
-
-        }
-
-        //public ActionResult Create()
-        //{
-        //    var aireplanes = db.Airplanes.Where(p2 => p2.IsDeleted == false).OrderBy(pq => pq.Model).ToList().Select(s => new
-        //    {
-        //        Id = s.Id,
-        //        Model = string.Format("{0} (seats: {1}), {2}", s.Model, s.SeatsAmount, s.Company)
-        //    });
-        //    var airports = db.Airports.Where(p2 => p2.IsDeleted == false && p2.City.IsDeleted == false && p2.City.Country.IsDeleted == false)
-        //        .OrderBy(pq => pq.Code).ToList().Select(s => new
-        //        {
-        //            Id = s.Id,
-        //            Code = string.Format("{0} ({1}, {2})", s.Code, s.City.Name, s.City.Country.Name)
-        //        });
-
-        //    ViewBag.AirplaneId = new SelectList(aireplanes, "Id", "Model");
-        //    ViewBag.ArrivalAirportId = new SelectList(airports, "Id", "Code");
-        //    ViewBag.DepartureAirportId = new SelectList(airports, "Id", "Code");
-
-
-        //    ViewBag.FlightNumbers = db.Flights.Where(p2 => p2.IsDeleted == false && p2.ArrivalAirport.IsDeleted == false
-        //    && p2.ArrivalAirport.City.IsDeleted == false && p2.ArrivalAirport.City.Country.IsDeleted == false
-        //    && p2.DepartureAirport.IsDeleted == false && p2.DepartureAirport.City.IsDeleted == false && p2.DepartureAirport.City.Country.IsDeleted == false)
-        //        .Select(s => new { s.Id, s.Number }).ToArray();
-
-        //    return PartialView(new Flight() { AirplaneId = 0 });
-        //}
-
-        //[HttpPost]
-        //public ActionResult Create(Flight flight)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Flights.Add(flight);
-        //        db.Airplanes.Add(flight.Airplane);
-        //        db.SaveChanges();
-        //    }
-        //    var filters = Session["FlightFilters"] as SearchFlight;
-        //    return RedirectToAction("Index", filters);
-
-        //}
-
-        //[HttpGet]
-        //public ActionResult Edit(int? id)
-        //{
-        //    Flight flight = db.Flights.Find(id);
-
-        //    var aireplanes = db.Airplanes.Where(p2 => p2.IsDeleted == false).OrderBy(pq => pq.Model).ToList().Select(s => new
-        //    {
-        //        Id = s.Id,
-        //        Model = string.Format("{0} (seats: {1}), {2}", s.Model, s.SeatsAmount, s.Company)
-        //    });
-        //    var airports = db.Airports.Where(p2 => p2.IsDeleted == false && p2.City.IsDeleted == false && p2.City.Country.IsDeleted == false)
-        //        .OrderBy(pq => pq.Code).ToList().Select(s => new
-        //        {
-        //            Id = s.Id,
-        //            Code = string.Format("{0} ({1}, {2})", s.Code, s.City.Name, s.City.Country.Name)
-        //        });
-
-        //    ViewBag.AirplaneId = new SelectList(aireplanes, "Id", "Model", flight.AirplaneId);
-        //    ViewBag.ArrivalAirportId = new SelectList(airports, "Id", "Code", flight.ArrivalAirportId);
-        //    ViewBag.DepartureAirportId = new SelectList(airports, "Id", "Code", flight.DepartureAirportId);
-
-
-        //    ViewBag.FlightNumbers = db.Flights.Where(p2 => p2.IsDeleted == false && p2.ArrivalAirport.IsDeleted == false
-        //    && p2.ArrivalAirport.City.IsDeleted == false && p2.ArrivalAirport.City.Country.IsDeleted == false
-        //    && p2.DepartureAirport.IsDeleted == false && p2.DepartureAirport.City.IsDeleted == false && p2.DepartureAirport.City.Country.IsDeleted == false)
-        //        .Select(s => new { s.Id, s.Number }).ToArray();
-
-        //    return PartialView(flight);
-        //}
-
-        //[HttpPost]
-        //public ActionResult Edit(Flight flight)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(flight).State = EntityState.Modified;
-        //        db.Entry(flight.Airplane).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //    }
-
-        //    var filters = Session["FlightFilters"] as SearchFlight;
-        //    return RedirectToAction("Index", filters);
-        //}
-
-        //[HttpPost]
-        //public ActionResult Delete(int id)
-        //{
-        //    Flight flight = db.Flights.Find(id);
-        //    flight.IsDeleted = true;
-
-        //    db.Entry(flight).State = EntityState.Modified;
-        //    db.SaveChanges();
-
-        //    var filters = Session["FlightFilters"] as SearchFlight;
-        //    return RedirectToAction("Index", filters);
-
-        //}
 
         //[HttpGet]
         //public ActionResult Schedule(int? id)
@@ -321,18 +241,6 @@ namespace SevenWonders.WebAPI.Controllers
 
         //    var filters = Session["FlightFilters"] as SearchFlight;
         //    return RedirectToAction("Index", filters);
-        //}
-
-        //public bool IsInPlace(Airport airport, string word)
-        //{
-        //    if (airport.Name.ToLower().Contains(word.ToLower())
-        //        || airport.Code.ToLower().Contains(word.ToLower())
-        //        || airport.City.Name.ToLower().Contains(word.ToLower())
-        //        || airport.City.Country.Name.ToLower().Contains(word.ToLower()))
-        //    {
-        //        return true;
-        //    }
-        //    else return false;
         //}
     }
 }

@@ -1,6 +1,5 @@
-﻿function ReservationsViewModel() {
+﻿function FlightsTableViewModel() {
 	var self = this;
-
 	self.flights = ko.observableArray([]);
 	self.pageIndex = ko.observable(0);
 	self.pageSize = ko.observable(10);
@@ -67,7 +66,6 @@
 		self.idOfDeletedFlight(flight.Id);
 		$('#deleteFlightModal').modal();
 	};
-
 	self.deleteFlight = function () {		
 		var id = self.idOfDeletedFlight();
 		$.ajax({
@@ -81,7 +79,6 @@
 				if (self.pageIndex() + 1 > self.pageCount()) {
 					self.pageIndex(self.pageCount() - 1);
 				}
-
 				self.loadTable();
 				$('#deleteFlightModal').modal('hide');
 
@@ -89,16 +86,20 @@
 		});
 
 	}
+
+	self.showModalEditFlight = function (flight) {
+		MainViewModel.FlightModifyViewModel.editFlight(flight);
+	}
 }
 
 ko.validation.rules['isNumberUnique'] = {
-	validator: function (val, param) {
+	validator: function (number,id) {
 		var isValid = true;
 		$.ajax({
 			async: false,
 			url: '../api/Flights/IsNumberValid',
 			type: 'Get',
-			data: { number: val },
+			data: { id: id, number: number },
 			success: function (response) {
 				isValid = response === true;
 			},
@@ -122,14 +123,15 @@ ko.validation.init({
 	errorClass: 'validationMessage'
 });
 
-function CreateViewModel(reservationsViewModel) {
+function FlightModifyViewModel(FlightsTableViewModel) {
 	var self = this;
-	self.Index = ko.observable()
+	self.Id = ko.observable(-1);
 	self.Number = ko.observable().extend({
 		required: true, minLength: 4, maxLength: 4, pattern: {
 			message: 'This field should contain only digits.',
 			params: /\b\d{4}\b/g
 		}, isNumberUnique: {
+			params: self.Id,
 			message: 'Flight number should be unique!'
 		} 
 	});
@@ -158,27 +160,48 @@ function CreateViewModel(reservationsViewModel) {
 
 	self.errors = ko.observable();
 
-	self.updateViewModel = function () {
-		self.Number(undefined);
-		self.Price(undefined);
-		self.AirplaneModel(undefined);
-		self.AirplaneCompany(undefined);
-		self.SeatsAmount(undefined);
-		self.selectedChoiceDeparture(undefined);
-		self.selectedChoiceArrival(undefined);
+	self.updateViewModel = function (flight) {
+		if (flight != undefined) {
+			self.Id(flight.Id);
+			self.Number(flight.Number);
+			self.Price(flight.Price);
+			self.AirplaneModel(flight.AirplaneModel);
+			self.AirplaneCompany(flight.AirplaneCompany);
+			self.SeatsAmount(flight.AirplaneSeatsAmount);
+			self.selectedChoiceDeparture(flight.DepartureAirportId);
+			self.selectedChoiceArrival(flight.ArrivalAirportId);
 
+			self.urlAction("../api/Flights/EditFlight");
+		}
+		else {
+			self.Number(undefined);
+			self.Price(undefined);
+			self.AirplaneModel(undefined);
+			self.AirplaneCompany(undefined);
+			self.SeatsAmount(undefined);
+			self.selectedChoiceDeparture(undefined);
+			self.selectedChoiceArrival(undefined);
+
+			self.urlAction("../api/Flights/AddFlight");
+		}
 		self.errors = ko.validation.group(self, { deep: true });
 		self.errors.showAllMessages(false);
 	}
+
 	self.addFlight = function () {
 		self.updateViewModel();
 		$('#editFlightModal').modal();
 	}
+	self.editFlight = function (flight) {
+		self.updateViewModel(flight);
+		$('#editFlightModal').modal();
+	}
 
-	self.saveFlight = function () {
+	self.saveChanges = function () {
 		self.errors= ko.validation.group(self, { deep: true });
 		if (self.errors().length === 0) {
 			var model = {
+				id: self.Id(),
 				number: self.Number(),
 				price: self.Price(),
 				departureAirportId: self.selectedChoiceDeparture(),
@@ -187,12 +210,12 @@ function CreateViewModel(reservationsViewModel) {
 				airplaneCompany: self.AirplaneCompany(),
 				seatsAmount: self.SeatsAmount()
 			};
-			$.ajax("../api/Flights/AddFlight", {
+			$.ajax(self.urlAction(), {
 				type: "post",
 				data: JSON.stringify(model),
 				contentType: "application/json",
 				success: function (result) {
-					reservationsViewModel.loadTable();
+					FlightsTableViewModel.loadTable();
 					$('#editFlightModal').modal('hide');
 				}
 			});
@@ -200,15 +223,15 @@ function CreateViewModel(reservationsViewModel) {
 		else {
 			self.errors.showAllMessages(true);
 		}
-	}
+	}	
+	self.urlAction = ko.observable();
 }
 
-var reservationsViewModel = new ReservationsViewModel();
+var FlightsTableViewModel = new FlightsTableViewModel();
 var MainViewModel = {
-	ReservationsViewModel: reservationsViewModel,
-	CreateViewModel: new CreateViewModel(reservationsViewModel)
+	FlightsTableViewModel: FlightsTableViewModel,
+	FlightModifyViewModel: new FlightModifyViewModel(FlightsTableViewModel)
 };
-
 
 ko.applyBindings(MainViewModel);
 $(document).ready(function () {
