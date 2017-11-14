@@ -6,6 +6,7 @@ using SevenWonders.WebAPI.DTO.Flights;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -122,6 +123,20 @@ namespace SevenWonders.WebAPI.Controllers
 
             return Ok(!isValid);
         }
+
+        [HttpPost]
+        public IHttpActionResult DeleteFlight([FromBody]int id)
+        {
+            Flight flight = db.Flights.Find(id);
+            flight.IsDeleted = true;
+
+            db.Entry(flight).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Ok();
+
+        }
+
         //public ActionResult Create()
         //{
         //    var aireplanes = db.Airplanes.Where(p2 => p2.IsDeleted == false).OrderBy(pq => pq.Model).ToList().Select(s => new
