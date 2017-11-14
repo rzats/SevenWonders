@@ -216,10 +216,10 @@
     <Compile Include="DTO\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
+    <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
     <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
-    <Compile Include="DTO\ScheduleItem.cs" />
     <Compile Include="DTO\SearchFlight.cs" />
     <Compile Include="DTO\SearchModel.cs" />
     <Compile Include="DTO\Security.cs" />

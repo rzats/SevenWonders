@@ -156,41 +156,39 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok(!contain);
         }
 
-        //[HttpGet]
-        //public ActionResult Schedule(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Flight flight = db.Flights.Find(id);
-        //    if (flight == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
+        [HttpGet]
+        public IHttpActionResult Schedule(int id)
+        {
+            Flight flight = db.Flights.Find(id);
 
-        //    List<Schedule> schedules = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
-        //    List<DayOfWeek> days = new List<DayOfWeek>()
-        //    { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
-        //        DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday};
+            List<Schedule> schedules = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
 
-        //    List<ScheduleItem> schedulesNew = new List<ScheduleItem>();
-        //    foreach (var day in days)
-        //    {
-        //        Schedule sch = new Schedule() { DayOfWeek = day, Flight = flight, FlightId = flight.Id };
-        //        if (schedules.FirstOrDefault(m => m.DayOfWeek == day) != null)
-        //        {
-        //            sch = schedules.FirstOrDefault(m => m.DayOfWeek == day);
-        //            schedulesNew.Add(new ScheduleItem(sch, true));
-        //        }
-        //        else
-        //        {
-        //            schedulesNew.Add(new ScheduleItem(sch, false));
-        //        }
-        //    }
-        //    return PartialView(schedulesNew);
-        //}
+            List<ScheduleItemModel> schedulesNew = new List<ScheduleItemModel>();
+            schedules.ToList().ForEach(x =>
+            {
+                schedulesNew.Add(ConvertToScheduleItemModel(x));
+            });
 
+            schedulesNew.Add(new ScheduleItemModel()
+            {
+                Id = 32,
+                DayOfWeek = 2,
+                DepartureTime = null,
+                ArrivalTime = null
+            });
+            return Ok(schedulesNew);
+        }
+
+        public ScheduleItemModel ConvertToScheduleItemModel(Schedule item)
+        {
+            return new ScheduleItemModel()
+            {
+                Id=item.Id,
+                DayOfWeek = (int) item.DayOfWeek,
+                DepartureTime=item.DepartureTime,
+                ArrivalTime = item.ArrivalTime
+            };
+        }
         //[HttpPost]
         //public ActionResult Schedule(List<ScheduleItem> schedulesForEveryDayNew)
         //{

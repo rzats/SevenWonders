@@ -90,6 +90,9 @@
 	self.showModalEditFlight = function (flight) {
 		MainViewModel.FlightModifyViewModel.editFlight(flight);
 	}
+	self.showModalSchedule = function (flight) {
+		MainViewModel.ScheduleViewModel.initScheduleModel(flight);
+	}
 }
 
 ko.validation.rules['isNumberUnique'] = {
@@ -146,7 +149,7 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 	self.ArrivalAirports = ko.observableArray([]);
 	self.selectedChoiceArrival = ko.observable()
 		.extend({ required: true, isDifference: self.selectedChoiceDeparture });
-	self.loadArrivalAirports = function () {
+	self.loadAirports = function () {
 		$.ajax("../api/Flights/GetAirports", {
 			type: "get",
 			contentType: "application/json",
@@ -156,7 +159,7 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 			}
 		});
 	}
-	self.loadArrivalAirports();
+	self.loadAirports();
 
 	self.errors = ko.observable();
 
@@ -227,10 +230,58 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 	self.urlAction = ko.observable();
 }
 
+function ScheduleItemViewModel(day, departureTime, arrivalTime) {
+	var self = this;
+	self.DayOfWeek = ko.observable(day);
+	self.DepartureTime = ko.observable(departureTime);
+	self.ArrivalTime = ko.observable(arrivalTime);
+}
+function ScheduleViewModel() {
+	var self = this;
+	self.schedule = ko.observableArray([]);
+	self.FlightId = ko.observable();
+
+	self.DropdownDays = ko.observableArray([
+		{ Text: "Monday", Id: 1 },
+		{ Text: "Tuesday", Id: 2 },
+		{ Text: "Wednesday", Id: 3 },
+		{ Text: "Thursday", Id: 4 },
+		{ Text: "Friday", Id: 5 },
+		{ Text: "Saturday", Id: 6 },
+		{ Text: "Sunday", Id: 0 },
+	]);  
+	self.initScheduleModel = function (flight) {
+		debugger;
+		self.FlightId(flight.Id);
+		self.loadSchedule()
+		$('#scheduleModal').modal();
+	};
+
+	self.saveSchedule = function (flight) {
+	};
+	self.loadSchedule = function () {
+		$.ajax("../api/Flights/Schedule", {
+			type: "get",
+			data: {
+				id: self.FlightId()
+			},
+			contentType: "application/json",
+			success: function (result) {
+				self.schedule(result);
+			}
+		});
+	}
+	self.addScheduleItem = function () {
+		debugger;
+		self.schedule.push(new ScheduleItemViewModel(self.DropdownDays[0],undefined,undefined));
+	}
+}
+
 var FlightsTableViewModel = new FlightsTableViewModel();
 var MainViewModel = {
 	FlightsTableViewModel: FlightsTableViewModel,
-	FlightModifyViewModel: new FlightModifyViewModel(FlightsTableViewModel)
+	FlightModifyViewModel: new FlightModifyViewModel(FlightsTableViewModel),
+	ScheduleViewModel: new ScheduleViewModel()
 };
 
 ko.applyBindings(MainViewModel);
