@@ -230,11 +230,18 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 	self.urlAction = ko.observable();
 }
 
-function ScheduleItemViewModel(day, departureTime, arrivalTime) {
+function ScheduleItemViewModel(id, day, departureTime, arrivalTime) {
 	var self = this;
+	self.Id = id;
 	self.DayOfWeek = day;
 	self.DepartureTime = departureTime;
 	self.ArrivalTime = arrivalTime;
+
+	self.isOld = ko.computed(function () {
+		debugger;
+		var kk = self.Id !== -1;
+		return self.Id !== -1;
+		}, self);
 }
 function ScheduleViewModel() {
 	var self = this;
@@ -255,22 +262,6 @@ function ScheduleViewModel() {
 		self.loadSchedule()
 		$('#scheduleModal').modal();
 	};
-	self.saveSchedule = function (flight) {
-		debugger;
-		var postObject =
-			{
-				schedule: self.Schedule(),
-				flightId: self.FlightId()
-			};
-		$.ajax("../api/Flights/EditSchedule", {
-			type: "POST",
-			data: JSON.stringify(postObject),
-			contentType: "application/json",
-			success: function (result) {
-				debugger;
-			}
-		});
-	};
 	self.loadSchedule = function () {
 		$.ajax("../api/Flights/GetSchedule", {
 			type: "get",
@@ -285,15 +276,32 @@ function ScheduleViewModel() {
 					var departureTime = bits[3] + ":" + bits[4] ;
 					bits = (item.ArrivalTime).split(/\D/);
 					var arrivalTime = bits[3] + ":" + bits[4];
-					self.Schedule.push(new ScheduleItemViewModel(item.DayOfWeek, departureTime, arrivalTime));
+					self.Schedule.push(new ScheduleItemViewModel(item.Id, item.DayOfWeek, departureTime, arrivalTime));
 				});
 			}
 		});
 	}
 	self.addScheduleItem = function () {
-		debugger;
-		self.Schedule.push(new ScheduleItemViewModel(1, "00:00","00:00"));
+		self.Schedule.push(new ScheduleItemViewModel(-1, 1, "00:00","00:00"));
 	}
+	self.removeSchedule = function (item) {
+		self.Schedule.remove(item)
+	};
+	self.saveSchedule = function () {
+		var postObject =
+			{
+				schedule: self.Schedule(),
+				flightId: self.FlightId()
+			};
+		$.ajax("../api/Flights/EditSchedule", {
+			type: "POST",
+			data: JSON.stringify(postObject),
+			contentType: "application/json",
+			success: function (result) {
+				$('#scheduleModal').modal('hide');
+			}
+		});
+	};
 }
 
 var FlightsTableViewModel = new FlightsTableViewModel();

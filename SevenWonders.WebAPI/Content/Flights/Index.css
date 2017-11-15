@@ -7,3 +7,11 @@
 .validationMessage {
 	color: #cc0000;
 }
+
+#addItem {
+	float: left;
+}
+
+.deleteSchedule {
+	color: #000000
+}

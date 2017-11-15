@@ -45,8 +45,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-bind="click: saveChanges">Save</button>
-					<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: saveChanges">Save</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -65,8 +65,8 @@
 				</div>
 				<div class="modal-footer">
 						<hidden data-bind="value: idOfDeletedFlight"></hidden>
-						<button type="button" class="btn btn-warning" data-bind="click: deleteFlight">Delete</button>
-						<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-warning middle-button" data-bind="click: deleteFlight">Delete</button>
+						<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
 					</div>
 			</div>
 
@@ -88,22 +88,23 @@
 								<th>Day</th>
 								<th>Departure time</th>
 								<th>Arrival time</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody data-bind="foreach: Schedule">
-							<tr>
-								<td><select class="form-control" data-bind="options: $parent.DropdownDays, optionsText: 'Text', optionsValue: 'Id', value: DayOfWeek"></select></td>
+							<tr>							
+								<td><select class="form-control" data-bind="options: $parent.DropdownDays, optionsText: 'Text', optionsValue: 'Id', value: DayOfWeek, disable: isOld()"></select></td>
 								<td><input class="form-control" type="time" data-bind="value: DepartureTime" /></td>
 								<td><input class="form-control" type="time" data-bind="value: ArrivalTime" /></td>
-								<!--<td><input type="time" data-bind="click: $root.removeItem" /></td>-->
+								<td><a href="#" class="deleteSchedule" data-bind="click: $parent.removeSchedule">x</a></td>
 							</tr>
 						</tbody>
 					</table>
-					<button class="btn btn-warning" type="button" data-bind="click: addScheduleItem">Add new item</button>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-warning" data-bind="click: saveSchedule">Save</button>
-					<button type="button" class="btn" data-dismiss="modal">Cancel</button>
+					<button class="btn btn-warning middle-button" type="button" id="addItem" data-bind="click: addScheduleItem">Add new item</button>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: saveSchedule">Save</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -111,7 +112,7 @@
 
 	<div class="row" style="margin-bottom:6px;" data-bind="with: FlightModifyViewModel">
 		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-			<button class="btn btn-warning" type="button" data-bind="click: addFlight">Add flight</button>
+			<button class="btn btn-warning middle-button" type="button" data-bind="click: addFlight">Add flight</button>
 		</div>
 	</div>
 	<div data-bind="with: FlightsTableViewModel">

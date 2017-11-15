@@ -22,8 +22,13 @@ function loadManagersTable() {
 				else {
 					$('td', row).eq(5).html('<span style="color: rgb(0, 128, 0);" data-customer-id="' + item.Id + '">Active</span>');
 				}
-				var changeStatusCss = "<button class='btn btn-warning' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
-				var editCss = '<a data-managerid= "' + item.Id + '" class="btn btn-warning edit" role="button">Edit</a>';
+
+				var bits = (item.DateOfBirth).split(/\D/);
+				var date = bits[0] + "-" + bits[1] + "-" + bits[2];			
+				$('td', row).eq(4).text(date);
+
+				var changeStatusCss = "<button class='btn btn-warning middle-button' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
+				var editCss = '<a data-managerid= "' + item.Id + '" class="btn btn-warning middle-button edit" role="button">Edit</a>';
 				$('td', row).eq(6).html(changeStatusCss);
 				$('td', row).eq(7).html(editCss);
 			},

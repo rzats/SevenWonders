@@ -43,29 +43,6 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok(new { flights = flights, dataCount = dataCount });
         }
 
-        private FlightModel convertToFlightModel(Flight flight)
-        {
-            return new FlightModel()
-            {
-                Id = flight.Id,
-                Number = flight.Number,
-                DepartureAirportId = flight.DepartureAirport.Id,
-                DepartureAirportCode = flight.DepartureAirport.Code,
-                DepartureAirportName = flight.DepartureAirport.Name,
-                DepartureAirportCityName = flight.DepartureAirport.City.Name,
-                DepartureAirportCountryName = flight.DepartureAirport.City.Country.Name,
-                ArrivalAirportId = flight.ArrivalAirport.Id,
-                ArrivalAirportCode = flight.ArrivalAirport.Code,
-                ArrivalAirportName = flight.ArrivalAirport.Name,
-                ArrivalAirportCityName = flight.ArrivalAirport.City.Name,
-                ArrivalAirportCountryName = flight.ArrivalAirport.City.Country.Name,
-                Price = flight.Price,
-                AirplaneSeatsAmount = flight.Airplane.SeatsAmount,
-                AirplaneCompany = flight.Airplane.Company,
-                AirplaneModel = flight.Airplane.Model
-            };
-        }
-
         [HttpPost]
         public void AddFlight([FromBody]EditFlightModel model)
         {
@@ -161,7 +138,7 @@ namespace SevenWonders.WebAPI.Controllers
         {
             Flight flight = db.Flights.Find(id);
 
-            List<Schedule> schedules = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
+            List<Schedule> schedules = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => !m.IsDeleted).OrderBy(x=>x.DayOfWeek).ToList();
 
             List<ScheduleItemModel> schedulesNew = new List<ScheduleItemModel>();
             schedules.ToList().ForEach(x =>
@@ -169,16 +146,74 @@ namespace SevenWonders.WebAPI.Controllers
                 schedulesNew.Add(convertToScheduleItemModel(x));
             });
 
-            schedulesNew.Add(new ScheduleItemModel()
-            {
-                Id = 32,
-                DayOfWeek = 2,
-                DepartureTime = DateTime.Now,
-                ArrivalTime = DateTime.Now,
-            });
-
-            
             return Ok(schedulesNew);
+        }
+
+        [HttpPost]
+        public IHttpActionResult EditSchedule([FromBody]JObject model)
+        {
+            var schedules = model["schedule"].ToObject<List<ScheduleItemModel>>();
+            var flightId = model["flightId"].ToObject<int>();
+
+            var olderSchedules = db.Schedule.Where(x => x.FlightId == flightId && !x.IsDeleted).ToList();
+            //add new
+            schedules.Where(x => x.Id == -1).ToList().ForEach(x =>
+            {
+                var item = new Schedule()
+                {
+                    FlightId = flightId,
+                    DepartureTime = x.DepartureTime.Value,
+                    ArrivalTime = x.ArrivalTime.Value,
+                    DayOfWeek = (DayOfWeek)x.DayOfWeek
+                };
+                db.Schedule.Add(item);
+            });
+           
+            if (olderSchedules != null && olderSchedules.Count() != 0)
+            {
+                //delete
+                olderSchedules.Where(x => !schedules.Any(y => y.Id == x.Id))
+                    .ToList().ForEach(x =>
+                    {
+                        x.IsDeleted = true;
+                        db.Entry(x).State = EntityState.Modified;
+                    });
+                //change
+                olderSchedules.Where(x => schedules.Any(y => y.Id == x.Id))
+                    .ToList().ForEach(x =>
+                    {
+                        var item = schedules.FirstOrDefault(s => s.Id == x.Id);
+                        x.ArrivalTime = item.ArrivalTime.Value;
+                        x.DepartureTime = item.DepartureTime.Value;
+                        x.DayOfWeek = (DayOfWeek)item.DayOfWeek;
+                        db.Entry(x).State = EntityState.Modified;
+                    });
+            };
+            db.SaveChanges();
+            return Ok();
+        }
+
+        private FlightModel convertToFlightModel(Flight flight)
+        {
+            return new FlightModel()
+            {
+                Id = flight.Id,
+                Number = flight.Number,
+                DepartureAirportId = flight.DepartureAirport.Id,
+                DepartureAirportCode = flight.DepartureAirport.Code,
+                DepartureAirportName = flight.DepartureAirport.Name,
+                DepartureAirportCityName = flight.DepartureAirport.City.Name,
+                DepartureAirportCountryName = flight.DepartureAirport.City.Country.Name,
+                ArrivalAirportId = flight.ArrivalAirport.Id,
+                ArrivalAirportCode = flight.ArrivalAirport.Code,
+                ArrivalAirportName = flight.ArrivalAirport.Name,
+                ArrivalAirportCityName = flight.ArrivalAirport.City.Name,
+                ArrivalAirportCountryName = flight.ArrivalAirport.City.Country.Name,
+                Price = flight.Price,
+                AirplaneSeatsAmount = flight.Airplane.SeatsAmount,
+                AirplaneCompany = flight.Airplane.Company,
+                AirplaneModel = flight.Airplane.Model
+            };
         }
 
         private ScheduleItemModel convertToScheduleItemModel(Schedule item)
@@ -190,61 +225,6 @@ namespace SevenWonders.WebAPI.Controllers
                 DepartureTime=item.DepartureTime,
                 ArrivalTime = item.ArrivalTime
             };
-        }
-
-        [HttpPost]
-        public IHttpActionResult EditSchedule([FromBody]JObject model)
-        {
-            var newSchedule = model["schedule"].ToObject<List<ScheduleItemModel>>();
-            var flightId = model["flightId"].ToObject<int>();
-
-            return Ok();
-            //Flight flight = db.Flights.Find(schedulesForEveryDayNew[0].Item.FlightId);
-
-            //List<Schedule> schedulesOld = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
-            //List<DayOfWeek> days = new List<DayOfWeek>()
-            //{ DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
-            //    DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday};
-
-            //List<ScheduleItem> schedulesForEveryDay = new List<ScheduleItem>();
-            //foreach (var day in days)
-            //{
-            //    Schedule sch = new Schedule() { DayOfWeek = day, Flight = flight, FlightId = flight.Id };
-            //    if (schedulesOld.FirstOrDefault(m => m.DayOfWeek == day) != null)
-            //    {
-            //        sch = schedulesOld.FirstOrDefault(m => m.DayOfWeek == day);
-            //        schedulesForEveryDay.Add(new ScheduleItem(sch, true));
-            //    }
-            //    else
-            //    {
-            //        schedulesForEveryDay.Add(new ScheduleItem(sch, false));
-            //    }
-            //}
-
-            //for (int i = 0; i < 7; i++)
-            //{
-            //    if (schedulesForEveryDay[i].IsCreated && !schedulesForEveryDayNew[i].IsCreated)
-            //    {
-            //        schedulesForEveryDay[i].Item.IsDeleted = true;
-            //        db.Entry(schedulesForEveryDay[i].Item).State = EntityState.Modified;
-
-            //    }
-            //    else if (schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
-            //    {
-            //        Schedule sch = db.Schedule.Find(schedulesForEveryDayNew[i].Item.Id);
-            //        sch.DepartureTime = schedulesForEveryDayNew[i].Item.DepartureTime;
-            //        sch.ArrivalTime = schedulesForEveryDayNew[i].Item.ArrivalTime;
-            //        db.Entry(sch).State = EntityState.Modified;
-            //    }
-            //    else if (!schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
-            //    {
-            //        db.Schedule.Add(schedulesForEveryDayNew[i].Item);
-            //    }
-            //}
-            //db.SaveChanges();
-
-            //var filters = Session["FlightFilters"] as SearchFlight;
-            //return RedirectToAction("Index", filters);
         }
     }
 }

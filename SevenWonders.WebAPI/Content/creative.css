@@ -412,16 +412,23 @@ fieldset[disabled] .btn-primary.active {
   background-color: #F05F40;
   border-color: #F05F40;
 }
-.btn-primary .badge {
-  color: #F05F40;
-  background-color: white;
+body, h1, h2, h3, h4, h5, h6, input {
+	font-family: 'Open Sans', sans-serif !important;
 }
-.btn {
-  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-  border: none;
-  border-radius: 300px;
-  font-weight: 700;
-  text-transform: uppercase;
+input, button{
+	font-size:14px !important;
+}
+table {
+	font-size: 14px !important;
+}
+
+.middle-button {
+	width: 110px !important;
+}
+
+.btn-primary .badge {
+	color: #F05F40;
+	background-color: white;
 }
 .btn-xl {
   padding: 15px 30px;

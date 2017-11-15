@@ -15,7 +15,13 @@
 					else {
 						$('td', row).eq(5).html('<span style="color: rgb(0, 128, 0);" data-customer-id="' + item.Id + '">Active</span>');
 					}
-					var buttonCss = "<button class='btn btn-warning' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
+
+
+					var bits = (item.DateOfBirth).split(/\D/);
+					var date = bits[0] + "-" + bits[1] + "-" + bits[2];
+					$('td', row).eq(4).text(date);
+
+					var buttonCss = "<button class='btn btn-warning middle-button' onclick='changeStatus(" + item.Id + ")\'> Change status </button>"
 					$('td', row).eq(6).html(buttonCss);
 				},
 				"columns": [
