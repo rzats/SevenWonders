@@ -208,11 +208,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomersManagementController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="DTO\Cities\CountryModel.cs" />
     <Compile Include="DTO\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
@@ -281,6 +283,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Contact\Index.css" />
+    <Content Include="Content\Countries\Index.css" />
     <Content Include="Content\creative.css" />
     <Content Include="Content\creative.min.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
@@ -477,6 +480,7 @@
     <EmbeddedResource Include="Scripts\CustomersManagement\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Scripts\Countries\Index.js" />
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -554,6 +558,7 @@
     <Content Include="Scripts\Table.js" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Countries\Index.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
     <Content Include="Web.config" />
@@ -592,6 +597,7 @@
     <Folder Include="Content\img\Hotels\Hotel_9\" />
     <Folder Include="Content\img\Rooms\Room73\" />
     <Folder Include="Content\img\Rooms\Room74\" />
+    <Folder Include="DTO\Countries\" />
     <Folder Include="Scripts\cldr\" />
     <Folder Include="Scripts\globalize\" />
     <Folder Include="Scripts\KnockoutHelpers\" />

@@ -238,8 +238,6 @@ function ScheduleItemViewModel(id, day, departureTime, arrivalTime) {
 	self.ArrivalTime = arrivalTime;
 
 	self.isOld = ko.computed(function () {
-		debugger;
-		var kk = self.Id !== -1;
 		return self.Id !== -1;
 		}, self);
 }
@@ -312,6 +310,3 @@ var MainViewModel = {
 };
 
 ko.applyBindings(MainViewModel);
-$(document).ready(function () {
-
-});

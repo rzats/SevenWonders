@@ -33,6 +33,18 @@ namespace SevenWonders.Controllers
             }
         }
 
+        [HttpGet]
+        public IHttpActionResult GetManager(int Id)
+        {
+            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
+            var managerCountriesIds = countries.Where(x => x.ManagerId == Id).Select(x => x.Id).ToList();
+            WorkWithManager workWithManager = new WorkWithManager();
+            var manager = workWithManager.GetFullManager(db, Id);
+
+            var result = convertToManagerEditModel(manager, countries, managerCountriesIds);
+            return Ok(result);
+        }
+
         [HttpPost]
         public void AddManager([FromBody]JObject model)
         {
@@ -62,6 +74,7 @@ namespace SevenWonders.Controllers
             }
         }
 
+        [HttpPost]
         public IHttpActionResult ChangeManagerStatus(int id)
         {
             var workWithCustomer = new WorkWithManager();
@@ -70,16 +83,19 @@ namespace SevenWonders.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult EditManager(int Id)
+        public IHttpActionResult GetCountries()
         {
-
-            var countries = db.Coutries.Where(c=>!c.IsDeleted).ToList();
-            var managerCountriesIds = countries.Where(x => x.ManagerId == Id).Select(x => x.Id).ToList();
-            WorkWithManager workWithManager = new WorkWithManager();
-            var manager = workWithManager.GetFullManager(db, Id);
-
-            var result = convertToManagerEditModel(manager,countries, managerCountriesIds);
+            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
+            var selectedCountries = new List<int>();
+            var result = getCountries(countries, selectedCountries);
             return Ok(result);
+        }
+
+        [HttpGet]
+        public List<Country> GetCountriesForSearch()
+        {
+            var countries = db.Coutries.Where(a => a.IsDeleted == false).ToList();
+            return countries;
         }
 
         private List<DropDownListItem> getCountries(List<Country> allCountries, List<int> selectedCountries)
@@ -110,7 +126,7 @@ namespace SevenWonders.Controllers
             return countries;
         }
 
-        private ManagerEditModel convertToManagerEditModel(FullManagerViewModel manager, List<Country> allCountries, List<int>selectedCountries)
+        private ManagerEditModel convertToManagerEditModel(FullManagerViewModel manager, List<Country> allCountries, List<int> selectedCountries)
         {
             ManagerEditModel managerEditModel = new ManagerEditModel()
             {
@@ -118,28 +134,12 @@ namespace SevenWonders.Controllers
                 FirstName = manager.FirstName,
                 LastName = manager.LastName,
                 DateOfBirth = manager.DateOfBirth.Date,
-                PhoneNumber=manager.PhoneNumber,
-                Email=manager.Email,
-                Password=manager.Password
+                PhoneNumber = manager.PhoneNumber,
+                Email = manager.Email,
+                Password = manager.Password
             };
             managerEditModel.Countries = getCountries(allCountries, selectedCountries);
             return managerEditModel;
-        }
-
-        [HttpGet]
-        public IHttpActionResult GetCountries()
-        {
-            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
-            var selectedCountries = new List<int>();
-            var result = getCountries(countries, selectedCountries);
-            return Ok(result);
-        }
-
-        [HttpGet]
-        public List<Country> GetCountriesForSearch()
-        {
-            var countries = db.Coutries.Where(a => a.IsDeleted == false).ToList();
-            return countries;
         }
     }
 }

@@ -16,31 +16,20 @@ namespace SevenWonders.Controllers
     public class CustomersManagementController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
-        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public CustomersManagementController()
+        [HttpGet]
+        public IEnumerable<Interfaces.IAuthorizedPerson> GetCustomers()
         {
-
-        }
-
-        public CustomersManagementController(SevenWondersContext context)
-        {
-            db = context;
+            WorkWithCustomer workWithCustomer = new WorkWithCustomer();
+            return workWithCustomer.FindPersons(db, new SearchViewModel()).AsEnumerable().ToList();
         }
 
         [HttpPost]
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetContries()
         {
             WorkWithCustomer workWithCustomer = new WorkWithCustomer();
             var result= workWithCustomer.FindPersons(db, new SearchViewModel()).AsEnumerable().ToList();
             return Ok(result);
-        }
-
-        [HttpGet]
-        public IEnumerable<Tour> GetCustomerTours(int id)
-        {
-            var result = db.Tours.Include(x => x.Customer).Include(x => x.Reservation).Where(x => x.CustomerId == id).AsEnumerable().ToList();
-            return result;
         }
 
         [HttpPost]
@@ -49,13 +38,6 @@ namespace SevenWonders.Controllers
             var workWithCustomer = new WorkWithCustomer();
             workWithCustomer.ChangePersonStatus(db, id);
             return Ok();
-        }
-
-        [HttpPost]
-        public IEnumerable<Interfaces.IAuthorizedPerson> Customers(SearchViewModel search)
-        {
-            WorkWithCustomer workWithCustomer = new WorkWithCustomer();
-            return workWithCustomer.FindPersons(db, search).AsEnumerable().ToList();
         }
     }
 }

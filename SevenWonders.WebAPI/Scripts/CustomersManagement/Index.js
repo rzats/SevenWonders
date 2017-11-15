@@ -5,7 +5,7 @@
 				"serverSide": false,
 				"ajax": {
 					"url": "../api/CustomersManagement/GetCustomers",
-					"method": "POST",
+					"method": "GET",
 					"dataSrc": "",
 				},
 				"createdRow": function (row, item, dataIndex) {
@@ -15,7 +15,6 @@
 					else {
 						$('td', row).eq(5).html('<span style="color: rgb(0, 128, 0);" data-customer-id="' + item.Id + '">Active</span>');
 					}
-
 
 					var bits = (item.DateOfBirth).split(/\D/);
 					var date = bits[0] + "-" + bits[1] + "-" + bits[2];

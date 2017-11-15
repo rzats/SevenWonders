@@ -71,7 +71,7 @@ function EditManagerHandler(event) {
 	event.preventDefault();
 	idManager = $(this).data("managerid");  
 
-	$.get('../api/ManagersManagement/EditManager', { id: idManager },
+	$.get('../api/ManagersManagement/GetManager', { id: idManager },
 		function (html) {
 			$('#editManagerModal').modal('show', { backdrop: 'static' });
 			$('#editManagerModal').on('shown.bs.modal', function () {
@@ -104,7 +104,7 @@ function EditManagerHandler(event) {
 								return "Searching...";
 							}
 						}
-					});	
+					});
 
 				$('#saveEditing').click(function() {
 					saveEditing(idManager);
@@ -162,16 +162,16 @@ function addManager(event) {
 		function (html) {
 			$('#editManagerModal').modal('show', { backdrop: 'static' });
 			$('#editManagerModal').on('shown.bs.modal', function () {
-			    $('#id').val(0);
-                $('#firstname').val("");
-			    $('#lastname').val("");
-			    $('#dateOfBirth').val(new Date());
+				$('#id').val(0);
+				$('#firstname').val("");
+				$('#lastname').val("");
+				$('#dateOfBirth').val(new Date());
 
-			    $('#phonenumber').val("");
-			    $('#email').val("");
-			    $('#password').val("");
+				$('#phonenumber').val("");
+				$('#email').val("");
+				$('#password').val("");
 
-			    $("#countries").empty();
+				$("#countries").empty();
 				$('#countries').
 					select2({
 						placeholder: 'Select countries',

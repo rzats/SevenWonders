@@ -156,6 +156,7 @@ namespace SevenWonders.WebAPI.Controllers
             var flightId = model["flightId"].ToObject<int>();
 
             var olderSchedules = db.Schedule.Where(x => x.FlightId == flightId && !x.IsDeleted).ToList();
+            
             //add new
             schedules.Where(x => x.Id == -1).ToList().ForEach(x =>
             {

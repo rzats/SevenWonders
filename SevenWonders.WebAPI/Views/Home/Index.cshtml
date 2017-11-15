@@ -32,6 +32,7 @@
 					<li><a href="#/contact">Contact</a></li>
 					<li><a href="#/customers">Customers</a></li>
 					<li><a href="#/managers">Managers</a></li>
+					<li><a href="#/countries">Countries</a></li>
 					<li><a href="#/flights">Flights</a></li>
 					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
 					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
@@ -133,6 +134,10 @@
 
 			this.get('#/flights', function () {
 				this.partial('/Views/Flights/Index.html');
+			});
+
+			this.get('#/countries', function () {
+				this.partial('/Views/Countries/Index.html');
 			});
 			
         });
