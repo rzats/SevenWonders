@@ -1,0 +1,59 @@
+﻿<script src="../../Scripts/knockout-3.1.0.js"></script>
+<script src="../../Scripts/knockout.validation.js"></script>
+<script src="../../Scripts/CustomerCabinet/Index.js"></script>
+<link href="../../Content/CustomerCabinet/Customer.css" rel="stylesheet" />
+<br />
+<br />
+<div class="col-md-4">
+</div>
+<div class="container col-md-4">
+
+    <div class="well well-sm col-md-9 col-md-offset-1">
+        <form data-bind="submit: changeCustomer">
+            <legend class="text-center"><i class="glyphicon glyphicon-globe"></i> Edit account info!</legend>
+
+            <div align="center">
+                <div>
+                    <input id="firstName" class="form-control" placeholder="First name" data-bind="value: firstName, validationElement: firstName" />
+                </div>
+                <br />
+                <div>
+                    <input id="lastName" class="form-control" placeholder="Last name" data-bind="value: lastName" />
+                </div>
+                <br />
+                <div>
+                    <input id="dateOfBirth" class="form-control datepicker" placeholder="Date of birth" type="datetime" data-bind="value: dateOfBirth" />
+                </div>
+                <br />
+                <div>
+                    <input id="phoneNumber" class="form-control" placeholder="Phone number" type="text" data-bind="value: phoneNumber" />
+                </div>
+                <br />
+                <div>
+                    <input id="email" class="form-control" placeholder="Email" type="email" data-bind="value: email" />
+                </div>
+                <br />
+                <div id="editServerErrors" style="display:none; color:red">
+                    <b id="editServerErrorsString" style="color:red">  </b>
+                </div>
+                <br />
+            </div>
+            <div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Change data</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link href="../../Content/themes/base/all.css" rel="stylesheet" />
+<script src="../../Scripts/jquery-ui-1.12.0.js"></script>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            var $j = jQuery.noConflict();
+            $j(".datepicker").datepicker();
+        });
+    });
+</script>

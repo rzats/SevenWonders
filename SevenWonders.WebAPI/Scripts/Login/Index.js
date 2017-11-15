@@ -1,9 +1,8 @@
-﻿function login()
-{
+﻿function login() {
     var email = $('#email').val();
     var password = $('#password').val();
     var rememberMe = $('rememberMe').val();
-
+    debugger;
     if (isValid()) {
         $.ajax({
             url: "../api/Account/Login",
@@ -15,6 +14,7 @@
                     RememberMe: rememberMe
                 },
             success: function () {
+                window.location.reload(true);
                 window.location.href = "#/home";
             },
             error: function (err) {
@@ -23,14 +23,12 @@
             }
         })
     }
-    else
-    {
+    else {
         $('#emptyEntrance').show();
     }
 }
 
-function isValid()
-{
+function isValid() {
     return !(isEmpty($('#email').val()) ||
         isEmpty($('#password').val()));
 }

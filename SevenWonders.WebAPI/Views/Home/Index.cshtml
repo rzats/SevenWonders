@@ -69,7 +69,7 @@
                                 @if (User.IsInRole("customer"))
                                 {
                                     <li>
-                                        @*@Html.ActionLink("Cabinet", "Info", "Customer", new { email = User.Identity.Name.ToString() }, null)*@
+                                        <a href="#/cabinet" id="cabinetLink">Cabinet</a>
                                     </li>
                                 }
                                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
@@ -122,6 +122,10 @@
 
 			this.get('#/contact', function () {
 				this.partial('/Views/Home/Contact.html');
+			});
+
+			this.get('#/cabinet', function () {
+			    this.partial('/Views/CustomerCabinet/Index.html');
 			});
 
 			this.get('#/customers', function () {

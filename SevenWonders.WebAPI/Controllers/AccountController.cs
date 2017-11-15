@@ -28,7 +28,8 @@ namespace SevenWonders.WebAPI.Controllers
 
                 if (user != null)
                 {
-                    return BadRequest("user with such email already exists");
+                    ModelState.AddModelError("", "user with such email already exists");
+                    return BadRequest(ModelState);
                 }
 
                 user = new User() { Email = model.Email, Password = utils.GetEncodedHash(model.Password, Security.solt), Role = db.Roles.Find(1) };
@@ -46,45 +47,45 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Login(LoginModel model)
         {
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                Utils utils = new Utils();
+                var hashPassword = utils.GetEncodedHash(model.Password, Security.solt);
+                User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == model.Email && u.Password == hashPassword);
+                if (user != null)
                 {
-                    Utils utils = new Utils();
-                    var hashPassword = utils.GetEncodedHash(model.Password, Security.solt);
-                    User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == model.Email && u.Password == hashPassword);
-                    if (user != null)
+                    if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 3))
                     {
-                        if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 3))
+                        Manager manager = GetPersonByEmail<Manager>(user.Email);
+                        if (manager.IsDeleted)
                         {
-                            Manager manager = GetPersonByEmail<Manager>(user.Email);
-                            if (manager.IsDeleted)
-                            {
-                                return Ok();
-                            }
-                        }
-                        if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 1))
-                        {
-                            Customer customer = GetPersonByEmail<Customer>(user.Email);
-                            if (customer.IsDeleted)
-                            {
-                                return Ok();
-                            }
-                        }
-                        if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 2))
-                        {
-                            Administrator customer = GetPersonByEmail<Administrator>(user.Email);
-                            if (customer.IsDeleted)
-                            {
-                                return Ok();
-                            }
+                            return Ok();
                         }
                     }
-                    if (user == null)
+                    if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 1))
                     {
-                        return BadRequest("Wrong login or password.");
+                        Customer customer = GetPersonByEmail<Customer>(user.Email);
+                        if (customer.IsDeleted)
+                        {
+                            return Ok();
+                        }
                     }
-                    utils.AddUserInCookies(user, AuthenticationManager);
+                    if (user.Role.Name == Enum.GetName(typeof(Security.RoleType), 2))
+                    {
+                        Administrator customer = GetPersonByEmail<Administrator>(user.Email);
+                        if (customer.IsDeleted)
+                        {
+                            return Ok();
+                        }
+                    }
                 }
-                return Ok();
+                if (user == null)
+                {
+                    return BadRequest("Wrong login or password.");
+                }
+                utils.AddUserInCookies(user, AuthenticationManager);
+            }
+            return Ok();
         }
 
         private T GetPersonByEmail<T>(string email) where T : class, IPerson

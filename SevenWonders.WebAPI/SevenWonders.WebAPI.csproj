@@ -209,6 +209,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomersManagementController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -286,6 +287,7 @@
     <Content Include="Content\Countries\Index.css" />
     <Content Include="Content\creative.css" />
     <Content Include="Content\creative.min.css" />
+    <Content Include="Content\CustomerCabinet\Customer.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
@@ -481,6 +483,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Scripts\Countries\Index.js" />
+    <Content Include="Scripts\CustomerCabinet\Index.js" />
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -559,6 +562,7 @@
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Views\Countries\Index.html" />
+    <Content Include="Views\CustomerCabinet\Index.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
     <Content Include="Web.config" />
