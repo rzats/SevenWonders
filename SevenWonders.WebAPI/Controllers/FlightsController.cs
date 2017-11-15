@@ -38,12 +38,12 @@ namespace SevenWonders.WebAPI.Controllers
             List<FlightModel> flights = new List<FlightModel>();
             data.ToList().ForEach(x =>
               {
-                  flights.Add(ConvertToFlightModel(x));
+                  flights.Add(convertToFlightModel(x));
               });
             return Ok(new { flights = flights, dataCount = dataCount });
         }
 
-        public FlightModel ConvertToFlightModel(Flight flight)
+        private FlightModel convertToFlightModel(Flight flight)
         {
             return new FlightModel()
             {
@@ -157,7 +157,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Schedule(int id)
+        public IHttpActionResult GetSchedule(int id)
         {
             Flight flight = db.Flights.Find(id);
 
@@ -166,20 +166,22 @@ namespace SevenWonders.WebAPI.Controllers
             List<ScheduleItemModel> schedulesNew = new List<ScheduleItemModel>();
             schedules.ToList().ForEach(x =>
             {
-                schedulesNew.Add(ConvertToScheduleItemModel(x));
+                schedulesNew.Add(convertToScheduleItemModel(x));
             });
 
             schedulesNew.Add(new ScheduleItemModel()
             {
                 Id = 32,
                 DayOfWeek = 2,
-                DepartureTime = null,
-                ArrivalTime = null
+                DepartureTime = DateTime.Now,
+                ArrivalTime = DateTime.Now,
             });
+
+            
             return Ok(schedulesNew);
         }
 
-        public ScheduleItemModel ConvertToScheduleItemModel(Schedule item)
+        private ScheduleItemModel convertToScheduleItemModel(Schedule item)
         {
             return new ScheduleItemModel()
             {
@@ -189,56 +191,60 @@ namespace SevenWonders.WebAPI.Controllers
                 ArrivalTime = item.ArrivalTime
             };
         }
-        //[HttpPost]
-        //public ActionResult Schedule(List<ScheduleItem> schedulesForEveryDayNew)
-        //{
-        //    Flight flight = db.Flights.Find(schedulesForEveryDayNew[0].Item.FlightId);
 
-        //    List<Schedule> schedulesOld = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
-        //    List<DayOfWeek> days = new List<DayOfWeek>()
-        //    { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
-        //        DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday};
+        [HttpPost]
+        public IHttpActionResult EditSchedule([FromBody]JObject model)
+        {
+            var newSchedule = model["schedule"].ToObject<List<ScheduleItemModel>>();
+            var flightId = model["flightId"].ToObject<int>();
 
-        //    List<ScheduleItem> schedulesForEveryDay = new List<ScheduleItem>();
-        //    foreach (var day in days)
-        //    {
-        //        Schedule sch = new Schedule() { DayOfWeek = day, Flight = flight, FlightId = flight.Id };
-        //        if (schedulesOld.FirstOrDefault(m => m.DayOfWeek == day) != null)
-        //        {
-        //            sch = schedulesOld.FirstOrDefault(m => m.DayOfWeek == day);
-        //            schedulesForEveryDay.Add(new ScheduleItem(sch, true));
-        //        }
-        //        else
-        //        {
-        //            schedulesForEveryDay.Add(new ScheduleItem(sch, false));
-        //        }
-        //    }
+            return Ok();
+            //Flight flight = db.Flights.Find(schedulesForEveryDayNew[0].Item.FlightId);
 
+            //List<Schedule> schedulesOld = db.Schedule.Where(m => m.FlightId == flight.Id).Where(m => m.IsDeleted == false).ToList();
+            //List<DayOfWeek> days = new List<DayOfWeek>()
+            //{ DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday,
+            //    DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday};
 
-        //    for (int i = 0; i < 7; i++)
-        //    {
-        //        if (schedulesForEveryDay[i].IsCreated && !schedulesForEveryDayNew[i].IsCreated)
-        //        {
-        //            schedulesForEveryDay[i].Item.IsDeleted = true;
-        //            db.Entry(schedulesForEveryDay[i].Item).State = EntityState.Modified;
+            //List<ScheduleItem> schedulesForEveryDay = new List<ScheduleItem>();
+            //foreach (var day in days)
+            //{
+            //    Schedule sch = new Schedule() { DayOfWeek = day, Flight = flight, FlightId = flight.Id };
+            //    if (schedulesOld.FirstOrDefault(m => m.DayOfWeek == day) != null)
+            //    {
+            //        sch = schedulesOld.FirstOrDefault(m => m.DayOfWeek == day);
+            //        schedulesForEveryDay.Add(new ScheduleItem(sch, true));
+            //    }
+            //    else
+            //    {
+            //        schedulesForEveryDay.Add(new ScheduleItem(sch, false));
+            //    }
+            //}
 
-        //        }
-        //        else if (schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
-        //        {
-        //            Schedule sch = db.Schedule.Find(schedulesForEveryDayNew[i].Item.Id);
-        //            sch.DepartureTime = schedulesForEveryDayNew[i].Item.DepartureTime;
-        //            sch.ArrivalTime = schedulesForEveryDayNew[i].Item.ArrivalTime;
-        //            db.Entry(sch).State = EntityState.Modified;
-        //        }
-        //        else if (!schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
-        //        {
-        //            db.Schedule.Add(schedulesForEveryDayNew[i].Item);
-        //        }
-        //    }
-        //    db.SaveChanges();
+            //for (int i = 0; i < 7; i++)
+            //{
+            //    if (schedulesForEveryDay[i].IsCreated && !schedulesForEveryDayNew[i].IsCreated)
+            //    {
+            //        schedulesForEveryDay[i].Item.IsDeleted = true;
+            //        db.Entry(schedulesForEveryDay[i].Item).State = EntityState.Modified;
 
-        //    var filters = Session["FlightFilters"] as SearchFlight;
-        //    return RedirectToAction("Index", filters);
-        //}
+            //    }
+            //    else if (schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
+            //    {
+            //        Schedule sch = db.Schedule.Find(schedulesForEveryDayNew[i].Item.Id);
+            //        sch.DepartureTime = schedulesForEveryDayNew[i].Item.DepartureTime;
+            //        sch.ArrivalTime = schedulesForEveryDayNew[i].Item.ArrivalTime;
+            //        db.Entry(sch).State = EntityState.Modified;
+            //    }
+            //    else if (!schedulesForEveryDay[i].IsCreated && schedulesForEveryDayNew[i].IsCreated)
+            //    {
+            //        db.Schedule.Add(schedulesForEveryDayNew[i].Item);
+            //    }
+            //}
+            //db.SaveChanges();
+
+            //var filters = Session["FlightFilters"] as SearchFlight;
+            //return RedirectToAction("Index", filters);
+        }
     }
 }

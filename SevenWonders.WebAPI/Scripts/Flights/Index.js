@@ -232,15 +232,14 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 
 function ScheduleItemViewModel(day, departureTime, arrivalTime) {
 	var self = this;
-	self.DayOfWeek = ko.observable(day);
-	self.DepartureTime = ko.observable(departureTime);
-	self.ArrivalTime = ko.observable(arrivalTime);
+	self.DayOfWeek = day;
+	self.DepartureTime = departureTime;
+	self.ArrivalTime = arrivalTime;
 }
 function ScheduleViewModel() {
 	var self = this;
-	self.schedule = ko.observableArray([]);
+	self.Schedule = ko.observableArray([]);
 	self.FlightId = ko.observable();
-
 	self.DropdownDays = ko.observableArray([
 		{ Text: "Monday", Id: 1 },
 		{ Text: "Tuesday", Id: 2 },
@@ -248,32 +247,52 @@ function ScheduleViewModel() {
 		{ Text: "Thursday", Id: 4 },
 		{ Text: "Friday", Id: 5 },
 		{ Text: "Saturday", Id: 6 },
-		{ Text: "Sunday", Id: 0 },
-	]);  
+		{ Text: "Sunday", Id: 0 }
+	]);
+
 	self.initScheduleModel = function (flight) {
-		debugger;
 		self.FlightId(flight.Id);
 		self.loadSchedule()
 		$('#scheduleModal').modal();
 	};
-
 	self.saveSchedule = function (flight) {
+		debugger;
+		var postObject =
+			{
+				schedule: self.Schedule(),
+				flightId: self.FlightId()
+			};
+		$.ajax("../api/Flights/EditSchedule", {
+			type: "POST",
+			data: JSON.stringify(postObject),
+			contentType: "application/json",
+			success: function (result) {
+				debugger;
+			}
+		});
 	};
 	self.loadSchedule = function () {
-		$.ajax("../api/Flights/Schedule", {
+		$.ajax("../api/Flights/GetSchedule", {
 			type: "get",
 			data: {
 				id: self.FlightId()
 			},
 			contentType: "application/json",
 			success: function (result) {
-				self.schedule(result);
+				self.Schedule([]);
+				result.forEach(function (item, i, result) {
+					var bits = (item.DepartureTime).split(/\D/);
+					var departureTime = bits[3] + ":" + bits[4] ;
+					bits = (item.ArrivalTime).split(/\D/);
+					var arrivalTime = bits[3] + ":" + bits[4];
+					self.Schedule.push(new ScheduleItemViewModel(item.DayOfWeek, departureTime, arrivalTime));
+				});
 			}
 		});
 	}
 	self.addScheduleItem = function () {
 		debugger;
-		self.schedule.push(new ScheduleItemViewModel(self.DropdownDays[0],undefined,undefined));
+		self.Schedule.push(new ScheduleItemViewModel(1, "00:00","00:00"));
 	}
 }
 

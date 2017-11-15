@@ -90,11 +90,11 @@
 								<th>Arrival time</th>
 							</tr>
 						</thead>
-						<tbody data-bind="foreach: schedule">
+						<tbody data-bind="foreach: Schedule">
 							<tr>
-								<td><div data-bind="options: $parent.DropdownDays, optionsText: 'Text', optionsValue: 'Id', value: DayOfWeek, optionsCaption: 'Choose departure airport'"></div></td>
-								<td><input type="time" data-bind="value: DepartureTime" /></td>
-								<td><input type="time" data-bind="value: ArrivalTime" /></td>
+								<td><select class="form-control" data-bind="options: $parent.DropdownDays, optionsText: 'Text', optionsValue: 'Id', value: DayOfWeek"></select></td>
+								<td><input class="form-control" type="time" data-bind="value: DepartureTime" /></td>
+								<td><input class="form-control" type="time" data-bind="value: ArrivalTime" /></td>
 								<!--<td><input type="time" data-bind="click: $root.removeItem" /></td>-->
 							</tr>
 						</tbody>
