@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 	loadCitiesTable();
 });
-function loadCaitiesTable() {
+function loadCitiesTable() {
 	$("#citiesTable")
 		.on('init.dt', function () {
 			$('#citiesTable').on('click', '.edit', EditCityHandler);
@@ -21,11 +21,11 @@ function loadCaitiesTable() {
 			"createdRow": function (row, item, dataIndex) {
 				var deleteCss = '<a data-cityid= "' + item.Id + '" class="btn btn-warning middle-button delete" role="button">Delete</a>';
 				var editCss = '<a data-cityid= "' + item.Id + '" class="btn btn-warning middle-button edit" role="button">Edit</a>';
-				$('td', row).eq(1).html(deleteCss);
-				$('td', row).eq(2).html(editCss);
+				$('td', row).eq(2).html(deleteCss);
+				$('td', row).eq(3).html(editCss);
 			},
 			"columns": [
-				{ "data": "Name" }, { "data": "Country" }, { "data": null }, { "data": null }
+				{ "data": "Name" }, { "data": "CountryName" }, { "data": null }, { "data": null }
 			],
 			"language": {
 				"emptyTable": "There are no customers at present.",
@@ -55,20 +55,23 @@ function addCity(event) {
 }
 
 ko.validation.rules['isNameUnique'] = {
-	validator: function (name, id) {
+	validator: function (name, params) {
 		var isValid = true;
-		$.ajax({
-			async: false,
-			url: '../api/Cities/IsNameValid',
-			type: 'Get',
-			data: { id: id, name: name },
-			success: function (response) {
-				isValid = response === true;
-			},
-			error: function () {
-				isValid = false;
-			}
-		});
+		var kk = params.countryId();
+		if (params.countryId() != undefined) {
+			$.ajax({
+				async: false,
+				url: '../api/Cities/IsNameValid',
+				type: 'Get',
+				data: { id: params.id, name: name, countryId: params.countryId },
+				success: function (response) {
+					isValid = response === true;
+				},
+				error: function () {
+					isValid = false;
+				}
+			});
+		}
 		return isValid;
 	}
 };
@@ -80,34 +83,50 @@ ko.validation.init({
 function CityModifyViewModel() {
 	var self = this;
 	self.Id = ko.observable(0);
+	self.Countries = ko.observableArray([]);
+	self.CountryId = ko.observable(0)
+		.extend({ required: true });
 	self.Name = ko.observable().extend({
 		required: true, minLength: 4, maxLength: 20,
 		isNameUnique: {
-			params: self.Id,
+			params: { id: self.Id, countryId: self.CountryId },
 			message: 'City name should be unique!'
 		}
 	})
+
+	self.loadCountries = function () {
+		$.ajax("../api/Countries/GetCountries", {
+			type: "get",
+			contentType: "application/json",
+			success: function (result) {
+				self.Countries(result);
+			}
+		});
+	}
+	self.loadCountries();
+
 	self.errors = ko.observable();
 
 	self.updateViewModel = function (city) {
 		if (city != undefined) {
 			self.Id(city.Id);
 			self.Name(city.Name);
+			self.CountryId(city.CountryId);
 		}
 		else {
 			self.Id(0);
 			self.Name(undefined);
+			self.CountryId(undefined);
 		}
 		self.errors = ko.validation.group(self, { deep: true });
 		self.errors.showAllMessages(false);
 	}
 	self.addCity = function () {
-		debugger;
+
 		self.updateViewModel();
 		$('#editCityModal').modal();
 	}
 	self.editCity = function (city) {
-		debugger;
 		self.updateViewModel(city);
 		$('#editCityModal').modal();
 	}
@@ -115,8 +134,9 @@ function CityModifyViewModel() {
 		self.errors = ko.validation.group(self, { deep: true });
 		if (self.errors().length === 0) {
 			var model = {
-				id: self.Id(),
-				name: self.Name(),
+				Id: self.Id(),
+				Name: self.Name(),
+				CountryId: self.CountryId()
 			};
 			$.ajax("../api/Cities/AddCity", {
 				type: "post",
@@ -133,12 +153,10 @@ function CityModifyViewModel() {
 		}
 	}
 	self.deleteCity = function (id) {
-		debugger;
 		self.Id(id);
 		$('#deleteCityModal').modal();
 	}
 	self.saveDeleting = function () {
-		debugger;
 		var id = self.Id();
 		$.ajax({
 			type: "POST",
@@ -146,7 +164,6 @@ function CityModifyViewModel() {
 			data: JSON.stringify(id),
 			contentType: "application/json",
 			success: function (result) {
-				debugger;
 				$('#citiesTable').DataTable().ajax.reload();
 				$('#deleteCityModal').modal('hide');
 			}

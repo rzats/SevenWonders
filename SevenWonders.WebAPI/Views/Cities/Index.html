@@ -1,4 +1,4 @@
-﻿<link type="text/css" rel="stylesheet" href="/Content/Countries/Index.css" />
+﻿<link type="text/css" rel="stylesheet" href="/Content/Cities/Index.css" />
 <link type="text/css" rel="stylesheet" href="/Content/select2.css" />
 
 <div class="col-md-1">
@@ -28,7 +28,7 @@
 						</div>
 						<div class="form-group">
 							<label for="country">Country</label>
-							<select class="form-control" data-bind="options: Countries, optionsText: 'Text', optionsValue: 'Id', value: selectedCountry, optionsCaption: 'Choose country'"></select>
+							<select class="form-control" data-bind="options: Countries, optionsText: 'Name', optionsValue: 'Id', value: CountryId, optionsCaption: 'Choose country'"></select>
 						</div>
 					</div>
 				</div>
@@ -59,7 +59,7 @@
 
 		</div>
 	</div>
-	<table class="table table-striped table-bordered" id="cityTable" cellspacing="0" width="100%">
+	<table class="table table-striped table-bordered" id="citiesTable" cellspacing="0" width="100%">
 		<thead>
 			<tr>
 				<th width="35%">Name</th>
@@ -79,6 +79,6 @@
 <script src="../../Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
-<script src="../../Scripts/Countries/Index.js"></script>
+<script src="../../Scripts/Cities/Index.js"></script>
 <script src="../../Scripts/Statistic.js"></script>
 <script src="../../Scripts/Table.js"></script>

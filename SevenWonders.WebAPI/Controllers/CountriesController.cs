@@ -21,7 +21,7 @@ namespace SevenWonders.Controllers
         [HttpGet]
         public IHttpActionResult GetCountries()
         {
-            var countries = db.Coutries.Where(x => !x.IsDeleted).ToList();
+            var countries = db.Coutries.Where(x => !x.IsDeleted).OrderBy(x=>x.Name).ToList();
             return Ok(countries);
         }
 
