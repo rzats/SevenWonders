@@ -21,7 +21,7 @@ namespace SevenWonders.Controllers
         [HttpGet]
         public IHttpActionResult GetCountries()
         {
-            var countries = db.Coutries.Where(x => !x.IsDeleted).ToList();
+            var countries = db.Coutries.Where(x => !x.IsDeleted).OrderBy(x=>x.Name).ToList();
             return Ok(countries);
         }
 
@@ -58,11 +58,23 @@ namespace SevenWonders.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult DeleteCountry(int id)
+        public IHttpActionResult DeleteCountry([FromBody]int id)
         {
-            var workWithCustomer = new WorkWithManager();
-            workWithCustomer.ChangePersonStatus(db, id);
+            Country country = db.Coutries.Find(id);
+            country.IsDeleted = true;
+
+            db.Entry(country).State = EntityState.Modified;
+            db.SaveChanges();
             return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult IsNameValid(int id, string name)
+        {
+            bool contain = db.Coutries.Where(x => !x.IsDeleted)
+                .Any(x => x.Id != id && x.Name == name);
+
+            return Ok(!contain);
         }
     }
 }

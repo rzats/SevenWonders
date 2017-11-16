@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
 	loadCountriesTable();
 });
 function loadCountriesTable() {
@@ -44,49 +43,111 @@ function EditCountryHandler(event) {
 
 	$.get('../api/Countries/GetCountry', { id: idCountry },
 		function (html) {
-			$('#id').val(html.Id);
-			$('#name').val(html.Name);
-
-			$('#saveEditing').click(function () {
-				saveEditing(idCountry);
-			});
-			$('#editCountryModal').modal('show', { backdrop: 'static' });
+			countryModifyViewModel.editCountry(html);
 		});
 }
-
 function DeleteCountryHandler(event) {
+	idCountry = $(this).data("countryid");
+	countryModifyViewModel.deleteCountry(idCountry);
 }
-
-function saveEditing(idCountry) {
-	var id = idCountry;
-	var name = $('#name').val();
-
-	var postObject =
-		{
-			Id: id,
-			Name: name
-		};
-
-	$.ajax({
-		type: "POST",
-		url: "../api/Countries/AddCountry",
-		data: postObject,
-		success: function () {
-			$('#countriesTable').DataTable().ajax.reload();
-			$('#editCountryModal').modal('hide');
-		},
-		error: function () {
-			alert('failed');
-		}
-	});
-}
-
 function addCountry(event) {
-	$('#id').val(0);
-	$('#name').val("");
-
-	$('#saveEditing').click(function () {
-		saveEditing(0);
-	});
-	$('#editCountryModal').modal('show', { backdrop: 'static' });
+	countryModifyViewModel.addCountry();
 }
+
+ko.validation.rules['isNameUnique'] = {
+	validator: function (name, id) {
+		var isValid = true;
+		$.ajax({
+			async: false,
+			url: '../api/Countries/IsNameValid',
+			type: 'Get',
+			data: { id: id, name: name },
+			success: function (response) {
+				isValid = response === true;
+			},
+			error: function () {
+				isValid = false;             
+			}
+		});
+		return isValid;
+	}
+}; 
+ko.validation.init({
+	insertMessages: true,
+	messagesOnModified: true,
+	errorClass: 'validationMessage'
+});
+function CountryModifyViewModel() {
+	var self = this;
+	self.Id = ko.observable(0);
+	self.Name = ko.observable().extend({
+		required: true, minLength: 4, maxLength: 20,
+		isNameUnique: {
+			params: self.Id,
+			message: 'Country name should be unique!'
+		}
+	})	
+	self.errors = ko.observable();
+
+	self.updateViewModel = function (country) {
+		if (country != undefined) {
+			self.Id(country.Id);
+			self.Name(country.Name);			
+		}
+		else {
+			self.Id(0);
+			self.Name(undefined);
+		}
+		self.errors = ko.validation.group(self, { deep: true });
+		self.errors.showAllMessages(false);
+	}
+	self.addCountry = function () {
+		self.updateViewModel();
+		$('#editCountryModal').modal();
+	}
+	self.editCountry = function (country) {
+		self.updateViewModel(country);
+		$('#editCountryModal').modal();
+	}
+	self.saveEditing = function () {
+		self.errors = ko.validation.group(self, { deep: true });
+		if (self.errors().length === 0) {
+			var model = {
+				id: self.Id(),
+				name: self.Name(),
+			};
+			$.ajax("../api/Countries/AddCountry", {
+				type: "post",
+				data: JSON.stringify(model),
+				contentType: "application/json",
+				success: function (result) {
+					$('#countriesTable').DataTable().ajax.reload();
+					$('#editCountryModal').modal('hide');
+				}
+			});
+		}
+		else {
+			self.errors.showAllMessages(true);
+		}
+	}
+	self.deleteCountry = function (id) {
+		self.Id(id);
+		$('#deleteCountryModal').modal();
+	}
+	self.saveDeleting = function () {
+		var id = self.Id();
+		$.ajax({
+			type: "POST",
+			url: '../api/Countries/DeleteCountry',
+			data: JSON.stringify(id),
+			contentType: "application/json",
+			success: function (result) {
+				$('#countriesTable').DataTable().ajax.reload();
+				$('#deleteCountryModal').modal('hide');
+			}
+		});
+	}
+}
+
+var countryModifyViewModel = new CountryModifyViewModel();
+ko.applyBindings(countryModifyViewModel)
