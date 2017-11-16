@@ -208,6 +208,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AirportsController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
     <Compile Include="DTO\DropDownListItem.cs" />
@@ -281,6 +283,7 @@
     <Content Include="App_Data\SevenWondersOld_log.ldf">
       <DependentUpon>SevenWondersOld.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\Airports\Index.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -480,6 +483,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Airports\Index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EmbeddedResource Include="Scripts\CustomersManagement\Index.js">
@@ -565,6 +569,7 @@
     <Content Include="Scripts\Table.js" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\Airports\Index.html" />
     <Content Include="Views\Cities\Index.html" />
     <Content Include="Views\Countries\Index.html" />
     <Content Include="Views\CustomerCabinet\Index.html" />

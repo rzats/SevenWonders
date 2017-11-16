@@ -37,8 +37,8 @@ function loadManagersTable() {
 				{ "data": "Email" }, { "data": "DateOfBirth" }, { "data": "IsDeleted" }, { "data": null }, { "data": null }
 			],
 			"language": {
-				"emptyTable": "There are no customers at present.",
-				"zeroRecords": "There were no matching customers found."
+				"emptyTable": "There are no managers at present.",
+				"zeroRecords": "There were no matching managers found."
 			},
 			"searching": true,
 			"ordering": true,

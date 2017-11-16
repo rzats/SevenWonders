@@ -28,8 +28,8 @@ function loadCitiesTable() {
 				{ "data": "Name" }, { "data": "CountryName" }, { "data": null }, { "data": null }
 			],
 			"language": {
-				"emptyTable": "There are no customers at present.",
-				"zeroRecords": "There were no matching customers found."
+				"emptyTable": "There are no cities at present.",
+				"zeroRecords": "There were no matching cities found."
 			},
 			"searching": true,
 			"ordering": true,
@@ -57,7 +57,6 @@ function addCity(event) {
 ko.validation.rules['isNameUnique'] = {
 	validator: function (name, params) {
 		var isValid = true;
-		var kk = params.countryId();
 		if (params.countryId() != undefined) {
 			$.ajax({
 				async: false,

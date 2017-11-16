@@ -28,8 +28,8 @@ function loadCountriesTable() {
 				{ "data": "Name" }, { "data": null }, { "data": null }
 			],
 			"language": {
-				"emptyTable": "There are no customers at present.",
-				"zeroRecords": "There were no matching customers found."
+				"emptyTable": "There are no countries at present.",
+				"zeroRecords": "There were no matching countries found."
 			},
 			"searching": true,
 			"ordering": true,
