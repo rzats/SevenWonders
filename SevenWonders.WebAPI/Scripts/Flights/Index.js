@@ -84,7 +84,6 @@
 
 			}
 		});
-
 	}
 
 	self.showModalEditFlight = function (flight) {
@@ -107,12 +106,12 @@ ko.validation.rules['isNumberUnique'] = {
 				isValid = response === true;
 			},
 			error: function () {
-				isValid = false; //however you would like to handle this              
+				isValid = false;              
 			}
 		});
 		return isValid;
 	},
-	message: 'The Email is not unique'
+	message: 'The Number is not unique.'
 }; 
 ko.validation.rules['isDifference'] = {
 	validator: function (val, otherVal) {

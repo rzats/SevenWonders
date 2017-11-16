@@ -1,31 +1,31 @@
 ﻿$(document).ready(function () {
-	loadCountriesTable();
+	loadCitiesTable();
 });
-function loadCountriesTable() {
-	$("#countriesTable")
+function loadCaitiesTable() {
+	$("#citiesTable")
 		.on('init.dt', function () {
-			$('#countriesTable').on('click', '.edit', EditCountryHandler);
+			$('#citiesTable').on('click', '.edit', EditCityHandler);
 		})
 		.on('init.dt', function () {
-			$('#countriesTable').on('click', '.delete', DeleteCountryHandler);
+			$('#citiesTable').on('click', '.delete', DeleteCityHandler);
 		})
 		.dataTable({
 			"processing": false,
 			"destroy": true,
 			"serverSide": false,
 			"ajax": {
-				"url": "../api/Countries/GetCountries",
+				"url": "../api/Cities/GetCities",
 				"method": "GET",
 				"dataSrc": "",
 			},
 			"createdRow": function (row, item, dataIndex) {
-				var deleteCss = '<a data-countryid= "' + item.Id + '" class="btn btn-warning middle-button delete" role="button">Delete</a>';
-				var editCss = '<a data-countryid= "' + item.Id + '" class="btn btn-warning middle-button edit" role="button">Edit</a>';
+				var deleteCss = '<a data-cityid= "' + item.Id + '" class="btn btn-warning middle-button delete" role="button">Delete</a>';
+				var editCss = '<a data-cityid= "' + item.Id + '" class="btn btn-warning middle-button edit" role="button">Edit</a>';
 				$('td', row).eq(1).html(deleteCss);
 				$('td', row).eq(2).html(editCss);
 			},
 			"columns": [
-				{ "data": "Name" }, { "data": null }, { "data": null }
+				{ "data": "Name" }, { "data": "Country" }, { "data": null }, { "data": null }
 			],
 			"language": {
 				"emptyTable": "There are no customers at present.",
@@ -37,21 +37,21 @@ function loadCountriesTable() {
 		});
 }
 
-function EditCountryHandler(event) {
+function EditCityHandler(event) {
 	event.preventDefault();
-	idCountry = $(this).data("countryid");
+	idCity = $(this).data("cityid");
 
-	$.get('../api/Countries/GetCountry', { id: idCountry },
+	$.get('../api/Cities/GetCity', { id: idCity },
 		function (html) {
-			countryModifyViewModel.editCountry(html);
+			cityModifyViewModel.editCity(html);
 		});
 }
-function DeleteCountryHandler(event) {
-	idCountry = $(this).data("countryid");
-	countryModifyViewModel.deleteCountry(idCountry);
+function DeleteCityHandler(event) {
+	idCity = $(this).data("cityid");
+	cityModifyViewModel.deleteCity(idCity);
 }
-function addCountry(event) {
-	countryModifyViewModel.addCountry();
+function addCity(event) {
+	cityModifyViewModel.addCity();
 }
 
 ko.validation.rules['isNameUnique'] = {
@@ -59,40 +59,40 @@ ko.validation.rules['isNameUnique'] = {
 		var isValid = true;
 		$.ajax({
 			async: false,
-			url: '../api/Countries/IsNameValid',
+			url: '../api/Cities/IsNameValid',
 			type: 'Get',
 			data: { id: id, name: name },
 			success: function (response) {
 				isValid = response === true;
 			},
 			error: function () {
-				isValid = false;             
+				isValid = false;
 			}
 		});
 		return isValid;
 	}
-}; 
+};
 ko.validation.init({
 	insertMessages: true,
 	messagesOnModified: true,
 	errorClass: 'validationMessage'
 });
-function CountryModifyViewModel() {
+function CityModifyViewModel() {
 	var self = this;
 	self.Id = ko.observable(0);
 	self.Name = ko.observable().extend({
 		required: true, minLength: 4, maxLength: 20,
 		isNameUnique: {
 			params: self.Id,
-			message: 'Country name should be unique!'
+			message: 'City name should be unique!'
 		}
-	})	
+	})
 	self.errors = ko.observable();
 
-	self.updateViewModel = function (country) {
-		if (country != undefined) {
-			self.Id(country.Id);
-			self.Name(country.Name);			
+	self.updateViewModel = function (city) {
+		if (city != undefined) {
+			self.Id(city.Id);
+			self.Name(city.Name);
 		}
 		else {
 			self.Id(0);
@@ -101,13 +101,15 @@ function CountryModifyViewModel() {
 		self.errors = ko.validation.group(self, { deep: true });
 		self.errors.showAllMessages(false);
 	}
-	self.addCountry = function () {
+	self.addCity = function () {
+		debugger;
 		self.updateViewModel();
-		$('#editCountryModal').modal();
+		$('#editCityModal').modal();
 	}
-	self.editCountry = function (country) {
-		self.updateViewModel(country);
-		$('#editCountryModal').modal();
+	self.editCity = function (city) {
+		debugger;
+		self.updateViewModel(city);
+		$('#editCityModal').modal();
 	}
 	self.saveEditing = function () {
 		self.errors = ko.validation.group(self, { deep: true });
@@ -116,13 +118,13 @@ function CountryModifyViewModel() {
 				id: self.Id(),
 				name: self.Name(),
 			};
-			$.ajax("../api/Countries/AddCountry", {
+			$.ajax("../api/Cities/AddCity", {
 				type: "post",
 				data: JSON.stringify(model),
 				contentType: "application/json",
 				success: function (result) {
-					$('#countriesTable').DataTable().ajax.reload();
-					$('#editCountryModal').modal('hide');
+					$('#citiesTable').DataTable().ajax.reload();
+					$('#editCityModal').modal('hide');
 				}
 			});
 		}
@@ -130,24 +132,27 @@ function CountryModifyViewModel() {
 			self.errors.showAllMessages(true);
 		}
 	}
-	self.deleteCountry = function (id) {
+	self.deleteCity = function (id) {
+		debugger;
 		self.Id(id);
-		$('#deleteCountryModal').modal();
+		$('#deleteCityModal').modal();
 	}
 	self.saveDeleting = function () {
+		debugger;
 		var id = self.Id();
 		$.ajax({
 			type: "POST",
-			url: '../api/Countries/DeleteCountry',
+			url: '../api/Cities/DeleteCity',
 			data: JSON.stringify(id),
 			contentType: "application/json",
 			success: function (result) {
-				$('#countriesTable').DataTable().ajax.reload();
-				$('#deleteCountryModal').modal('hide');
+				debugger;
+				$('#citiesTable').DataTable().ajax.reload();
+				$('#deleteCityModal').modal('hide');
 			}
 		});
 	}
 }
 
-var countryModifyViewModel = new CountryModifyViewModel();
-ko.applyBindings(countryModifyViewModel)
+var cityModifyViewModel = new CityModifyViewModel();
+ko.applyBindings(cityModifyViewModel)

@@ -94,9 +94,7 @@ namespace SevenWonders.WebAPI.Controllers
 
             db.Entry(flight).State = EntityState.Modified;
             db.SaveChanges();
-
             return Ok();
-
         }
 
         [HttpGet]
