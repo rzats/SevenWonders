@@ -17,7 +17,6 @@ namespace SevenWonders.WebAPI.DTO
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public List<DropDownListItem> Countries { get; set; }
-
         public ManagerEditModel()
         {
             Countries = new List<DropDownListItem>();
