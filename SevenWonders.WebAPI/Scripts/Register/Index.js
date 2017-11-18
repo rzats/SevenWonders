@@ -75,7 +75,6 @@ function getErrors(responce)
                 }
             }
         }
-
     }
     return errorsString;
 }

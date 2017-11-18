@@ -109,6 +109,7 @@ function CustomerViewModel() {
         type: "GET",
         url: "../api/Customer/GetCurrentCustomer",
         success: function (data) {
+            console.log(data);
             self.firstName(data.FirstName);
             self.lastName(data.LastName);
             self.dateOfBirth(data.DateOfBirth);
@@ -149,5 +150,6 @@ function CustomerViewModel() {
         }
     }
 }
+
 
 ko.applyBindings(new CustomerViewModel());

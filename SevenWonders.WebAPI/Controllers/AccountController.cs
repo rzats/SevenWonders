@@ -88,6 +88,12 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public User GetCurrentUser()
+        {
+            return GetPersonByEmail<User>(User.Identity.Name);
+        }
+
         private T GetPersonByEmail<T>(string email) where T : class, IPerson
         {
             DbSet<T> dbSet = db.Set<T>();

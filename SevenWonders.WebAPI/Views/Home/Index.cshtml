@@ -1,24 +1,36 @@
-﻿@model SevenWonders.Models.SearchModel
+﻿@*@Styles.Render("~/Content/css")*@
 
-@{
-    ViewBag.Title = "7 wonders";
-}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<link href="~/Content/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/vendor/magnific-popup/magnific-popup.css" rel="stylesheet" />
+<link href="~/Content/creative.css" rel="stylesheet" />
 
-@Styles.Render("~/Content/css")
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryui")
-@Scripts.Render("~/bundles/bootstrap")
+@*@Scripts.Render("~/bundles/jquery")*@
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.12.4.js"></script>
+
+
+@*@Scripts.Render("~/bundles/jqueryui")*@
+<script src="~/Scripts/jquery-ui-1.12.0.js"></script>
+
+@*@Scripts.Render("~/bundles/bootstrap")*@
+
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/respond.js"></script>
+<script src="~/Scripts/select2.js"></script>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <title>7 Wonders</title>
 </head>
 
 <body id="page-top">
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" data-bind="with: currentUserModelObject">
         <div id="mainNav1" class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -30,71 +42,46 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="#/home">Home</a></li>
 					<li><a href="#/contact">Contact</a></li>
-					<li><a href="#/customers">Customers</a></li>
-					<li><a href="#/managers">Managers</a></li>
-					<li><a href="#/countries">Countries</a></li>
-					<li><a href="#/flights">Flights</a></li>
-					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
 
-                    @if (User.IsInRole("admin"))
-                    {
-                        @*<li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>*@
-                        <li class="dropdown ">
-                            <a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                @*<li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
-                                <li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>*@
-                            </ul>
-                        </li>
-                    }
-                    else if (User.IsInRole("manager"))
-                    {
-                        @*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-                        <li>@Html.ActionLink("Cities", "Index", "Cities")</li>
-                        <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
-                        <li>@Html.ActionLink("Airports", "Index", "Airports")</li>
-                        <li>@Html.ActionLink("Flights", "Index", "Flights")</li>
-                        <li>@Html.ActionLink("Tours", "Index", "Tours")</li>*@
-                    }
+                    
+					        <li data-bind="if: visibleForAdmins()"><a href="#/customers">Customers</a></li>
+					        <li data-bind="if: visibleForAdmins()"><a href="#/managers">Managers</a></li>
+
+
+                    
+					        <li data-bind="if: visibleForManagers()"><a href="#/countries">Countries</a></li>
+					        <li data-bind="if: visibleForManagers()"><a href="#/flights">Flights</a></li>
+
+
                 </ul>
                 <div style="margin-right:1%">
-                    @if (Request.IsAuthenticated)
-                    {
-                        using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
 
-                            <ul class="nav navbar-nav navbar-right">
-                                @if (User.IsInRole("customer"))
-                                {
-                                    <li>
+                            <ul class="nav navbar-nav navbar-right" id="loggedNavbar">
+
+                                    <li id="customerCabinetLink" data-bind="if: visibleForCustomers()">
                                         <a href="#/cabinet" id="cabinetLink">Cabinet</a>
                                     </li>
-                                }
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+
+                                <li><a href="#/logout" data-bind="if: !visibleForGuests()">Log off</a></li>
                             </ul>
-                        }
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right">
+
+                        <ul class="nav navbar-nav navbar-right" id="notLoggedNavbar" data-bind="if: visibleForGuests()">
                             <li><a href="#/register" id="registerLink">Register</a></li>
                             <li><a href="#/login" id="loginLink">Log in</a></li>
                         </ul>
-                    }
                 </div>
             </div>
         </div>
     </nav>
     <div id="mainDiv">        
     </div>
+    <script src="~/Scripts/knockout-3.1.0.js"></script>
+    <script src="~/Scripts/Home/Index.js"></script>
 </body>
 </html>
 
 <script src="../../Scripts/Search/Index.js"></script>
 <script src="../../Scripts/Tours/Index.js"></script>
-<script src="../../Scripts/Home/Index.js"></script>
 
 <script src="../../Scripts/sammy-0.7.5.js"></script>
 
@@ -104,12 +91,11 @@
             this.debug = true;
             var form_fields = null;
 
-            this.get('#/', function () {
-                this.app.swap('Click form!');
-            });
-
             this.get('#/home', function () {
                 this.partial('/Views/Home/HomePage.html');
+                ko.applyBindings(FakeModel);
+                ko.applyBindings(currentUserModelObject);
+                currentUserModelObject.updateCurrentUser();
             });
 
             this.get('#/register', function () {
@@ -118,7 +104,20 @@
 
             this.get('#/login', function () {
 				this.partial('/Views/Account/Login.html');
-			});
+            });
+
+            this.get('#/logout', function () {
+                var self = this;
+                $.ajax({
+                    url: "/Home/Logout",
+                    type: "POST",
+                    success: function()
+                    {
+                        window.location.href = "#/home";
+                        location.reload(true);
+                    }
+                })
+            });
 
 			this.get('#/contact', function () {
 				this.partial('/Views/Home/Contact.html');

@@ -14,8 +14,9 @@
                     RememberMe: rememberMe
                 },
             success: function () {
-                window.location.reload(true);
+                //window.location.reload(true);
                 window.location.href = "#/home";
+                currentUserModelObject.updateCurrentUser();
             },
             error: function (err) {
                 console.log(err);
