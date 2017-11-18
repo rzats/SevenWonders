@@ -1,1 +1,8 @@
-﻿
+﻿#customersTable_filter {
+	float: right;
+}
+
+.input-sm {
+	margin-left: 5px;
+	margin-right: 0px;
+}
