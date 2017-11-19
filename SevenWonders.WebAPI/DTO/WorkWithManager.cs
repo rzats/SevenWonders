@@ -1,7 +1,7 @@
 ﻿using SevenWonders.DAL.Context;
 using SevenWonders.Interfaces;
 using SevenWonders.ViewModels;
-using SevenWonders.WebAPI.Models;
+using SevenWonders.WebAPI;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

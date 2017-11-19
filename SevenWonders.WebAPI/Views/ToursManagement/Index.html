@@ -1,9 +1,73 @@
 ﻿<link type="text/css" rel="stylesheet" href="../../Content/ToursManagement/Index.css" />
 
-<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+<!-- Hotel info modal -->
+<div class="modal fade" id="hotelInfoModal" role="dialog" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center">
+					<span data-bind="text: Name"></span>
+					<span>&nbsp;</span>
+					<span data-bind="foreach: new Array(Rating())">
+						<span class="glyphicon glyphicon-star ratingStars"></span>
+					</span>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div id="hotelInfo"></div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<div id="mainTable" class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
 	<h2 class="text-center">Tours</h2>
 	<br />
-	<!--вставити модальні вікна -->
+
+	<!-- Delete tour modal -->
+	<div class="modal fade" id="deleteTourModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center">Tour</h4>
+				</div>
+				<div class="modal-body">
+					<h5 class="text-center">Are you sure you want to delete this tour?</h5>
+				</div>
+				<div class="modal-footer">
+					<hidden data-bind="value: idOfSelectedTour"></hidden>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: deleteTour">Delete</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Pay tour modal -->
+	<div class="modal fade" id="payTourModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center">Tour</h4>
+				</div>
+				<div class="modal-body">
+					<h5 class="text-center">Are you sure that customer pay for this tour?</h5>
+				</div>
+				<div class="modal-footer">
+					<hidden data-bind="value: idOfSelectedTour"></hidden>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: payTour">Submit</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	<div class="row" style="margin-bottom:6px;">
 		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
@@ -85,7 +149,7 @@
 											</div>
 											<div class="alert alert-success">
 												<div data-bind="visible:TourState==='Registered'">
-													<button class="btn btn-warning middle-button" type="button"  data-bind="click: $parent.pay">Pay</button>
+													<button class="btn btn-warning middle-button" type="button"  data-bind="click: $parent.showModalPayTour">Pay</button>
 													<span style="float: right; margin-top:5px"><b>Total price: </b><span data-bind="text:Price"></span></span>
 												</div>
 												<div data-bind="visible:TourState!=='Registered'" style="float: right; margin-top:-10px;"><b>Total price: </b><span data-bind="text:Price"></span></div>
@@ -130,4 +194,7 @@
 <script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
+<script src="../../Scripts/sammy-0.7.5.js"></script>
+<!--<script type="text/javascript" src="../../Scripts/Hotels/ShortInfo.js"></script>-->
 <script type="text/javascript" src="../../Scripts/ToursManagement/Index.js"></script>
+

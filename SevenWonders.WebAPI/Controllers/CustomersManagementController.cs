@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using SevenWonders.WebAPI.Models;
 using SevenWonders.Models;
 using SevenWonders.ViewModels;
 using System;

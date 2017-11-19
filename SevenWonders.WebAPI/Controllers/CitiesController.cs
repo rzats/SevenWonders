@@ -1,6 +1,5 @@
 ﻿using SevenWonders.DAL.Context;
 using SevenWonders.WebAPI.DTO.Cities;
-using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -88,7 +87,7 @@ namespace SevenWonders.WebAPI.Controllers
             {
                 Id = city.Id,
                 Name = city.Name,
-                CountryId=city.CountryId.Value,
+                CountryId=city.CountryId,
                 CountryName=city.Country.Name
             };
         }

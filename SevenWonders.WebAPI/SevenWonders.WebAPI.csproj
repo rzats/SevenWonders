@@ -203,10 +203,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administrator.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Airplane.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Airport.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Answer.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="City.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AirportsController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
@@ -215,26 +230,57 @@
     <Compile Include="Controllers\CustomersManagementController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ToursManagementController.cs" />
+    <Compile Include="Country.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
     <Compile Include="DTO\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
+    <Compile Include="DTO\Flights\FlightShortInfo.cs" />
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
-    <Compile Include="DTO\ManagersManager\ManagerEditModel.cs" />
-    <Compile Include="DTO\ManagersManager\ManagerSerchModel.cs" />
+    <Compile Include="DTO\Hotel\HotelPhotoModel.cs" />
+    <Compile Include="DTO\Hotel\HotelShortInfoModel.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
     <Compile Include="DTO\SearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
-    <Compile Include="DTO\Tours\TourModel.cs" />
+    <Compile Include="DTO\ToursManagement\TourModel.cs" />
     <Compile Include="DTO\Utils.cs" />
     <Compile Include="DTO\WorkWithAutorizedPerson.cs" />
     <Compile Include="DTO\WorkWithCustomer.cs" />
     <Compile Include="DTO\WorkWithManager.cs" />
+    <Compile Include="Equipment.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExtraPrice.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Facility.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Flight.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FoodType.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -242,48 +288,72 @@
     <Compile Include="DTO\Account\Interfaces\ICustomer.cs" />
     <Compile Include="DTO\Account\Interfaces\IManager.cs" />
     <Compile Include="DTO\Account\Interfaces\IPerson.cs" />
-    <Compile Include="Models\Administrator.cs" />
-    <Compile Include="Models\Airplane.cs" />
-    <Compile Include="Models\Airport.cs" />
-    <Compile Include="Models\Answer.cs" />
-    <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Country.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Equipment.cs" />
-    <Compile Include="Models\ExtraPrice.cs" />
-    <Compile Include="Models\Facility.cs" />
-    <Compile Include="Models\Feedback.cs" />
-    <Compile Include="Models\Flight.cs" />
-    <Compile Include="Models\FoodType.cs" />
-    <Compile Include="Models\Hotel.cs" />
-    <Compile Include="Models\HotelsPhoto.cs" />
-    <Compile Include="Models\IdentityExtensions.cs" />
-    <Compile Include="Models\Manager.cs" />
-    <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\Question.cs" />
-    <Compile Include="Models\Rating.cs" />
-    <Compile Include="Models\Reservation.cs" />
-    <Compile Include="Models\Role.cs" />
-    <Compile Include="Models\Room.cs" />
-    <Compile Include="Models\RoomsPhoto.cs" />
-    <Compile Include="Models\RoomType.cs" />
-    <Compile Include="Models\Schedule.cs" />
-    <Compile Include="Models\SevenWondersContext.cs" />
-    <Compile Include="Models\Tour.cs" />
-    <Compile Include="Models\TourState.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Hotel.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HotelsPhoto.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Manager.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SevenWondersContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Question.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rating.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reservation.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Room.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomsPhoto.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoomType.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Schedule.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SevenWonders.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SevenWonders.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SevenWonders.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SevenWonders.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SevenWonders.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="DTO\Account\FullManagerViewModel.cs" />
     <Compile Include="DTO\Account\LoginModel.cs" />
     <Compile Include="DTO\Account\ManagersSearchViewModel.cs" />
     <Compile Include="DTO\Account\RegisterViewModel.cs" />
+    <Compile Include="Tour.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TourState.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>SevenWonders.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\SevenWondersOld.mdf" />
-    <Content Include="App_Data\SevenWondersOld_log.ldf">
-      <DependentUpon>SevenWondersOld.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\Airports\Index.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -296,6 +366,7 @@
     <Content Include="Content\creative.min.css" />
     <Content Include="Content\CustomerCabinet\Customer.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
+    <Content Include="Content\Hotel\Index.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\17661561.jpg" />
@@ -496,6 +567,7 @@
     <Content Include="Scripts\CustomerCabinet\Index.js" />
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
+    <Content Include="Scripts\Hotels\ShortInfo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -571,6 +643,17 @@
     <Content Include="Scripts\Table.js" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\ToursManagement\Index.js" />
+    <Content Include="SevenWonders.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SevenWonders.edmx</DependentUpon>
+      <LastGenOutput>SevenWonders.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SevenWonders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SevenWonders.edmx</DependentUpon>
+      <LastGenOutput>SevenWonders.cs</LastGenOutput>
+    </Content>
     <Content Include="Views\Airports\Index.html" />
     <Content Include="Views\Cities\Index.html" />
     <Content Include="Views\Countries\Index.html" />
@@ -578,8 +661,9 @@
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
     <Content Include="Views\ToursManagement\Index.html" />
-    <Content Include="Web.config" />
-    <Content Include="Scripts\ToursManagement\Index.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -594,8 +678,19 @@
     <Content Include="Views\Account\Register.html" />
     <Content Include="Views\Account\Login.html" />
     <Content Include="Views\Home\Contact.html" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Hotels\ShortInfo.html" />
+    <EntityDeploy Include="SevenWonders.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SevenWonders.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="SevenWonders.edmx.diagram">
+      <DependentUpon>SevenWonders.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Content\img\Hotels\Hotel17\" />
     <Folder Include="Content\img\Hotels\Hotel18\" />
     <Folder Include="Content\img\Hotels\Hotel19\" />

@@ -1,6 +1,5 @@
 ﻿using SevenWonders.DAL.Context;
 using SevenWonders.WebAPI.DTO.Airports;
-using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -92,7 +91,7 @@ namespace SevenWonders.WebAPI.Controllers
                 Id = airport.Id,
                 Name = airport.Name,
                 Code=airport.Code,
-                CityId = airport.CityId.Value,
+                CityId = airport.CityId,
                 CityName = airport.City.Name
             };
         }
