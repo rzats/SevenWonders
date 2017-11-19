@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="/static/content/bootstrap.css" />
+    <link rel="stylesheet" href="/static/content/site.css" />
+    <link rel="stylesheet" href="/static/content/vendor/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/content/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="/static/content/creative.css" />
+    
+    <script src="/static/scripts/jquery-1.10.2.js"></script>
+    <script src="/static/scripts/jquery-1.12.4.js"></script>
+    <script src="/static/scripts/bootstrap.js"></script>
+    <script src="/static/scripts/respond.js"></script>
+    <script src="/static/scripts/select2.js"></script>
+    <script src="/static/scripts/sammy-0.7.5.js"></script>
+
+    <title>{{title}}</title>
+</head>
+
+<body id="page-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div id="mainNav1" class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#/home">7 wonders</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#/home">Home</a></li>
+                    <li><a href="#/contact">Contact</a></li>
+                    <li><a href="#/customers">Customers</a></li>
+                    <li><a href="#/managers">Managers</a></li>
+                    <li><a href="#/countries">Countries</a></li>
+                    <li><a href="#/cities">Cities</a></li>
+                    <li><a href="#/airports">Airports</a></li>
+                    <li><a href="#/flights">Flights</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="mainDiv">
+    </div>
+</body>
+</html>
+
+<script>
+    (function ($) {
+        var app = $.sammy('#mainDiv', function () {
+            this.debug = true;
+            var form_fields = null;
+
+            this.get('#/', function () {
+                this.app.swap('Click form!');
+            });
+
+            this.get('#/home', function () {
+                this.partial('/home');
+            });
+
+            this.get('#/contact', function () {
+                this.partial('/contact');
+            });
+
+            /*
+            this.get('#/register', function () {
+                this.partial('/Views/Account/Register.html');
+            });
+
+            this.get('#/login', function () {
+				this.partial('/Views/Account/Login.html');
+			});
+
+			this.get('#/contact', function () {
+				this.partial('/Views/Home/Contact.html');
+			});
+
+			this.get('#/cabinet', function () {
+			    this.partial('/Views/CustomerCabinet/Index.html');
+			});
+
+			this.get('#/customers', function () {
+				this.partial('/Views/CustomersManagement/Index.html');
+			});
+
+			this.get('#/managers', function () {
+				this.partial('/Views/ManagersManagement/Index.html');
+			});
+
+			this.get('#/flights', function () {
+				this.partial('/Views/Flights/Index.html');
+			});
+
+			this.get('#/countries', function () {
+				this.partial('/Views/Countries/Index.html');
+			});
+
+			this.get('#/cities', function () {
+				this.partial('/Views/Cities/Index.html');
+			});
+
+			this.get('#/airports', function () {
+				this.partial('/Views/Airports/Index.html');
+			});
+            */
+        });
+
+        $(function () {
+            app.run('#/home');
+        });
+
+    })(jQuery);
+
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+
+    $(window).on('resize', function () {
+
+        var width = $(window).width();
+
+        if (width < 975) {
+            $('header').height('1200px');
+        }
+        else {
+            $('header').height('840px');
+        }
+
+        if ($('#mainNav').height() == 100) {
+            document.body.style.paddingTop = '100px'
+        }
+        else if ($('#mainNav').height() == 150) {
+            document.body.style.paddingTop = '150px'
+        }
+        else if ($('#mainNav').height() == 200) {
+            document.body.style.paddingTop = '200px'
+        }
+        else {
+            document.body.style.paddingTop = '50px'
+        }
+    }).trigger('resize');
+</script>

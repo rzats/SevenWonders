@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>03cb6bce-7f6c-4682-a6fe-786ffbaae46a</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>runserver.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Web launcher</LaunchProvider>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+    <Name>SevenWondersPython</Name>
+    <RootNamespace>SevenWondersPython</RootNamespace>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="runserver.py" />
+    <Compile Include="SevenWondersPython\__init__.py" />
+    <Compile Include="SevenWondersPython\views.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SevenWondersPython\" />
+    <Folder Include="SevenWondersPython\static\" />
+    <Folder Include="SevenWondersPython\static\content\" />
+    <Folder Include="SevenWondersPython\static\content\Contact\" />
+    <Folder Include="SevenWondersPython\static\content\img\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel10\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel11\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel13\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel15\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel17\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel18\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel19\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel20\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel21\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel22\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel2\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel3\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel41\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel4\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel5\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel6\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel7\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel8\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel9\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_10\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_11\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_2\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_3\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_4\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_5\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_6\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_7\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_8\" />
+    <Folder Include="SevenWondersPython\static\content\img\Hotels\Hotel_9\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room17\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room18\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room26\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room27\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room28\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room31\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room32\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room37\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room38\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room39\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room58\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room60\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room61\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room62\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room68\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room73\" />
+    <Folder Include="SevenWondersPython\static\content\img\Rooms\Room74\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\font-awesome\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\font-awesome\css\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\font-awesome\less\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\font-awesome\scss\" />
+    <Folder Include="SevenWondersPython\static\content\vendor\magnific-popup\" />
+    <Folder Include="SevenWondersPython\static\fonts\" />
+    <Folder Include="SevenWondersPython\static\scripts\" />
+    <Folder Include="SevenWondersPython\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt" />
+    <Content Include="SevenWondersPython\static\content\bootstrap-theme.css" />
+    <Content Include="SevenWondersPython\static\content\bootstrap.css" />
+    <Content Include="SevenWondersPython\static\content\bootstrap.min.css" />
+    <Content Include="SevenWondersPython\static\content\Contact\Index.css" />
+    <Content Include="SevenWondersPython\static\content\creative.css" />
+    <Content Include="SevenWondersPython\static\content\img\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\17661561.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\17742267.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\17898992.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\22986028.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\32965782.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33331970.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33336275.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33407453.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33473915.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33553223.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\33760867.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\363834.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\374010.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\38529985.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\39917565.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\51271742.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\674925.png" />
+    <Content Include="SevenWondersPython\static\content\img\Avatar.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\default.png" />
+    <Content Include="SevenWondersPython\static\content\img\header.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\5.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\6.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel10\7.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\5.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\6.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\7.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\8.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel11\9.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\10.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\5.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\6.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\7.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\8.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel13\9.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\10.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\5.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\6.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\7.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\8.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel15\9.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel2\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel2\33043.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel2\33108.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel3\14.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel3\22986028.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel41\11594109_12_y.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel4\14.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel4\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel5\11594109_12_y.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel5\14.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel5\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel6\hotel1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel6\hotel2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel6\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel7\hotel1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel7\hotel2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel7\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel8\hotel1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel8\hotel2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel8\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel9\hotel1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel9\hotel2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Hotels\Hotel9\hotel3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\palma.png" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room17\47251022.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room18\78679797.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room26\46487274.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room27\46487277.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room28\56068710.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room31\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room31\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room31\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room31\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room32\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room32\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room32\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room32\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room37\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room37\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room37\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room37\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room38\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room38\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room38\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room38\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room39\1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room39\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room39\3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room39\4.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room58\2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room60\46385677.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room61\25955758.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room62\46385682.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\Rooms\Room68\46385685.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\tour1.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\tour2.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\tour3.jpg" />
+    <Content Include="SevenWondersPython\static\content\img\tour4.jpeg" />
+    <Content Include="SevenWondersPython\static\content\PagedList.css" />
+    <Content Include="SevenWondersPython\static\content\select2.css" />
+    <Content Include="SevenWondersPython\static\content\site.css" />
+    <Content Include="SevenWondersPython\static\content\star-off.svg" />
+    <Content Include="SevenWondersPython\static\content\star-on.svg" />
+    <Content Include="SevenWondersPython\static\content\stars.css" />
+    <Content Include="SevenWondersPython\static\content\Table.css" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\css\font-awesome.css" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\css\font-awesome.min.css" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\animated.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\bordered-pulled.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\core.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\fixed-width.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\font-awesome.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\icons.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\larger.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\list.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\mixins.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\path.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\rotated-flipped.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\screen-reader.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\stacked.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\less\variables.less" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\font-awesome.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_animated.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_core.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_icons.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_larger.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_list.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_mixins.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_path.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_stacked.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\font-awesome\scss\_variables.scss" />
+    <Content Include="SevenWondersPython\static\content\vendor\magnific-popup\jquery.magnific-popup.js" />
+    <Content Include="SevenWondersPython\static\content\vendor\magnific-popup\jquery.magnific-popup.min.js" />
+    <Content Include="SevenWondersPython\static\content\vendor\magnific-popup\magnific-popup.css" />
+    <Content Include="SevenWondersPython\static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="SevenWondersPython\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="SevenWondersPython\static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="SevenWondersPython\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="SevenWondersPython\static\scripts\bootstrap.js" />
+    <Content Include="SevenWondersPython\static\scripts\bootstrap.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.10.2.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.10.2.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.10.2.min.map" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.12.4.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery-1.12.4.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.validate.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.validate.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="SevenWondersPython\static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\modernizr-2.6.2.js" />
+    <Content Include="SevenWondersPython\static\scripts\respond.js" />
+    <Content Include="SevenWondersPython\static\scripts\respond.min.js" />
+    <Content Include="SevenWondersPython\static\scripts\sammy-0.7.5.js" />
+    <Content Include="SevenWondersPython\static\scripts\select2.js" />
+    <Content Include="SevenWondersPython\static\scripts\_references.js" />
+    <Content Include="SevenWondersPython\templates\Contact.html" />
+    <Content Include="SevenWondersPython\templates\Error.html" />
+    <Content Include="SevenWondersPython\templates\HomePage.html" />
+    <Content Include="SevenWondersPython\templates\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>2.7</Version>
+      <Description>env (Python 2.7 (32-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
