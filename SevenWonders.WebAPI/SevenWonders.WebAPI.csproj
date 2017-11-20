@@ -215,8 +215,10 @@
     <Compile Include="Controllers\CustomersManagementController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HotelsController.cs" />
     <Compile Include="Controllers\ManagersManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\ToursManagementController.cs" />
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
@@ -224,12 +226,15 @@
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
+    <Compile Include="DTO\Hotels\HotelPhotoModel.cs" />
+    <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
     <Compile Include="DTO\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagerSerchModel.cs" />
     <Compile Include="DTO\ReservationModel.cs" />
     <Compile Include="DTO\SearchFlight.cs" />
     <Compile Include="DTO\SearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
+    <Compile Include="DTO\ToursManagement\TourModel.cs" />
     <Compile Include="DTO\Utils.cs" />
     <Compile Include="DTO\WorkWithAutorizedPerson.cs" />
     <Compile Include="DTO\WorkWithCustomer.cs" />
@@ -295,6 +300,7 @@
     <Content Include="Content\creative.min.css" />
     <Content Include="Content\CustomerCabinet\Customer.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
+    <Content Include="Content\Hotels\Index.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\17661561.jpg" />
@@ -462,6 +468,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\ToursManagement\Index.css" />
     <Content Include="Content\vendor\bootstrap\css\bootstrap.css" />
     <Content Include="Content\vendor\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\vendor\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -494,6 +501,7 @@
     <Content Include="Scripts\CustomerCabinet\Index.js" />
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
+    <Content Include="Scripts\Hotels\ShortInfo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -569,12 +577,15 @@
     <Content Include="Scripts\Table.js" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\ToursManagement\Index.js" />
     <Content Include="Views\Airports\Index.html" />
     <Content Include="Views\Cities\Index.html" />
     <Content Include="Views\Countries\Index.html" />
     <Content Include="Views\CustomerCabinet\Index.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
+    <Content Include="Views\Hotels\ShortInfo.html" />
+    <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Tours\Index.js" />
     <Content Include="Web.Debug.config">

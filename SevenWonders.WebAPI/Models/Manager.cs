@@ -23,7 +23,5 @@ namespace SevenWonders.WebAPI.Models
 
         [Newtonsoft.Json.JsonIgnore]
         public virtual List<Country> Countries { get; set; }
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual List<Tour> Tour { get; set; }
     }
 }

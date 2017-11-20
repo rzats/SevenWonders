@@ -73,43 +73,43 @@ function EditManagerHandler(event) {
 
 	$.get('../api/ManagersManagement/GetManager', { id: idManager },
 		function (html) {
-			$('#editManagerModal').modal('show', { backdrop: 'static' });
-			$('#editManagerModal').on('shown.bs.modal', function () {
-				$('#id').val(html.Id);
-				$('#firstname').val(html.FirstName);
-				$('#lastname').val(html.LastName);
+			$('#id').val(html.Id);
+			$('#firstname').val(html.FirstName);
+			$('#lastname').val(html.LastName);
 
-				var bits = (html.DateOfBirth).split(/\D/);
-				var date = bits[0] + "-" + bits[1] + "-" + bits[2];
-				$('#dateOfBirth').val(date);
+			var bits = (html.DateOfBirth).split(/\D/);
+			var date = bits[0] + "-" + bits[1] + "-" + bits[2];
+			$('#dateOfBirth').val(date);
 
-				$('#phonenumber').val(html.PhoneNumber);
-				$('#email').val(html.Email);
-				$('#password').val(html.Password);
+			$('#phonenumber').val(html.PhoneNumber);
+			$('#email').val(html.Email);
+			$('#password').val(html.Password);
 
-				$("#countries").empty();
-				$('#countries').
-					select2({
-						placeholder: 'Select countries',
-						escapeMarkup: function (m) { return m; },
-						data: [(html.Countries).forEach(function (element) {
-							$("#countries").append($('<option>', { value: element.Id, text: element.Text, selected: element.IsChecked }));
-						})],
-						language: {
-							noResults: function () {
-								return 'No result.';
-							},
-							searching: function (val) {
-								saveMultiselectValueInLocalVariable(val.term);
-								return "Searching...";
-							}
+			$("#countries").empty();
+			$('#countries').
+				select2({
+					placeholder: 'Select countries',
+					width: 280,
+					escapeMarkup: function (m) { return m; },
+					data: [(html.Countries).forEach(function (element) {
+						$("#countries").append($('<option>', { value: element.Id, text: element.Text, selected: element.IsChecked }));
+					})],
+					language: {
+						noResults: function () {
+							return 'No result.';
+						},
+						searching: function (val) {
+							saveMultiselectValueInLocalVariable(val.term);
+							return "Searching...";
 						}
-					});
-
-				$('#saveEditing').click(function() {
-					saveEditing(idManager);
+					}
 				});
+			$('#saveEditing').unbind();
+			$('#saveEditing').click(function () {
+				saveEditing(idManager);
 			});
+
+			$('#editManagerModal').modal('show');
 		});
 
 }
@@ -160,39 +160,40 @@ function saveEditing(idManager) {
 function addManager(event) {
 	$.get('../api/ManagersManagement/GetCountries',
 		function (html) {
-			$('#editManagerModal').modal('show', { backdrop: 'static' });
-			$('#editManagerModal').on('shown.bs.modal', function () {
-				$('#id').val(0);
-				$('#firstname').val("");
-				$('#lastname').val("");
-				$('#dateOfBirth').val(new Date());
+			$('#id').val(0);
+			$('#firstname').val("");
+			$('#lastname').val("");
+			$('#dateOfBirth').val(new Date());
 
-				$('#phonenumber').val("");
-				$('#email').val("");
-				$('#password').val("");
+			$('#phonenumber').val("");
+			$('#email').val("");
+			$('#password').val("");
 
-				$("#countries").empty();
-				$('#countries').
-					select2({
-						placeholder: 'Select countries',
-						escapeMarkup: function (m) { return m; },
-						data: [html.forEach(function (element) {
-							$("#countries").append($('<option>', { value: element.Id, text: element.Text, selected: element.IsChecked }));
-						})],
-						language: {
-							noResults: function () {
-								return 'No result.';
-							},
-							searching: function (val) {
-								saveMultiselectValueInLocalVariable(val.term);
-								return "Searching...";
-							}
+			$("#countries").empty();
+			$('#countries').
+				select2({
+					width: 280,
+					placeholder: 'Select countries',
+					escapeMarkup: function (m) { return m; },
+					data: [html.forEach(function (element) {
+						$("#countries").append($('<option>', { value: element.Id, text: element.Text, selected: element.IsChecked }));
+					})],
+					language: {
+						noResults: function () {
+							return 'No result.';
+						},
+						searching: function (val) {
+							saveMultiselectValueInLocalVariable(val.term);
+							return "Searching...";
 						}
-					});
-
-				$('#saveEditing').click(function () {
-					saveEditing(0);
+					}
 				});
+
+			$('#saveEditing').unbind();
+			$('#saveEditing').click(function () {
+				saveEditing(0);
 			});
+
+			$('#editManagerModal').modal('show', { backdrop: 'static' });
 		});
 }
