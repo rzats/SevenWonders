@@ -1,11 +1,16 @@
 ﻿(function ($) {
-	debugger;
-	var app = $.sammy('#hotelInfo', function () {
+	var app1 = $.sammy('#hotelInfo', function () {
 		this.get('#/tours', function () {
-			this.partial('/Views/Hotels/ShortInfo.html');
+			this.partial('/Views/Hotels/HotelShortInfo.html');
 		});
 	});
-	app.run('#/tours');
+	var app2 = $.sammy('#flightInfo', function () {
+		this.get('#/tours', function () {
+			this.partial('/Views/Flights/FlightShortInfo.html');
+		});
+	});
+	app1.run('#/tours');
+	app2.run('#/tours');
 })(jQuery);
 
 function ToursTableViewModel() {
@@ -126,9 +131,6 @@ function ToursTableViewModel() {
 		});
 	}
 
-	self.showFlightDetail = function (tour) {
-
-	}
 	self.showHotelDetail = function (tour) {
 		var id = tour.HotelId;
 		$.ajax("../api/Hotels/GetHotelShortInfo", {
@@ -142,10 +144,23 @@ function ToursTableViewModel() {
 				$('#hotelInfoModal').modal();
 			}
 		});
+	}
+	self.showFlightDetail = function (tour) {
+		var id = tour.Id;
+		$.ajax("../api/Flights/GetFlightsShortInfo", {
+			type: "get",
+			data: {
+				id: id
+			},
+			contentType: "application/json",
+			success: function (result) {
+				flightShortInfoViewModel.updateViewModel(result)
+				$('#flightInfoModal').modal();
+			}
+		});
 	};
 
 	self.updateTours = function () {
-		debugger;
 		$.ajax({
 			type: "POST",
 			url: '../api/ToursManagement/UpdateTours',
@@ -163,4 +178,7 @@ ko.applyBindings(mainTableViewModel, $("#mainTable")[0]);
 
 function HotelBind() {
 	ko.applyBindings(hotelShortInfoViewModel, document.getElementById("hotelInfoModal"));
+}
+function FlightBind() {
+	ko.applyBindings(flightShortInfoViewModel, document.getElementById("flightInfoModal"));
 }

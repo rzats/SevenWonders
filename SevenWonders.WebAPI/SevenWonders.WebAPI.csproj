@@ -225,6 +225,7 @@
     <Compile Include="DTO\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
+    <Compile Include="DTO\Flights\FlightShortInfoModel.cs" />
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
     <Compile Include="DTO\Hotels\HotelPhotoModel.cs" />
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
@@ -300,7 +301,8 @@
     <Content Include="Content\creative.min.css" />
     <Content Include="Content\CustomerCabinet\Customer.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
-    <Content Include="Content\Hotels\Index.css" />
+    <Content Include="Content\Flights\FlightShortInfo.css" />
+    <Content Include="Content\Hotels\HotelShortInfo.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\17661561.jpg" />
@@ -499,9 +501,10 @@
     <Content Include="Scripts\Cities\Index.js" />
     <Content Include="Scripts\Countries\Index.js" />
     <Content Include="Scripts\CustomerCabinet\Index.js" />
+    <Content Include="Scripts\Flights\FlightShortInfo.js" />
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
-    <Content Include="Scripts\Hotels\ShortInfo.js" />
+    <Content Include="Scripts\Hotels\HotelShortInfo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -582,9 +585,10 @@
     <Content Include="Views\Cities\Index.html" />
     <Content Include="Views\Countries\Index.html" />
     <Content Include="Views\CustomerCabinet\Index.html" />
+    <Content Include="Views\Flights\FlightShortInfo.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Home\HomePage.html" />
-    <Content Include="Views\Hotels\ShortInfo.html" />
+    <Content Include="Views\Hotels\HotelShortInfo.html" />
     <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Tours\Index.js" />

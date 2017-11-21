@@ -56,7 +56,6 @@ function addAirport(event) {
 
 ko.validation.rules['isCodeUnique'] = {
 	validator: function (code, id) {
-		debugger;
 		var isValid = true;
 		$.ajax({
 			async: false,

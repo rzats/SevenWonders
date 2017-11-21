@@ -11,7 +11,6 @@
 	self.HotelPhotos = ko.observableArray([]);
 
 	self.updateViewModel = function (hotel) {
-		debugger;
 		self.Id(hotel.Id);
 		self.Name(hotel.Name);
 		self.Description(hotel.Description);
