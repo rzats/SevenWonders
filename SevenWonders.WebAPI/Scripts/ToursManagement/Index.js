@@ -37,7 +37,7 @@ function ToursTableViewModel() {
 	}, self);
 
 	self.loadTable = function () {
-		$.ajax("../api/ToursManagement/GetTours", {
+		$.ajax("../api/ToursManagement/GetToursForManager", {
 			type: "get",
 			data: {
 				pageIndex: self.pageIndex(),

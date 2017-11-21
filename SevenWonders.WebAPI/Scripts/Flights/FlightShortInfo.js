@@ -26,30 +26,40 @@
 	self.ReturnFlightArrivalTime = ko.observable();
 
 	self.updateViewModel = function (flight ) {
-		debugger;
 		self.LeaveFlightNumber(flight.LeaveFlightNumber);
 		self.LeaveFlightAirplaneModel(flight.LeaveFlightAirplaneModel);
 		self.LeaveFlightAirplaneCompany(flight.LeaveFlightAirplaneCompany);
 		self.LeaveFlightDepartureAirport(flight.LeaveFlightDepartureAirport);
 		self.LeaveFlightDepartureCity(flight.LeaveFlightDepartureCity);
 		self.LeaveFlightDepartureCountry(flight.LeaveFlightDepartureCountry);
-		self.LeaveFlightDepartureTime(flight.LeaveFlightDepartureTime);
+
+		var bits = (flight.LeaveFlightDepartureTime).split(/\D/);
+		var date = bits[0] + "-" + bits[1] + "-" + bits[2] + " " + bits[3] + ":" + bits[4];
+		self.LeaveFlightDepartureTime(date);
 		self.LeaveFlightArrivalAirport(flight.LeaveFlightArrivalAirport);
 		self.LeaveFlightArrivalCity(flight.LeaveFlightArrivalCity);
 		self.LeaveFlightArrivalCountry(flight.LeaveFlightArrivalCountry);
-		self.LeaveFlightArrivalTime(flight.LeaveFlightArrivalTime);
 
+		bits = (flight.LeaveFlightArrivalTime).split(/\D/);
+		date = bits[0] + "-" + bits[1] + "-" + bits[2] + " " + bits[3] + ":" + bits[4];
+		self.LeaveFlightArrivalTime(date);
 		self.ReturnFlightNumber(flight.ReturnFlightNumber);
 		self.ReturnFlightAirplaneModel(flight.ReturnFlightAirplaneModel);
 		self.ReturnFlightAirplaneCompany(flight.ReturnFlightAirplaneCompany);
 		self.ReturnFlightDepartureAirport(flight.ReturnFlightDepartureAirport);
 		self.ReturnFlightDepartureCity(flight.ReturnFlightDepartureCity);
 		self.ReturnFlightDepartureCountry(flight.ReturnFlightDepartureCountry);
-		self.ReturnFlightDepartureTime(flight.ReturnFlightDepartureTime);
+
+		bits = (flight.ReturnFlightDepartureTime).split(/\D/);
+		date = bits[0] + "-" + bits[1] + "-" + bits[2] + " " + bits[3] + ":" + bits[4];
+		self.ReturnFlightDepartureTime(date);
 		self.ReturnFlightArrivalAirport(flight.ReturnFlightArrivalAirport);
 		self.ReturnFlightArrivalCity(flight.ReturnFlightArrivalCity);
 		self.ReturnFlightArrivalCountry(flight.ReturnFlightArrivalCountry);
-		self.ReturnFlightArrivalTime(flight.ReturnFlightArrivalTime);
+
+		bits = (flight.ReturnFlightArrivalTime).split(/\D/);
+		date = bits[0] + "-" + bits[1] + "-" + bits[2] + " " + bits[3] + ":" + bits[4];
+		self.ReturnFlightArrivalTime(date);
 	};
 }
 var flightShortInfoViewModel = new FlightShortInfoViewModel();

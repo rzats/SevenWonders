@@ -26,11 +26,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<div class="modal-header text-center">
-					<h4 class="modal-title">
-						<span class="glyphicon glyphicon-plane"></span> Flights
-					</h4>
-				</div>
+				<h4 class="modal-title text-center">
+					<span class="glyphicon glyphicon-plane"></span> Flights
+				</h4>
 			</div>
 			<div class="modal-body">
 				<div id="flightInfo"></div>
@@ -139,16 +137,14 @@
 														<td>
 															<b>Departure: </b>
 															<span data-bind="text:DepartureAirportCode"></span>
-															(<span data-bind="text:DepartureAirportCity"></span>
-															, <span data-bind="text:DepartureAirportCountry"></span>
-															)
+															(<span data-bind="text:DepartureAirportCity"></span>,
+															<span data-bind="text:DepartureAirportCountry"></span>)
 														</td>
 														<td>
 															<b>Arrival: </b>
 															<span data-bind="text:ArrivalAirportCode"></span>
-															(<span data-bind="text:ArrivalAirportCity"></span>
-															, <span data-bind="text:ArrivalAirportCountry"></span>
-															)
+															(<span data-bind="text:ArrivalAirportCity"></span>,
+															<span data-bind="text:ArrivalAirportCountry"></span>)
 														</td>
 													</tr>
 												</tbody>
@@ -170,7 +166,7 @@
 													<button class="btn btn-warning middle-button" type="button" data-bind="click: $parent.showModalPayTour">Pay</button>
 													<span style="float: right; margin-top:5px"><b>Total price: </b><span data-bind="text:Price"></span></span>
 												</div>
-												<div data-bind="visible:TourState!=='Registered'" style="float: right; margin-top:-10px;"><b>Total price: </b><span data-bind="text:Price"></span></div>
+												<div data-bind="visible:TourState!=='Registered'" style="float: right; margin-top:-10px;"><b>Total price: </b>$<span data-bind="text:Price"></span></div>
 											</div>
 										</div>
 									</div>

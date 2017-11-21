@@ -16,11 +16,33 @@ namespace SevenWonders.WebAPI.Controllers
         private SevenWondersContext db = new SevenWondersContext();
 
         [HttpGet]
-        public IHttpActionResult GetTours(int pageIndex, int pageSize)
+        public IHttpActionResult GetToursForManager(int pageIndex, int pageSize)
         {
             //List<Tour> data = db.Tours.Where(t => t.Reservation.Room.Hotel.City.Country.Manager.Id == manager.Id && !t.IsDeleted).ToList();
             var data = db.Tours.Where(t => !t.IsDeleted);
 
+            int dataCount = data.Count();
+            data = data.OrderByDescending(x => x.CreationDate)
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize);
+
+            var KK = data.ToList();
+            List<TourModel> tours = new List<TourModel>();
+            data.ToList().ForEach(x =>
+            {
+                tours.Add(convertToTourModel(x));
+            });
+            return Ok(new { tours = tours, dataCount = dataCount });
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetToursForCustomer(int pageIndex, int pageSize)
+        {
+            var email = User.Identity.Name;
+            var customer = getCustomer(email);
+            List<TourModel> toursToReturn = new List<TourModel>();
+
+            var data = customer.Tours.Where(x => !x.IsDeleted && !x.Reservation.IsDeleted);
             int dataCount = data.Count();
             data = data.OrderByDescending(x => x.CreationDate)
             .Skip(pageIndex * pageSize)
@@ -111,7 +133,8 @@ namespace SevenWonders.WebAPI.Controllers
                 ArrivalAirportCode = tour.Reservation.ReturnSchedule.Flight.DepartureAirport.Code,
                 ArrivalAirportCity = tour.Reservation.ReturnSchedule.Flight.DepartureAirport.City.Name,
                 ArrivalAirportCountry = tour.Reservation.ReturnSchedule.Flight.DepartureAirport.City.Country.Name,
-                HotelId = tour.Reservation.Room.HotelId.Value
+                HotelId = tour.Reservation.Room.HotelId.Value,
+                HotelName= tour.Reservation.Room.Hotel.Name
             };
         }
 
@@ -125,5 +148,11 @@ namespace SevenWonders.WebAPI.Controllers
                 return 3;
             else return 0;
         }
+
+        private Customer getCustomer(string email)
+        {
+            return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
+        }
+
     }
 }

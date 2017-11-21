@@ -14,7 +14,7 @@ using System.Net;
 
 namespace SevenWonders.WebAPI.Controllers
 {
-    public class CustomerController : ApiController
+    public class CustomerCabinetController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
 
@@ -58,22 +58,6 @@ namespace SevenWonders.WebAPI.Controllers
         private Customer GetCustomer(string email)
         {
             return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
-        }
-
-        private bool IsCurrentUser(string email)
-        {
-            bool IsCurrentUser = false;
-            if (User.Identity.Name == email)
-            {
-                IsCurrentUser = true;
-            }
-            return IsCurrentUser;
-        }
-
-        private T GetPersonByEmail<T>(string email) where T : class, IPerson
-        {
-            DbSet<T> dbSet = db.Set<T>();
-            return dbSet.FirstOrDefault(x => x.Email == email);
         }
 
         private IAuthenticationManager AuthenticationManager

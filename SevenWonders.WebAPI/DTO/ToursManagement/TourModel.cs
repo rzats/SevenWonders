@@ -29,5 +29,6 @@ namespace SevenWonders.WebAPI.DTO.ToursManagement
         public string ArrivalAirportCountry { get; set; }
 
         public int HotelId { get; set; }
+        public string HotelName { get; set; }
     }
 }
