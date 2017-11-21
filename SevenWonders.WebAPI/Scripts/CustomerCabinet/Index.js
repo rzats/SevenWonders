@@ -34,7 +34,6 @@ function CustomerViewModel() {
             }
         }
     });
-
     self.lastName = ko.observable("").extend({
         required: {
             message: "Last name cannot be empty!",
@@ -43,7 +42,6 @@ function CustomerViewModel() {
             }
         }
     });
-
     self.dateOfBirth = ko.observable("").extend({
         required: {
             message: "Date of birth cannot be empty!",
@@ -52,33 +50,26 @@ function CustomerViewModel() {
             }
         }
     });
-
     self.phoneNumber = ko.observable("").extend({
         required: {
             message: "Phone number cannot be empty!",
             onlyIf: function () {
                 return self.validateNow();
             }
-        }
-    }).extend({
-        pattern: {
+        }, pattern: {
             message: 'Phone number should contain only digits',
             params: '^[0-9]+$',
             onlyIf: function () {
                 return self.validateNow();
             }
-        }
-    }).extend(
-    {
+        },
         minLength: {
             params: 9,
             message: "Phone number should consist of 9 to 14 digits!",
             onlyIf: function () {
                 return self.validateNow();
             }
-        }
-    }).extend(
-    {
+        },
         maxLength: {
             params: 14,
             message: "Phone number should consist of 9 to 14 digits!",
@@ -87,21 +78,18 @@ function CustomerViewModel() {
             }
         }
     });
-
     self.email = ko.observable("").extend({
         required: {
             message: "Email cannot be empty!",
             onlyIf: function () {
                 return self.validateNow();
             }
-        }
-    }).extend({
+        },
         email: true
     });
+    self.discount = ko.observable("");
 
     self.errors = ko.observable();
-
-
     self.errors = ko.validation.group(self);
 
     $.ajax({
@@ -110,15 +98,19 @@ function CustomerViewModel() {
         success: function (data) {
             self.firstName(data.FirstName);
             self.lastName(data.LastName);
-            self.dateOfBirth(data.DateOfBirth);
+
+            var bits = (data.DateOfBirth).split(/\D/);
+            var dateOfBirth = bits[0] + "-" + bits[1] + "-" + bits[2];
+            self.dateOfBirth(dateOfBirth);
+
             self.phoneNumber(data.PhoneNumber);
             self.email(data.Email);
+            self.discount(data.Discount);
         },
         error: function (err) {
             console.log(err);
         }
     });
-
     self.changeCustomer = function () {
         self.validateNow(true);
         if (self.errors().length === 0) {
@@ -147,9 +139,12 @@ function CustomerViewModel() {
             alert('errors');
         }
     }
+
+    self.showEditCustomerMadal = function () {
+        
+    }
 }
 ko.applyBindings(new CustomerViewModel(), $("#personalInfo")[0]); 
-
 
 function ToursTableViewModel() {
 	var self = this;
@@ -310,7 +305,6 @@ function ToursTableViewModel() {
 		});
 	};
 }
-
 var mainTableViewModel = new ToursTableViewModel();
 ko.applyBindings(mainTableViewModel, $("#mainTable")[0]);
 
@@ -320,8 +314,6 @@ function HotelBind() {
 function FlightBind() {
 	ko.applyBindings(flightShortInfoViewModel, document.getElementById("flightInfoModal"));
 }
-
-
 (function ($) {
 	//var $j = jQuery.noConflict();
 	//$j(".datepicker").datepicker();
