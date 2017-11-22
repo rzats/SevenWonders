@@ -51,22 +51,22 @@ namespace SevenWonders.WebAPI.Controllers
                 for (int j = 0; j < returnFlights.Count; ++j)
                     for (int k = 0; k < rooms.Count; ++k)
                     {
-                        Reservation tempReservation = new Reservation();
-                        tempReservation.LeaveDate = model.DapartureDay;
-                        tempReservation.ReturnDate = model.DapartureDay.AddDays(model.Duration);
-                        tempReservation.LeaveFlight = leaveFlights[i];
-                        tempReservation.PersonAmount = model.PeopleNumber;
-                        tempReservation.ReturnFlight = returnFlights[j];
-                        tempReservation.Room = rooms[k];
-                        reservations.Add(tempReservation);
+                        //Reservation tempReservation = new Reservation();
+                        //tempReservation.LeaveDate = model.DapartureDay;
+                        //tempReservation.ReturnDate = model.DapartureDay.AddDays(model.Duration);
+                        //tempReservation.LeaveSchedule = leaveFlights[i];
+                        //tempReservation.PersonAmount = model.PeopleNumber;
+                        //tempReservation.ReturnSchedule= returnFlights[j];
+                        //tempReservation.Room = rooms[k];
+                        //reservations.Add(tempReservation);
                     }
 
             List<ReservationModel> resModels = new List<ReservationModel>();
             for (int i = 0; i < reservations.Count; ++i)
             {
                 var appropriateReservation = resModels.Where(p => (p.Hotel.Id == reservations[i].Room.HotelId
-                && p.Reservation.LeaveFlight.Id == reservations[i].LeaveFlight.Id
-                && p.Reservation.ReturnFlight.Id == reservations[i].ReturnFlight.Id)).FirstOrDefault();
+                && p.Reservation.LeaveSchedule.Id == reservations[i].LeaveSchedule.Id
+                && p.Reservation.ReturnSchedule.Id == reservations[i].ReturnSchedule.Id)).FirstOrDefault();
 
                 if (appropriateReservation != null)
                 {
@@ -163,9 +163,9 @@ namespace SevenWonders.WebAPI.Controllers
                     for (int k = 0; k < list[i].Rooms.Count; ++k)
                     {
                         list[i].TotalPrices[k] += list[i].Rooms[k].Price + list[i].Rooms[k].Price * percent / 100 + list[i].Reservation.PersonAmount * (list[i].Hotel.FoodPrice
-                            + list[i].Reservation.LeaveFlight.Price + list[i].Reservation.ReturnFlight.Price);
+                            + list[i].Reservation.LeaveSchedule.Flight.Price + list[i].Reservation.ReturnSchedule.Flight.Price);
                         list[i].PricesWithoutFood[k] += list[i].Rooms[k].Price + list[i].Rooms[k].Price * percent / 100 + list[i].Reservation.PersonAmount *
-                            (list[i].Reservation.LeaveFlight.Price + list[i].Reservation.ReturnFlight.Price);
+                            (list[i].Reservation.ReturnSchedule.Flight.Price + list[i].Reservation.ReturnSchedule.Flight.Price);
                     }
                     list[i].MinPrice = list[i].PricesWithoutFood.Min();
                 }
@@ -269,8 +269,8 @@ namespace SevenWonders.WebAPI.Controllers
                 int flightId = flights[i].Id;
 
                 IEnumerable<int> temp = db.Reservations.Where(r => (r.IsDeleted == false &&
-                ((r.LeaveFlightId == flightId && r.LeaveDate == departureDay)
-                || (r.ReturnFlightId == flightId && r.ReturnDate == departureDay))))
+                ((r.LeaveSchedule.FlightId == flightId && r.LeaveDate == departureDay)
+                || (r.ReturnSchedule.FlightId ==flightId && r.ReturnDate == departureDay))))
                 .Select(r => r.PersonAmount).ToList();
 
                 int reservedSeats = 0;

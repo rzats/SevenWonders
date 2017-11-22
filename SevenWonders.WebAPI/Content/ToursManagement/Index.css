@@ -1,0 +1,13 @@
+﻿.pagination a.disabled {
+	text-decoration: none;
+	color: #666;
+	cursor: default;
+}
+
+.validationMessage {
+	color: #cc0000;
+}
+
+#addItem {
+	float: right;
+}

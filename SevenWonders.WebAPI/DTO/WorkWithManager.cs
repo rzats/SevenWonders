@@ -19,26 +19,26 @@ namespace SevenWonders.Models
         private void AddCountriesForManager(SevenWondersContext db, Manager manager, int[] countries)
         {
             
-            if (manager.Countries != null)
-            {
-                foreach (var country in manager.Countries.ToList())
-                {
-                    country.ManagerId = null;
-                    db.Entry(country).State = EntityState.Modified;
-                }
-            }
-            db.SaveChanges();
-            if (countries != null)
-            {
-                var length = countries.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    var country = db.Coutries.Find(countries[i]);
-                    country.ManagerId = manager.Id;
-                    db.Entry(country).State = EntityState.Modified;
-                }
-            }
-            db.SaveChanges();
+            //if (manager.Countries != null)
+            //{
+            //    foreach (var country in manager.Countries.ToList())
+            //    {
+            //        country.ManagerId = null;
+            //        db.Entry(country).State = EntityState.Modified;
+            //    }
+            //}
+            //db.SaveChanges();
+            //if (countries != null)
+            //{
+            //    var length = countries.Length;
+            //    for (int i = 0; i < length; i++)
+            //    {
+            //        var country = db.Coutries.Find(countries[i]);
+            //        country.ManagerId = manager.Id;
+            //        db.Entry(country).State = EntityState.Modified;
+            //    }
+            //}
+            //db.SaveChanges();
         }
 
         public void AddFullManager(SevenWondersContext db, FullManagerViewModel user, int[] countries)

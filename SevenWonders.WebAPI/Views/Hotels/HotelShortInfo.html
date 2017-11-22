@@ -1,0 +1,59 @@
+﻿<link type="text/css" rel="stylesheet" href="../../Content/Hotels/HotelShortInfo.css" />
+
+<div class="row">
+	<div class="col-md-12">
+		<div data-bind="if: HotelPhotos().length>0">
+			<div class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner" role="listbox" data-bind="foreach: HotelPhotos">
+					<div data-bind="if: $index()===0" class="item active">
+						<img data-bind="attr: {src:$data.PhotoLink}" class="img-rounded img-responsive" />
+					</div>
+					<div data-bind="if: $index()>0" class="item">
+						<img data-bind="attr: {src:$data.PhotoLink}" class="img-rounded img-responsive" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-bind="if: HotelPhotos().length===0">
+			<img src="../../Content/img/default.png" alt=@Model.Name class="img-responsive" />
+		</div>
+	</div>
+</div>
+<br />
+
+<div class="row">
+	<div data-bind="if: Facilities().length>0">
+		<div class="col-md-3">
+			<span class="glyphicon glyphicon-cog"></span><b> Facilities:</b>
+			<br />
+			<div class="col-md-offset-1" data-bind="foreach: Facilities">
+				<span data-bind="text: $data"></span>
+				<br />
+			</div>
+		</div>
+		<div class="col-md-5">
+			<span class="glyphicon glyphicon-info-sign"></span><b>Description: </b>
+			<br />
+			<span data-bind="text: Description"></span>
+		</div>
+	</div>
+	<div data-bind="if: Facilities().length===0">
+		<div class="col-md-8">
+			<span class="glyphicon glyphicon-info-sign"></span><b>Description: </b>
+			<br />
+			<span data-bind="text: Description"></span>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<span class="glyphicon glyphicon-map-marker"></span> <b>Country: </b>
+		<span data-bind="text: Country"></span>
+		<br />
+		<span class="glyphicon glyphicon-map-marker"></span> <b>City: </b>
+		<span data-bind="text: City"></span>
+		<br />
+		<span class="glyphicon glyphicon-map-marker"></span> <b>Address: </b>
+		<span data-bind="text: Address"></span>
+	</div>
+</div>
+
+<script type="text/javascript" src="../../Scripts/Hotels/HotelShortInfo.js"></script>

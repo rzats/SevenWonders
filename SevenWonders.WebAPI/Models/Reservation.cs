@@ -16,12 +16,12 @@ namespace SevenWonders.WebAPI.Models
         public virtual Room Room { get; set; }
         [Required]
         public int PersonAmount { get; set; }
-        [ForeignKey("LeaveFlightId")]
+        [ForeignKey("LeaveScheduleId")]
         [Newtonsoft.Json.JsonIgnore]
-        public virtual Flight LeaveFlight { get; set; }
-        [ForeignKey("ReturnFlightId")]
+        public virtual Schedule LeaveSchedule { get; set; }
+        [ForeignKey("ReturnScheduleId")]
         [Newtonsoft.Json.JsonIgnore]
-        public virtual Flight ReturnFlight { get; set; }
+        public virtual Schedule ReturnSchedule { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateTime LeaveDate { get; set; }
@@ -35,8 +35,8 @@ namespace SevenWonders.WebAPI.Models
         [Required]
         public int? RoomId { get; set; }
         [Required]
-        public int? LeaveFlightId { get; set; }
+        public int? LeaveScheduleId { get; set; }
         [Required]
-        public int? ReturnFlightId { get; set; }
+        public int? ReturnScheduleId { get; set; }
     }
 }

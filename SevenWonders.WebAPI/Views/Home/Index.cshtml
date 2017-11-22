@@ -1,7 +1,7 @@
 ﻿@model SevenWonders.Models.SearchModel
 
 @{
-    ViewBag.Title = "7 wonders";
+	ViewBag.Title = "7 wonders";
 }
 
 @Styles.Render("~/Content/css")
@@ -12,23 +12,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title</title>
 </head>
 
 <body id="page-top">
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-        <div id="mainNav1" class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand page-scroll" href="#/home">7 wonders</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#/home">Home</a></li>
+	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+		<div id="mainNav1" class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+				</button>
+				<a class="navbar-brand page-scroll" href="#/home">7 wonders</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-left">
+					<li><a href="#/home">Home</a></li>
 					<li><a href="#/contact">Contact</a></li>
 					<li><a href="#/customers">Customers</a></li>
 					<li><a href="#/managers">Managers</a></li>
@@ -36,61 +36,62 @@
 					<li><a href="#/cities">Cities</a></li>
 					<li><a href="#/airports">Airports</a></li>
 					<li><a href="#/flights">Flights</a></li>
+					<li><a href="#/tours">Tours</a></li>
 					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
+						<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
 
-                    @if (User.IsInRole("admin"))
-                    {
-                        @*<li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>*@
-                        <li class="dropdown ">
-                            <a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                @*<li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
-                                <li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>*@
-                            </ul>
-                        </li>
-                    }
-                    else if (User.IsInRole("manager"))
-                    {
-                        @*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-                        <li>@Html.ActionLink("Cities", "Index", "Cities")</li>
-                        <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
-                        <li>@Html.ActionLink("Airports", "Index", "Airports")</li>
-                        <li>@Html.ActionLink("Flights", "Index", "Flights")</li>
-                        <li>@Html.ActionLink("Tours", "Index", "Tours")</li>*@
-                    }
-                </ul>
-                <div style="margin-right:1%">
-                    @if (Request.IsAuthenticated)
-                    {
-                        using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        {
-                            @Html.AntiForgeryToken()
+					@if (User.IsInRole("admin"))
+					{
+						@*<li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>*@
+						<li class="dropdown ">
+							<a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								@*<li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
+									<li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>*@
+							</ul>
+						</li>
+					}
+					else if (User.IsInRole("manager"))
+					{
+						@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
+							<li>@Html.ActionLink("Cities", "Index", "Cities")</li>
+							<li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
+							<li>@Html.ActionLink("Airports", "Index", "Airports")</li>
+							<li>@Html.ActionLink("Flights", "Index", "Flights")</li>
+							<li>@Html.ActionLink("Tours", "Index", "Tours")</li>*@
+					}
+				</ul>
+				<div style="margin-right:1%">
+					@if (Request.IsAuthenticated)
+					{
+						using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+						{
+							@Html.AntiForgeryToken()
 
-                            <ul class="nav navbar-nav navbar-right">
-                                @if (User.IsInRole("customer"))
-                                {
-                                    <li>
-                                        <a href="#/cabinet" id="cabinetLink">Cabinet</a>
-                                    </li>
-                                }
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                            </ul>
-                        }
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#/register" id="registerLink">Register</a></li>
-                            <li><a href="#/login" id="loginLink">Log in</a></li>
-                        </ul>
-                    }
-                </div>
-            </div>
-        </div>
-    </nav>
-    <div id="mainDiv">        
-    </div>
+							<ul class="nav navbar-nav navbar-right">
+								@if (User.IsInRole("customer"))
+								{
+									<li>
+										<a href="#/cabinet" id="cabinetLink">Cabinet</a>
+									</li>
+								}
+								<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+							</ul>
+						}
+					}
+					else
+					{
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#/register" id="registerLink">Register</a></li>
+							<li><a href="#/login" id="loginLink">Log in</a></li>
+						</ul>
+					}
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div id="mainDiv">
+	</div>
 </body>
 </html>
 
@@ -153,7 +154,10 @@
 			this.get('#/airports', function () {
 				this.partial('/Views/Airports/Index.html');
 			});
-			
+			this.get('#/tours', function () {
+				this.partial('/Views/ToursManagement/Index.html');
+			});
+
         });
 
         $(function () {
@@ -190,4 +194,4 @@
             document.body.style.paddingTop = '50px'
         }
     }).trigger('resize');
-    </script>
+</script>

@@ -2,7 +2,6 @@
     var email = $('#email').val();
     var password = $('#password').val();
     var rememberMe = $('rememberMe').val();
-    debugger;
     if (isValid()) {
         $.ajax({
             url: "../api/Account/Login",

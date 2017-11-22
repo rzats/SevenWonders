@@ -1,0 +1,212 @@
+﻿<link type="text/css" rel="stylesheet" href="../../Content/ToursManagement/Index.css" />
+<!-- Hotel info modal -->
+<div class="modal fade" id="hotelInfoModal" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center">
+					<span data-bind="text: Name"></span>
+					<span>&nbsp;</span>
+					<span data-bind="foreach: new Array(Rating())">
+						<span class="glyphicon glyphicon-star ratingStars"></span>
+					</span>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div id="hotelInfo"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Flight info modal -->
+<div class="modal fade" id="flightInfoModal" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center">
+					<span class="glyphicon glyphicon-plane"></span> Flights
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div id="flightInfo"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="mainTable" class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+	<h2 class="text-center">Tours</h2>
+	<br />
+
+	<!-- Delete tour modal -->
+	<div class="modal fade" id="deleteTourModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center">Tour</h4>
+				</div>
+				<div class="modal-body">
+					<h5 class="text-center">Are you sure you want to delete this tour?</h5>
+				</div>
+				<div class="modal-footer">
+					<hidden data-bind="value: idOfSelectedTour"></hidden>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: deleteTour">Delete</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Pay tour modal -->
+	<div class="modal fade" id="payTourModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center">Tour</h4>
+				</div>
+				<div class="modal-body">
+					<h5 class="text-center">Are you sure that customer pay for this tour?</h5>
+				</div>
+				<div class="modal-footer">
+					<hidden data-bind="value: idOfSelectedTour"></hidden>
+					<button type="button" class="btn btn-warning middle-button" data-bind="click: payTour">Submit</button>
+					<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row" style="margin-bottom:6px;">
+		<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+			<button class="btn btn-warning middle-button" type="button" data-bind="click: updateTours">Update tours</button>
+		</div>
+	</div>
+
+	<div>
+		<div class="row">
+			<table class="table">
+				<tbody data-bind="foreach: tours">
+					<tr>
+						<td>
+							<div class="panel panel-default" style="margin-bottom: 0;">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="panelHeadingItem headCustomerName col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											<h3 class="panel-title">
+												<b data-bind="text:CustomerFirstName"></b>
+												<b data-bind="text:CustomerLastName"></b>
+											</h3>
+										</div>
+										<div class="panelHeadingItem headCustomerName col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+											<h3 class="panel-title">
+												<b data-bind="visible:TourState==='Registered'" style="color:orange">Registered</b>
+												<b data-bind="visible:TourState==='Paid'" style="color:lightgreen">Paid</b>
+												<b data-bind="visible:TourState==='Done'" style="color:blue">Done</b>
+											</h3>
+										</div>
+										<div class="panelHeadingItem pull-right" style="padding-right:15px;">
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showFlightDetail">
+												<div class="glyphicon glyphicon-plane"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showHotelDetail">
+												<div class="glyphicon glyphicon-bed"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showModalDeleteTour">
+												<div class="glyphicon glyphicon-remove"></div>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="panelItem col-xs-12 col-sm-7 col-md-7 col-lg-7">
+											<table class="table table-hover table-bordered">
+												<tbody>
+													<tr>
+														<td><b>Leave date: </b> <span data-bind="text:LeaveDate"></span></td>
+														<td><b>Return date: </b> <span data-bind="text:ReturnDate"></span></td>
+													</tr>
+													<tr>
+														<td>
+															<b>Departure: </b>
+															<span data-bind="text:DepartureAirportCode"></span>
+															(<span data-bind="text:DepartureAirportCity"></span>,
+															<span data-bind="text:DepartureAirportCountry"></span>)
+														</td>
+														<td>
+															<b>Arrival: </b>
+															<span data-bind="text:ArrivalAirportCode"></span>
+															(<span data-bind="text:ArrivalAirportCity"></span>,
+															<span data-bind="text:ArrivalAirportCountry"></span>)
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="panelItem col-xs-12 col-sm-5 col-md-5 col-lg-5">
+											<div>
+												<b>Phone number: </b> <span data-bind="text:CustomerPhoneNumber"></span>
+											</div>
+											<div>
+												<b>Email: </b> <span data-bind="text:CustomerEmail"></span>
+											</div>
+											<br />
+											<div>
+												<b>Order date: </b> <span data-bind="text:OrderDate"></span>
+											</div>
+											<div class="alert alert-success">
+												<div data-bind="visible:TourState==='Registered'">
+													<button class="btn btn-warning middle-button" type="button" data-bind="click: $parent.showModalPayTour">Pay</button>
+													<span style="float: right; margin-top:5px"><b>Total price: </b><span data-bind="text:Price"></span></span>
+												</div>
+												<div data-bind="visible:TourState!=='Registered'" style="float: right; margin-top:-10px;"><b>Total price: </b>$<span data-bind="text:Price"></span></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row" data-bind="visible: pageCount()>1">
+			<div class="col-sm-5">
+				<div class="dataTables_info" id="managersTable_info" role="status" aria-live="polite">
+					Showing <span data-bind="text: indexOfFirst"></span> to <span data-bind="text: indexOfLast"></span> of <span data-bind="text: dataCount"></span> entries
+				</div>
+			</div>
+			<div class="col-sm-7">
+				<ul class="pagination">
+					<li class="page-item">
+						<a class="page-link" data-bind="click: previousPage, css: {'disabled': pageIndex()<=0}">Previous</a>
+					</li>
+				</ul>
+				<ul class="pagination" data-bind="foreach: allPages">
+					<li class="page-item" data-bind="css: { active: $data.pageNumber == ($parent.pageIndex()+1) }">
+						<a href="#" class="page-link" data-bind="text: $data.pageNumber, click: function() { $parent.moveToPage($data.pageNumber-1); }"></a>
+					</li>
+				</ul>
+				<ul class="pagination">
+					<li class="page-item">
+						<a class="page-link" data-bind="click: nextPage, css: {'disabled': pageIndex() >= pageCount()-1}">Next</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="../../Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
+<script src="../../Scripts/sammy-0.7.5.js"></script>
+<script type="text/javascript" src="../../Scripts/ToursManagement/Index.js"></script>
