@@ -1,6 +1,4 @@
-﻿@model SevenWonders.Models.SearchModel
-
-@{
+﻿@{
 	ViewBag.Title = "7 wonders";
 }
 
@@ -36,38 +34,13 @@
 					<li><a href="#/cities">Cities</a></li>
 					<li><a href="#/airports">Airports</a></li>
 					<li><a href="#/flights">Flights</a></li>
-					<li><a href="#/tours">Tours</a></li>
-					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-						<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
-
-					@if (User.IsInRole("admin"))
-					{
-						@*<li>@Html.ActionLink("Customers", "SearchCustomers", "Admin")</li>*@
-						<li class="dropdown ">
-							<a class="dropdown-toggle " data-toggle="dropdown" href="#">Statistics<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								@*<li>@Html.ActionLink("Countries statistic", "CountriesStatistic", "Reports")</li>
-									<li>@Html.ActionLink("Managers statistic", "ManagersStatistic", "Reports")</li>*@
-							</ul>
-						</li>
-					}
-					else if (User.IsInRole("manager"))
-					{
-						@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
-							<li>@Html.ActionLink("Cities", "Index", "Cities")</li>
-							<li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
-							<li>@Html.ActionLink("Airports", "Index", "Airports")</li>
-							<li>@Html.ActionLink("Flights", "Index", "Flights")</li>
-							<li>@Html.ActionLink("Tours", "Index", "Tours")</li>*@
-					}
+					<li><a href="#/tours">Tours</a></li>					
 				</ul>
 				<div style="margin-right:1%">
 					@if (Request.IsAuthenticated)
 					{
 						using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 						{
-							@Html.AntiForgeryToken()
-
 							<ul class="nav navbar-nav navbar-right">
 								@if (User.IsInRole("customer"))
 								{
@@ -95,103 +68,56 @@
 </body>
 </html>
 
-<script src="../../Scripts/Search/Index.js"></script>
-<script src="../../Scripts/Tours/Index.js"></script>
 <script src="../../Scripts/Home/Index.js"></script>
-
 <script src="../../Scripts/sammy-0.7.5.js"></script>
 
 <script>
     (function ($) {
         var app = $.sammy('#mainDiv', function () {
-            this.debug = true;
-            var form_fields = null;
 
             this.get('#/', function () {
                 this.app.swap('Click form!');
             });
-
             this.get('#/home', function () {
-                this.partial('/Views/Home/HomePage.html');
+                this.partial('/Views/Search/Index.html');
             });
-
             this.get('#/register', function () {
                 this.partial('/Views/Account/Register.html');
             });
-
             this.get('#/login', function () {
 				this.partial('/Views/Account/Login.html');
 			});
-
 			this.get('#/contact', function () {
 				this.partial('/Views/Home/Contact.html');
 			});
-
 			this.get('#/cabinet', function () {
 			    this.partial('/Views/CustomerCabinet/Index.html');
 			});
-
 			this.get('#/customers', function () {
 				this.partial('/Views/CustomersManagement/Index.html');
 			});
-
 			this.get('#/managers', function () {
 				this.partial('/Views/ManagersManagement/Index.html');
 			});
-
 			this.get('#/flights', function () {
 				this.partial('/Views/Flights/Index.html');
 			});
-
 			this.get('#/countries', function () {
 				this.partial('/Views/Countries/Index.html');
 			});
-
 			this.get('#/cities', function () {
 				this.partial('/Views/Cities/Index.html');
 			});
-
 			this.get('#/airports', function () {
 				this.partial('/Views/Airports/Index.html');
 			});
 			this.get('#/tours', function () {
 				this.partial('/Views/ToursManagement/Index.html');
 			});
-
         });
-
         $(function () {
             app.run('#/home');
         });
 
     })(jQuery);
-
-    $(document).ready(function () {
-        $('.dropdown-toggle').dropdown();
-	});
-
-    $(window).on('resize', function () {
-
-        var width = $(window).width();
-
-        if (width < 975) {
-            $('header').height('1200px');
-        }
-        else {
-            $('header').height('840px');
-        }
-
-        if ($('#mainNav').height() == 100) {
-            document.body.style.paddingTop = '100px'
-        }
-        else if ($('#mainNav').height() == 150) {
-            document.body.style.paddingTop = '150px'
-        }
-        else if ($('#mainNav').height() == 200) {
-            document.body.style.paddingTop = '200px'
-        }
-        else {
-            document.body.style.paddingTop = '50px'
-        }
-    }).trigger('resize');
 </script>

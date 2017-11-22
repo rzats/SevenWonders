@@ -55,6 +55,14 @@ namespace SevenWonders.WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
+        [HttpGet]
+        public IHttpActionResult IsEmailValid(string email)
+        {
+            var currentCustomer = GetCustomer(User.Identity.Name);
+            bool contain = db.Customers.Any(x => x.Email == email && email != currentCustomer.Email);
+            return Ok(!contain);
+        }
+
         private Customer GetCustomer(string email)
         {
             return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
@@ -66,14 +74,6 @@ namespace SevenWonders.WebAPI.Controllers
             {
                 return HttpContext.Current.GetOwinContext().Authentication;
             }
-        }
-
-        [HttpGet]
-        public IHttpActionResult IsEmailValid(string email)
-        {
-            var currentCustomer = GetCustomer(User.Identity.Name);
-            bool contain = db.Customers.Any(x => x.Email == email && email != currentCustomer.Email);
-            return Ok(!contain);
         }
     }
 }

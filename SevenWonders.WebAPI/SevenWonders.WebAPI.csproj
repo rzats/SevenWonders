@@ -229,11 +229,8 @@
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
     <Compile Include="DTO\Hotels\HotelPhotoModel.cs" />
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
-    <Compile Include="DTO\ManagerEditModel.cs" />
-    <Compile Include="DTO\ManagerSerchModel.cs" />
-    <Compile Include="DTO\ReservationModel.cs" />
-    <Compile Include="DTO\SearchFlight.cs" />
-    <Compile Include="DTO\SearchModel.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
     <Compile Include="DTO\Security.cs" />
     <Compile Include="DTO\ToursManagement\TourModel.cs" />
     <Compile Include="DTO\Utils.cs" />
@@ -567,10 +564,10 @@
     <Content Include="Scripts\knockout-3.1.0.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\knockout.validation.min.js" />
-    <Content Include="Scripts\Login\Index.js" />
+    <Content Include="Scripts\Account\Login\Index.js" />
     <Content Include="Scripts\ManagersManagement\Index.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\Register\Index.js" />
+    <Content Include="Scripts\Account\Register\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
@@ -589,11 +586,10 @@
     <Content Include="Views\CustomerCabinet\Index.html" />
     <Content Include="Views\Flights\FlightShortInfo.html" />
     <Content Include="Views\Flights\Index.html" />
-    <Content Include="Views\Home\HomePage.html" />
     <Content Include="Views\Hotels\HotelShortInfo.html" />
+    <Content Include="Views\Search\Index.html" />
     <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
-    <Content Include="Scripts\Tours\Index.js" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -628,6 +624,7 @@
     <Folder Include="Content\img\Hotels\Hotel_9\" />
     <Folder Include="Content\img\Rooms\Room73\" />
     <Folder Include="Content\img\Rooms\Room74\" />
+    <Folder Include="DTO\Search\" />
     <Folder Include="Scripts\cldr\" />
     <Folder Include="Scripts\globalize\" />
     <Folder Include="Scripts\KnockoutHelpers\" />
