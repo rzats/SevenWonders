@@ -299,7 +299,7 @@
     <Content Include="Content\Countries\Index.css" />
     <Content Include="Content\creative.css" />
     <Content Include="Content\creative.min.css" />
-    <Content Include="Content\CustomerCabinet\Customer.css" />
+    <Content Include="Content\CustomerCabinet\Index.css" />
     <Content Include="Content\CustomersManagement\Index.css" />
     <Content Include="Content\Flights\FlightShortInfo.css" />
     <Content Include="Content\Hotels\HotelShortInfo.css" />

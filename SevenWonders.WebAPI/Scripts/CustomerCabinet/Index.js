@@ -1,150 +1,135 @@
-﻿function getErrors(responce) {
-    var errors = [];
-    var errorsString = "";
-    if (responce != null) {
-        var modelState = responce.ModelState;
-        for (var key in modelState) {
-            if (modelState.hasOwnProperty(key)) {
-                for (var i = 0; i < modelState[key].length; i++) {
-                    errorsString = (errorsString == "" ? "" : errorsString + "<br/>") + modelState[key][i];
-                    errors.push(modelState[key][i]);
-                }
-            }
-        }
+﻿function CustomerViewModel() {
+	var self = this;
 
-    }
-    return errorsString;
+	self.firstName = ko.observable("");
+	self.lastName = ko.observable("");
+	self.dateOfBirth = ko.observable("");
+	self.phoneNumber = ko.observable("");
+	self.email = ko.observable("");
+	self.discount = ko.observable("");
+
+	self.loadCustomer = function () {
+		$.ajax({
+			type: "GET",
+			url: "../api/CustomerCabinet/GetCurrentCustomer",
+			success: function (data) {
+				self.firstName(data.FirstName);
+				self.lastName(data.LastName);
+
+				var bits = (data.DateOfBirth).split(/\D/);
+				var dateOfBirth = bits[0] + "-" + bits[1] + "-" + bits[2];
+				self.dateOfBirth(dateOfBirth);
+
+				self.phoneNumber(data.PhoneNumber);
+				self.email(data.Email);
+				self.discount(data.Discount);
+			},
+			error: function (err) {
+				console.log(err);
+			}
+		});
+	}
+	self.loadCustomer();
+	self.showEditCustomerModal = function () {
+		$('#editCustomerModal').modal();
+		editCustomerViewModel.passModel(self);
+	}
 }
+var customerViewModel = new CustomerViewModel();
+ko.applyBindings(customerViewModel, $("#customerDetails")[0]); 
 
+ko.validation.rules['isEmailUnique'] = {
+	validator: function (email) {
+		var isValid = true;
+		$.ajax({
+			async: false,
+			url: '../api/CustomerCabinet/IsEmailValid',
+			type: 'Get',
+			data: { email:email },
+			success: function (response) {
+				isValid = response === true;
+			},
+			error: function () {
+				isValid = false;
+			}
+		});
+		return isValid;
+	},
+	message: 'The Number is not unique.'
+}; 
 ko.validation.init({
-    errorElementClass: "wrong-field",
-    decorateElement: true,
-    errorClass: 'wrong-field'
-}, true);
+	insertMessages: true,
+	messagesOnModified: true,
+	errorClass: 'validationMessage'
+});
+function EditCustomerViewModel() {
+	var self = this;
 
-function CustomerViewModel() {
-    var self = this;
-    self.validateNow = ko.observable(false);
+	self.firstName = ko.observable("").extend({ required: true, minLength: 4, maxLength: 20 });
+	self.lastName = ko.observable("").extend({ required: true, minLength: 4, maxLength: 20 });
+	self.dateOfBirth = ko.observable("").extend({ required: true});
+	self.phoneNumber = ko.observable("").extend({
+		required: true,
+		pattern: {
+			message: 'Phone number should contain only digits',
+			params: '^[0-9]+$'
+		},
+		minLength: 9,
+		maxLength:  14			
+	});
+	self.email = ko.observable("").extend({
+		required: true, email: true,
+		isEmailUnique: {
+			params: self.Id,
+			message: 'Email should be unique!'
+		} });
 
-    self.firstName = ko.observable("").extend({
-        required: {
-            message: "First name cannot be empty!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        }
-    });
-    self.lastName = ko.observable("").extend({
-        required: {
-            message: "Last name cannot be empty!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        }
-    });
-    self.dateOfBirth = ko.observable("").extend({
-        required: {
-            message: "Date of birth cannot be empty!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        }
-    });
-    self.phoneNumber = ko.observable("").extend({
-        required: {
-            message: "Phone number cannot be empty!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        }, pattern: {
-            message: 'Phone number should contain only digits',
-            params: '^[0-9]+$',
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        },
-        minLength: {
-            params: 9,
-            message: "Phone number should consist of 9 to 14 digits!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        },
-        maxLength: {
-            params: 14,
-            message: "Phone number should consist of 9 to 14 digits!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        }
-    });
-    self.email = ko.observable("").extend({
-        required: {
-            message: "Email cannot be empty!",
-            onlyIf: function () {
-                return self.validateNow();
-            }
-        },
-        email: true
-    });
-    self.discount = ko.observable("");
+	self.errors = ko.observable();
 
-    self.errors = ko.observable();
-    self.errors = ko.validation.group(self);
+	self.passModel = function (data) {
+		self.firstName(data.firstName());
+		self.lastName(data.lastName());
+		self.dateOfBirth(data.dateOfBirth());
 
-    $.ajax({
-        type: "GET",
-        url: "../api/CustomerCabinet/GetCurrentCustomer",
-        success: function (data) {
-            self.firstName(data.FirstName);
-            self.lastName(data.LastName);
+		self.phoneNumber(data.phoneNumber());
+		self.email(data.email());
 
-            var bits = (data.DateOfBirth).split(/\D/);
-            var dateOfBirth = bits[0] + "-" + bits[1] + "-" + bits[2];
-            self.dateOfBirth(dateOfBirth);
-
-            self.phoneNumber(data.PhoneNumber);
-            self.email(data.Email);
-            self.discount(data.Discount);
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
-    self.changeCustomer = function () {
-        self.validateNow(true);
-        if (self.errors().length === 0) {
-            $.ajax({
-                type: "POST",
-                url: "../api/CustomerCabinet/EditCustomer",
-                data:
-                   {
-                       FirstName: self.firstName,
-                       LastName: self.lastName,
-                       DateOfBirth: self.dateOfBirth,
-                       PhoneNumber: self.phoneNumber,
-                       Email: self.email
-                   },
-                success: function () {
-                    window.location.href = "#/home";
-                },
-                error: function (err) {
-                    console.log(getErrors(err.responseJSON));
-                    $('#editServerErrors').show();
-                    $('#editServerErrorsString').html(getErrors(err.responseJSON));
-                }
-            });
-        }
-        else {
-            alert('errors');
-        }
-    }
-
-    self.showEditCustomerMadal = function () {
-        
-    }
+		self.errors = ko.validation.group(self, { deep: true });
+		self.errors.showAllMessages(false);
+	}
+	self.changeCustomer = function () {
+		self.errors = ko.validation.group(self, { deep: true });
+		if (self.errors().length === 0) {
+			$.ajax({
+				type: "POST",
+				url: "../api/CustomerCabinet/EditCustomer",
+				data:
+				{
+					FirstName: self.firstName,
+					LastName: self.lastName,
+					DateOfBirth: self.dateOfBirth,
+					PhoneNumber: self.phoneNumber,
+					Email: self.email
+				},
+				success: function () {
+					$('#editCustomerModal').modal('hide');
+					customerViewModel.loadCustomer();
+				},
+				error: function (err) {
+					console.log(getErrors(err.responseJSON));
+					$('#editServerErrors').show();
+					$('#editServerErrorsString').html(getErrors(err.responseJSON));
+				}
+			});
+		}
+		else {
+			self.errors.showAllMessages(true);
+		}
+	}
 }
-ko.applyBindings(new CustomerViewModel(), $("#personalInfo")[0]); 
+var editCustomerViewModel = new EditCustomerViewModel();
+ko.applyBindings(editCustomerViewModel, $("#editCustomerModal")[0]); 
+
 
 function ToursTableViewModel() {
 	var self = this;
