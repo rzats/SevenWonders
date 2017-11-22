@@ -2,8 +2,8 @@
 using SevenWonders.Interfaces;
 using SevenWonders.ViewModels;
 using System.Collections.Generic;
-using SevenWonders.WebAPI.Models;
 using SevenWonders.DAL.Context;
+using SevenWonders.WebAPI;
 
 namespace SevenWonders.Models
 {

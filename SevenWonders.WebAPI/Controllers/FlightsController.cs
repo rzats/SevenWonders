@@ -3,7 +3,6 @@ using SevenWonders.DAL.Context;
 using SevenWonders.Models;
 using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Flights;
-using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -35,6 +34,7 @@ namespace SevenWonders.WebAPI.Controllers
             .Skip(pageIndex * pageSize)
             .Take(pageSize);
 
+            var kk = data.ToList();
             List<FlightModel> flights = new List<FlightModel>();
             data.ToList().ForEach(x =>
               {
@@ -163,7 +163,7 @@ namespace SevenWonders.WebAPI.Controllers
                     FlightId = flightId,
                     DepartureTime = x.DepartureTime.Value,
                     ArrivalTime = x.ArrivalTime.Value,
-                    DayOfWeek = (DayOfWeek)x.DayOfWeek
+                    DayOfWeek = x.DayOfWeek
                 };
                 db.Schedule.Add(item);
             });
@@ -184,7 +184,7 @@ namespace SevenWonders.WebAPI.Controllers
                         var item = schedules.FirstOrDefault(s => s.Id == x.Id);
                         x.ArrivalTime = item.ArrivalTime.Value;
                         x.DepartureTime = item.DepartureTime.Value;
-                        x.DayOfWeek = (DayOfWeek)item.DayOfWeek;
+                        x.DayOfWeek = item.DayOfWeek;
                         db.Entry(x).State = EntityState.Modified;
                     });
             };

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using SevenWonders.WebAPI.Models;
 using SevenWonders.Models;
 using SevenWonders.ViewModels;
 using System;
@@ -11,6 +10,7 @@ using System.Net.Http;
 using System.Web.Http;
 using SevenWonders.DAL.Context;
 using SevenWonders.WebAPI.DTO.Cities;
+using SevenWonders.WebAPI;
 
 namespace SevenWonders.Controllers
 {

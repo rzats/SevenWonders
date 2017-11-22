@@ -1,5 +1,5 @@
 ﻿
-using SevenWonders.WebAPI.Models;
+using SevenWonders.WebAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;

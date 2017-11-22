@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
-using SevenWonders.WebAPI.Models;
+using SevenWonders.WebAPI;
 
 namespace SevenWonders.Models
 {

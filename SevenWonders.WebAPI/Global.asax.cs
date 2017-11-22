@@ -4,6 +4,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Http;
 using Newtonsoft.Json;
+using System.Data.Entity;
+using SevenWonders.DAL.Context;
 
 namespace SevenWonders.WebAPI
 {

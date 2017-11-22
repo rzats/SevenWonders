@@ -2,7 +2,6 @@
 using SevenWonders.DAL.Context;
 using SevenWonders.Interfaces;
 using SevenWonders.Models;
-using SevenWonders.WebAPI.Models;
 using SevenWonders.WebAPI.ViewModels;
 using System.Data.Entity;
 using System.Linq;
@@ -41,7 +40,7 @@ namespace SevenWonders.WebAPI.Controllers
                 return Ok();
             }
 
-            return BadRequest(ModelState);
+            return BadRequest();
         }
 
         [HttpPost]

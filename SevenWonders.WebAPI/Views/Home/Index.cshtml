@@ -36,6 +36,7 @@
 					<li><a href="#/cities">Cities</a></li>
 					<li><a href="#/airports">Airports</a></li>
 					<li><a href="#/flights">Flights</a></li>
+					<li><a href="#/tours">Tours</a></li>
 					@*<li>@Html.ActionLink("Countries", "Index", "Countries")</li>
 					<li>@Html.ActionLink("Managers", "SearchManagers", "Admin")</li>*@
 
@@ -152,6 +153,9 @@
 
 			this.get('#/airports', function () {
 				this.partial('/Views/Airports/Index.html');
+			});
+			this.get('#/tours', function () {
+				this.partial('/Views/ToursManagement/Index.html');
 			});
 			
         });
