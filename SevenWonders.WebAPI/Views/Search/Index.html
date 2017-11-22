@@ -3,65 +3,49 @@
 		<div class="header-content-inner">
 			<h1 id="homeHeading">Find the best deal for you</h1>
 			<hr>
-			<div id="searchForm">
-				<div class="form-group col-md-6">
-					<label class="control-label col-md-4"> From: </label>
+			<div id="searchForm" >
+				<div class="form-group col-md-6" >
+					<label class="control-label col-md-4" style="text-align:right;"> From: </label>
 					<div class="col-md-8" align="center">
-						<select class="form-control dropdownlist" id="countryFrom" style="width:100%; max-width:300px"
-								onchange="FillCity($('#countryFrom').val(), '#cityFrom')"></select>
+                        <select class="form-control" data-bind="options: Countries, optionsText: 'Name', optionsValue: 'Id', value: CountryFrom, optionsCaption: 'Choose departure country'"></select>
 					</div>
 					<div class="col-md-8 col-md-offset-4" align="center">
-						<select class="form-control col-md-6 dropdownlist" id="cityFrom" style="width:100%; max-width:300px"></select>
+                        <select class="form-control" data-bind="options: CitiesFrom, optionsText: 'Name', optionsValue: 'Id', value: CityFrom, optionsCaption: 'Choose departure city'"></select>
 					</div>
 				</div>
-
 				<div class="form-group col-md-6">
-					<label class="control-label col-md-4"> To: </label>
+					<label class="control-label col-md-4" style="text-align:right;"> To: </label>
 					<div class="col-md-8" align="center">
-						<select class="form-control dropdownlist" id="countryTo" style="width:100%; max-width:300px"
-								onchange="FillCity($('#countryTo').val(), '#cityTo')"></select>
+                        <select class="form-control" data-bind="options: Countries, optionsText: 'Name', optionsValue: 'Id', value: CountryTo, optionsCaption: 'Choose arrival country'"></select>
 					</div>
 					<div class="col-md-8 col-md-offset-4" align="center">
-						<select class="form-control col-md-6 dropdownlist" id="cityTo" style="width:100%; max-width:300px"
-								onchange="FillHotel($('#cityTo').val())"></select>
+                        <select class="form-control" data-bind="options: CitiesTo, optionsText: 'Name', optionsValue: 'Id', value: CityTo, optionsCaption: 'Choose arrival city'"></select>
 					</div>
 				</div>
-
 				<div class="form-group col-md-12">
 					<label class="control-label col-md-4  col-md-offset-2 text-right"> People: </label>
 					<div class="col-md-4" align="center">
-						<input style="width:100%; max-width:300px"
-							   class="form-control"
-							   min="1"
-							   type="number" id="peopleNumber">
-						<br />
+                        <input type="number" min="1" max="99" class="form-control" data-bind="value: People" placeholder="Enter seats amount">
 					</div>
 				</div>
-
 				<div class="form-group col-md-12">
 					<label class="control-label col-md-4  col-md-offset-2 text-right"> Departure day: </label>
 					<div class="col-md-4" align="center">
-						<input style="width:100%; max-width:300px"
-							   class="form-control"
-							   type="date" id="departureDay">
-						<br />
+                        <input type="date" class="form-control" data-bind="value: DepartureDay">
 					</div>
 				</div>
-
 				<div class="form-group col-md-12">
 					<label class="control-label col-md-4  col-md-offset-2 text-right"> Duration, days: </label>
 					<div class="col-md-4" align="center">
-						<input style="width:100%; max-width:300px"
-							   class="form-control"
-							   min="1"
-							   type="number" id="duration">
-						<br />
+                        <input type="number" min="1" max="99" class="form-control" data-bind="value: Duration" placeholder="Enter duration">
 					</div>
-				</div>
+				</div>				
 
-				<button id="btnSearch" type="submit" class="btn btn-primary col-md-6 col-md-offset-3" onClick="searchTours()" style="display:none;"><span class="glyphicon glyphicon-search"></span>Search</button>
-				<button type="button" class="btn btn-primary col-md-6 col-md-offset-3" onClick="validateForm()"><span class="glyphicon glyphicon-search"></span>Search</button>
-
+                <div class="form-group col-md-12" >
+                    <br />
+                    <button type="button" class="btn btn-primary" data-bind="click: submitSearch" align="center" style="width:150px; text-align:center;">
+                    <span class="glyphicon glyphicon-search"></span>Search</button>
+                </div>		
 			</div>
 		</div>
 	</div>
@@ -126,5 +110,8 @@
 	</div>
 </section>
 
-<script src="../../Scripts/jquery-1.12.4.min.js"></script>
-<script src="../../Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" src="../../Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
+<script type="text/javascript" src="../../Scripts/Search/Index.js"></script>

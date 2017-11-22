@@ -231,6 +231,8 @@
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
+    <Compile Include="DTO\Search\RoomForSearchModel.cs" />
+    <Compile Include="DTO\Search\TourForSearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
     <Compile Include="DTO\ToursManagement\TourModel.cs" />
     <Compile Include="DTO\Utils.cs" />
@@ -588,6 +590,7 @@
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Hotels\HotelShortInfo.html" />
     <Content Include="Views\Search\Index.html" />
+    <Content Include="Views\Search\Tours.html" />
     <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -624,7 +627,7 @@
     <Folder Include="Content\img\Hotels\Hotel_9\" />
     <Folder Include="Content\img\Rooms\Room73\" />
     <Folder Include="Content\img\Rooms\Room74\" />
-    <Folder Include="DTO\Search\" />
+    <Folder Include="DTO\Rooms\" />
     <Folder Include="Scripts\cldr\" />
     <Folder Include="Scripts\globalize\" />
     <Folder Include="Scripts\KnockoutHelpers\" />
