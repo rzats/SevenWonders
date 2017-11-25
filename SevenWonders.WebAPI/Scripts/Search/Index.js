@@ -1,17 +1,23 @@
-﻿function SearchViewModel() {
-    debugger;
+﻿ko.validation.init({
+    insertMessages: false,
+    decorateInputElement: true,
+    messagesOnModified: true,
+    errorClass: 'validationMessage'
+});
+
+function SearchViewModel() {
     var self = this;
     self.Countries = ko.observableArray([]);
     self.CitiesFrom = ko.observableArray([]);
     self.CitiesTo = ko.observableArray([]);
 
-	self.CountryFrom = ko.observable();
+    self.CountryFrom = ko.observable().extend({ required: true });;
 	self.CityFrom = ko.observable();
-	self.CountryTo = ko.observable();
+    self.CountryTo = ko.observable().extend({ required: true });;
 	self.CityTo = ko.observable();
-	self.People = ko.observable();
-	self.DepartureDay = ko.observable();
-	self.Duration = ko.observable();
+    self.People = ko.observable().extend({ required: true });;
+    self.DepartureDay = ko.observable().extend({ required: true });;
+    self.Duration = ko.observable().extend({ required: true });;
 
 	self.loadCountries = function () {
 		$.ajax("../api/Countries/GetCountries", {
@@ -25,7 +31,6 @@
     self.loadCountries();
 
     self.loadCityFrom = function () {
-        debugger;
         $.ajax("../api/Cities/GetCities", {
             type: "get",
             data: {
@@ -38,7 +43,6 @@
         });
     }
     self.loadCityTo = function () {
-        debugger;
         $.ajax("../api/Cities/GetCities", {
             type: "get",
             data: {
@@ -51,9 +55,23 @@
         });
     }
 
-	self.submitSearch = function () {
-		self.updateViewModel();
-		$('#editFlightModal').modal();
+    self.errors = ko.observable();
+    self.submitSearch = function () {
+        self.errors = ko.validation.group(self, { deep: true });
+        if (self.errors().length === 0) {
+            debugger;
+            var href= "#/booking?countryFrom=" + self.CountryFrom()
+                + (self.CityFrom() != undefined ? "&cityFrom=" + self.CityFrom() : "") 
+                + "&countryTo=" + self.CountryTo()
+                + (self.CityTo() != undefined ? "&cityTo=" + self.CityTo() : "")
+                + "&people=" + self.People()
+                + "&departureDate=" + self.DepartureDay()
+                + "&duration=" + self.Duration()
+            window.location.href = href;
+        }
+        else {
+            self.errors.showAllMessages(true);
+        }
     }
 
     self.CountryFrom.subscribe(function () {
@@ -64,5 +82,9 @@
     });
 }
 var searchViewModel = new SearchViewModel();
-
 ko.applyBindings(searchViewModel);
+
+$(document).ready(function () {
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("DepartureDay")[0].setAttribute('min', today);
+});

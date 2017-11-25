@@ -18,20 +18,20 @@ namespace SevenWonders.WebAPI.Controllers
         public IHttpActionResult GetHotelShortInfo(int id)
         {
             var data = db.Hotels.FirstOrDefault(x => x.Id == id);
-            var hotel = convertToTourModel(data);
+            var hotel = convertToHotelModel(data);
 
             return Ok(hotel);
         }
 
-        private HotelShortInfoModel convertToTourModel(Hotel hotel)
+        private HotelShortInfoModel convertToHotelModel(Hotel hotel)
         {
-            var ll = new List<HotelPhotoModel>();
-            ll.Add(new HotelPhotoModel()
+            var ll = new List<PhotoModel>();
+            ll.Add(new PhotoModel()
             {
                 Id = 1,
                 PhotoLink = "../../Content/img/Hotels/Hotel10/2.jpg"
             });
-            ll.Add(new HotelPhotoModel()
+            ll.Add(new PhotoModel()
             {
                 Id = 1,
                 PhotoLink = "../../Content/img/Hotels/Hotel10/1.jpg"

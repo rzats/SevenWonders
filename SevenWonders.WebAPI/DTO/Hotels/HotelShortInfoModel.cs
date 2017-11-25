@@ -15,6 +15,6 @@ namespace SevenWonders.WebAPI.DTO.Hotels
         public string City { get; set; }
         public string Address { get; set; }
         public List<string> Facilities { get; set; }
-        public List<HotelPhotoModel> HotelPhotos { get; set; }
+        public List<PhotoModel> HotelPhotos { get; set; }
     }
 }

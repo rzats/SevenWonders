@@ -113,7 +113,10 @@
 			});
 			this.get('#/tours', function () {
 				this.partial('/Views/ToursManagement/Index.html');
-			});
+            });
+            this.get('#/booking', function () {
+                this.partial('/Views/Search/Booking.html');
+            });
         });
         $(function () {
             app.run('#/home');

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SevenWonders.WebAPI.DTO.Hotels
 {
-    public class HotelPhotoModel
+    public class PhotoModel
     {
         public int Id { get; set; }
         public string PhotoLink { get; set; }

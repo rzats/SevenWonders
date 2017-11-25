@@ -231,7 +231,7 @@
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
-    <Compile Include="DTO\Search\RoomForSearchModel.cs" />
+    <Compile Include="DTO\Search\RoomShortInfoModel.cs" />
     <Compile Include="DTO\Search\TourForSearchModel.cs" />
     <Compile Include="DTO\Security.cs" />
     <Compile Include="DTO\ToursManagement\TourModel.cs" />
@@ -421,6 +421,7 @@
     <Content Include="Content\Flights\Index.css" />
     <Content Include="Content\ManagersManagement\Index.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Search\Index.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
@@ -574,6 +575,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
     <Content Include="Scripts\sammy-0.7.5.min.js" />
+    <Content Include="Scripts\Search\Booking.js" />
     <Content Include="Scripts\Search\Index.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
@@ -589,8 +591,8 @@
     <Content Include="Views\Flights\FlightShortInfo.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Hotels\HotelShortInfo.html" />
+    <Content Include="Views\Search\Booking.html" />
     <Content Include="Views\Search\Index.html" />
-    <Content Include="Views\Search\Tours.html" />
     <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

@@ -18,6 +18,8 @@ namespace SevenWonders.WebAPI.DTO.Search
 
         public HotelShortInfoModel Hotel { get; set; }
         public FlightShortInfoModel Flights { get; set; }
-        public List<RoomForSearchModel> Rooms { get; set; }
+        public List<RoomShortInfoModel> Rooms { get; set; }
+
+        public TourForSearchModel() { }
     }
 }
