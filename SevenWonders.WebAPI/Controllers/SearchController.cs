@@ -22,66 +22,60 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetTours(
             int countryFrom,
-            int? cityFrom,
             int countryTo,
-            int? cityTo, 
             int people,
             DateTime departureDate,
-            int duration)
+            int duration,
+            int? cityFrom=null, 
+            int? cityTo = null)
         {
-            try
+            var citiesFrom = db.Cities.Where(x => x.CountryId == countryFrom && !x.IsDeleted).ToList();
+            if (cityFrom.HasValue)
+                citiesFrom = citiesFrom.Where(x => x.Id == cityFrom).ToList();
+
+            var citiesTo = db.Cities.Where(x => x.CountryId == countryTo && !x.IsDeleted).ToList();
+            if (cityTo.HasValue)
+                citiesTo = citiesTo.Where(x => x.Id == cityTo).ToList();
+
+            var availableTours = new List<TourForSearchModel>();
+
+            foreach (var tempCityFrom in citiesFrom)
             {
-                var citiesFrom = db.Cities.Where(x => x.CountryId == countryFrom && !x.IsDeleted).ToList();
-                if (cityFrom.HasValue)
-                    citiesFrom = citiesFrom.Where(x => x.Id == cityFrom).ToList();
-
-                var citiesTo = db.Cities.Where(x => x.CountryId == countryTo && !x.IsDeleted).ToList();
-                if (cityTo.HasValue)
-                    citiesTo = citiesTo.Where(x => x.Id == cityTo).ToList();
-
-                var availableTours = new List<TourForSearchModel>();
-
-                foreach (var tempCityFrom in citiesFrom)
+                foreach (var tempCityTo in citiesTo)
                 {
-                    foreach (var tempCityTo in citiesTo)
+                    if (tempCityFrom.Id != tempCityTo.Id)
                     {
-                        if (tempCityFrom.Id != tempCityTo.Id)
+                        var availableSchedulesDeparture = availableSchedules(tempCityFrom.Id, tempCityTo.Id, people, departureDate);
+                        var availableSchedulesArrival = availableSchedules(tempCityTo.Id, tempCityFrom.Id, people, departureDate.AddDays(duration));
+                        var availableRooms = this.availableRooms(tempCityTo.Id, people, departureDate, duration);
+
+
+                        var bestScheduleDeparture = availableSchedulesDeparture.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+                        var bestScheduleArrival = availableSchedulesArrival.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+
+                        var hotelForTours = availableRooms.GroupBy(x => x.HotelId).ToDictionary(x => x.Key, x => x.ToList());
+                        foreach (var hotelModel in hotelForTours)
                         {
-                            var availableSchedulesDeparture = availableSchedules(tempCityFrom.Id, tempCityTo.Id, people, departureDate);
-                            var availableSchedulesArrival = availableSchedules(tempCityTo.Id, tempCityFrom.Id, people, departureDate.AddDays(duration));
-                            var availableRooms = this.availableRooms(tempCityTo.Id, people, departureDate, duration);
-
-
-                            var bestScheduleDeparture = availableSchedulesDeparture.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
-                            var bestScheduleArrival = availableSchedulesArrival.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
-
-                            var hotelForTours = availableRooms.GroupBy(x => x.HotelId).ToDictionary(x => x.Key, x => x.ToList());
-                            foreach (var hotelModel in hotelForTours)
+                            var hotel = db.Hotels.Find(hotelModel.Key.Value);
+                            var newTour = new TourForSearchModel()
                             {
-                                var hotel = db.Hotels.Find(hotelModel.Key.Value);
-                                var newTour = new TourForSearchModel()
-                                {
-                                    People = people,
-                                    DepartureDate = departureDate,
-                                    ArrivaleDate = departureDate.AddDays(duration),
-                                    DepartureScheduleId = bestScheduleDeparture.Id,
-                                    ArrivalScheduleId = bestScheduleArrival.Id,
-                                    Hotel = convertToHotelShortInfoModel(hotel),
-                                    Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
-                                    Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
-                                };
-                                availableTours.Add(newTour);
-                            }
+                                People = people,
+                                Duration = duration,
+                                DepartureDate = departureDate,
+                                ArrivaleDate = departureDate.AddDays(duration),
+                                DepartureScheduleId = bestScheduleDeparture.Id,
+                                ArrivalScheduleId = bestScheduleArrival.Id,
+                                Hotel = convertToHotelShortInfoModel(hotel),
+                                Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
+                                Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
+                            };
+                            availableTours.Add(newTour);
                         }
-
                     }
+
                 }
-                return Ok(availableTours);
             }
-            catch(Exception ex)
-            {
-                return Ok();
-            }
+            return Ok(availableTours);
         }
 
         private List<Room> availableRooms(int cityId, int people, DateTime departureDate, int duration)
@@ -125,7 +119,7 @@ namespace SevenWonders.WebAPI.Controllers
             else leaveFlightArrivalTime = leaveDate.ToShortDateString() + " "
                + leaveSchedule.ArrivalTime.ToShortTimeString();
 
-            var returnFlightDepartureTime =returnDate.ToShortDateString() + " "
+            var returnFlightDepartureTime = returnDate.ToShortDateString() + " "
                 + returnSchedule.DepartureTime.ToShortTimeString();
 
             var returnFlightArrivalTime = "";
@@ -136,6 +130,8 @@ namespace SevenWonders.WebAPI.Controllers
                + returnSchedule.ArrivalTime.ToShortTimeString();
             return new FlightShortInfoModel()
             {
+                LeaveFlightId = leaveSchedule.Flight.Id,
+                LeaveFlightPrice = leaveSchedule.Flight.Price,
                 LeaveFlightNumber = leaveSchedule.Flight.Number,
                 LeaveFlightAirplaneModel = leaveSchedule.Flight.Airplane.Model,
                 LeaveFlightAirplaneCompany = leaveSchedule.Flight.Airplane.Company,
@@ -148,6 +144,8 @@ namespace SevenWonders.WebAPI.Controllers
                 LeaveFlightArrivalCountry = leaveSchedule.Flight.ArrivalAirport.City.Country.Name,
                 LeaveFlightArrivalTime = DateTime.Parse(leaveFlightArrivalTime),
 
+                ReturnFlightId = returnSchedule.Flight.Id,
+                ReturnFlightPrice = returnSchedule.Flight.Price,
                 ReturnFlightNumber = returnSchedule.Flight.Number,
                 ReturnFlightAirplaneModel = returnSchedule.Flight.Airplane.Model,
                 ReturnFlightAirplaneCompany = returnSchedule.Flight.Airplane.Company,
@@ -155,7 +153,7 @@ namespace SevenWonders.WebAPI.Controllers
                 ReturnFlightDepartureCity = returnSchedule.Flight.DepartureAirport.City.Name,
                 ReturnFlightDepartureCountry = returnSchedule.Flight.DepartureAirport.City.Country.Name,
                 ReturnFlightDepartureTime = DateTime.Parse(returnFlightDepartureTime),
-                ReturnFlightArrivalAirport =returnSchedule.Flight.ArrivalAirport.Name,
+                ReturnFlightArrivalAirport = returnSchedule.Flight.ArrivalAirport.Name,
                 ReturnFlightArrivalCity = returnSchedule.Flight.ArrivalAirport.City.Name,
                 ReturnFlightArrivalCountry = returnSchedule.Flight.ArrivalAirport.City.Country.Name,
                 ReturnFlightArrivalTime = DateTime.Parse(returnFlightArrivalTime),
@@ -181,7 +179,9 @@ namespace SevenWonders.WebAPI.Controllers
                 Country = hotel.City.Country.Name,
                 City = hotel.City.Name,
                 Address = hotel.Adress,
-                HotelPhotos = ll
+                HotelPhotos = ll,
+                FoodType = hotel.FoodType.Name,
+                FoodPrice = hotel.FoodPrice
             };
         }
         private RoomShortInfoModel convertToRoomShortInfoModel(Room room)
@@ -194,7 +194,7 @@ namespace SevenWonders.WebAPI.Controllers
                 Price = room.Price,
                 WindowView = room.WindowView,
                 Equipments = room.Equipments.Select(x => x.Name).ToList(),
-                RoomsPhotos = room.RoomsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.photoLink }).ToList()
+                RoomPhotos = room.RoomsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.photoLink }).ToList()
             };
         }
     }

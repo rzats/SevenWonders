@@ -14,6 +14,6 @@ namespace SevenWonders.WebAPI.DTO.Rooms
         public string WindowView { get; set; }
         public decimal Price { get; set; }
         public List<string> Equipments { get; set; }
-        public virtual List<PhotoModel> RoomsPhotos { get; set; }
+        public virtual List<PhotoModel> RoomPhotos { get; set; }
     }
 }

@@ -7,6 +7,8 @@ namespace SevenWonders.WebAPI.DTO.Flights
 {
     public class FlightShortInfoModel
     {
+        public int LeaveFlightId { get; set; }
+        public decimal LeaveFlightPrice { get; set; }
         public string LeaveFlightNumber { get; set; }
         public string LeaveFlightAirplaneModel { get; set; }
         public string LeaveFlightAirplaneCompany { get; set; }
@@ -19,6 +21,8 @@ namespace SevenWonders.WebAPI.DTO.Flights
         public string LeaveFlightArrivalCountry { get; set; }
         public DateTime LeaveFlightArrivalTime { get; set; }
 
+        public int ReturnFlightId { get; set; }
+        public decimal ReturnFlightPrice { get; set; }
         public string ReturnFlightNumber { get; set; }
         public string ReturnFlightAirplaneModel { get; set; }
         public string ReturnFlightAirplaneCompany { get; set; }
