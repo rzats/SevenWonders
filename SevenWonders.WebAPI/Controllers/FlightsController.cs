@@ -192,6 +192,64 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public IHttpActionResult GetFlightsShortInfo(int id)
+        {
+            var data = db.Tours.FirstOrDefault(x => x.Id == id).Reservation;
+            var flightsForRegistration = convertToFlightShortInfoModel(data);
+
+            return Ok(flightsForRegistration);
+        }
+        
+        private FlightShortInfoModel convertToFlightShortInfoModel(Reservation reservation)
+        {
+            var leaveFlightDepartureTime = reservation.LeaveDate.ToShortDateString() + " "
+                + reservation.LeaveSchedule.DepartureTime.ToShortTimeString();
+
+            var leaveFlightArrivalTime="";
+            if (reservation.LeaveSchedule.ArrivalTime <= reservation.LeaveSchedule.DepartureTime)
+                leaveFlightArrivalTime = reservation.LeaveDate.AddDays(1).ToShortDateString() + " "
+                + reservation.LeaveSchedule.ArrivalTime.ToShortTimeString();
+            else leaveFlightArrivalTime = reservation.LeaveDate.ToShortDateString() + " "
+               + reservation.LeaveSchedule.ArrivalTime.ToShortTimeString();
+
+            var returnFlightDepartureTime = reservation.ReturnDate.ToShortDateString() + " "
+                + reservation.ReturnSchedule.DepartureTime.ToShortTimeString();
+
+            var returnFlightArrivalTime = "";
+            if (reservation.ReturnSchedule.ArrivalTime <= reservation.ReturnSchedule.DepartureTime)
+                returnFlightArrivalTime = reservation.ReturnDate.AddDays(1).ToShortDateString() + " "
+                + reservation.ReturnSchedule.ArrivalTime.ToShortTimeString();
+            else returnFlightArrivalTime = reservation.ReturnDate.ToShortDateString() + " "
+               + reservation.ReturnSchedule.ArrivalTime.ToShortTimeString();
+            return new FlightShortInfoModel()
+            {
+                LeaveFlightNumber = reservation.LeaveSchedule.Flight.Number,
+                LeaveFlightAirplaneModel = reservation.LeaveSchedule.Flight.Airplane.Model,
+                LeaveFlightAirplaneCompany = reservation.LeaveSchedule.Flight.Airplane.Company,
+                LeaveFlightDepartureAirport = reservation.LeaveSchedule.Flight.DepartureAirport.Name,
+                LeaveFlightDepartureCity = reservation.LeaveSchedule.Flight.DepartureAirport.City.Name,
+                LeaveFlightDepartureCountry = reservation.LeaveSchedule.Flight.DepartureAirport.City.Country.Name,
+                LeaveFlightDepartureTime = DateTime.Parse(leaveFlightDepartureTime),
+                LeaveFlightArrivalAirport = reservation.LeaveSchedule.Flight.ArrivalAirport.Name,
+                LeaveFlightArrivalCity = reservation.LeaveSchedule.Flight.ArrivalAirport.City.Name,
+                LeaveFlightArrivalCountry = reservation.LeaveSchedule.Flight.ArrivalAirport.City.Country.Name,
+                LeaveFlightArrivalTime = DateTime.Parse(leaveFlightArrivalTime),
+
+                ReturnFlightNumber = reservation.ReturnSchedule.Flight.Number,
+                ReturnFlightAirplaneModel = reservation.ReturnSchedule.Flight.Airplane.Model,
+                ReturnFlightAirplaneCompany = reservation.ReturnSchedule.Flight.Airplane.Company,
+                ReturnFlightDepartureAirport = reservation.ReturnSchedule.Flight.DepartureAirport.Name,
+                ReturnFlightDepartureCity = reservation.ReturnSchedule.Flight.DepartureAirport.City.Name,
+                ReturnFlightDepartureCountry = reservation.ReturnSchedule.Flight.DepartureAirport.City.Country.Name,
+                ReturnFlightDepartureTime = DateTime.Parse(returnFlightDepartureTime),
+                ReturnFlightArrivalAirport = reservation.ReturnSchedule.Flight.ArrivalAirport.Name,
+                ReturnFlightArrivalCity = reservation.ReturnSchedule.Flight.ArrivalAirport.City.Name,
+                ReturnFlightArrivalCountry = reservation.ReturnSchedule.Flight.ArrivalAirport.City.Country.Name,
+                ReturnFlightArrivalTime = DateTime.Parse(returnFlightArrivalTime),
+            };
+        }
+
         private FlightModel convertToFlightModel(Flight flight)
         {
             return new FlightModel()

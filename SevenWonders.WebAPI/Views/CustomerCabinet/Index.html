@@ -1,59 +1,254 @@
-﻿<script src="../../Scripts/knockout-3.1.0.js"></script>
-<script src="../../Scripts/knockout.validation.js"></script>
-<script src="../../Scripts/CustomerCabinet/Index.js"></script>
-<link href="../../Content/CustomerCabinet/Customer.css" rel="stylesheet" />
-<br />
-<br />
-<div class="col-md-4">
-</div>
-<div class="container col-md-4">
+﻿<link type="text/css" rel="stylesheet" href="../../Content/CustomerCabinet/Index.css" />
 
-    <div class="well well-sm col-md-9 col-md-offset-1">
-        <form data-bind="submit: changeCustomer">
-            <legend class="text-center"><i class="glyphicon glyphicon-globe"></i> Edit account info!</legend>
+<h3 class="text-center">Customer Cabinet</h3>
+<div class="col-md-10 col-md-offset-1">
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#tours">Tours</a></li>
+		<li><a data-toggle="tab" href="#personalInfo">Pesonal Details</a></li>
+	</ul>
+	<div class="tab-content">
+		<div id="tours" class="tab-pane fade in active">
+			<!-- Hotel info modal -->
+			<div class="modal fade" id="hotelInfoModal" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title text-center">
+								<span data-bind="text: Name"></span>
+								<span>&nbsp;</span>
+								<span data-bind="foreach: new Array(Rating())">
+									<span class="glyphicon glyphicon-star ratingStars"></span>
+								</span>
+							</h4>
+						</div>
+						<div class="modal-body">
+							<div id="hotelInfo"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <div align="center">
-                <div>
-                    <input id="firstName" class="form-control" placeholder="First name" data-bind="value: firstName, validationElement: firstName" />
+			<!-- Flight info modal -->
+			<div class="modal fade" id="flightInfoModal" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title text-center">
+								<span class="glyphicon glyphicon-plane"></span> Flights
+							</h4>
+						</div>
+						<div class="modal-body">
+							<div id="flightInfo"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="mainTable">
+				<br />
+				<!-- Delete tour modal -->
+				<div class="modal fade" id="deleteTourModal" role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title text-center">Tour</h4>
+							</div>
+							<div class="modal-body">
+								<h5 class="text-center">Are you sure you want to delete this tour?</h5>
+							</div>
+							<div class="modal-footer">
+								<hidden data-bind="value: idOfSelectedTour"></hidden>
+								<button type="button" class="btn btn-warning middle-button" data-bind="click: deleteTour">Delete</button>
+								<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div data-bind="foreach: tours">
+					<div class="panel panel-default" style="margin-bottom: 0;">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="panelHeadingItem headCustomerName col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											<h3 class="panel-title">
+												<b>#</b><b data-bind="text:Id"></b>
+											</h3>
+										</div>
+										<div class="panelHeadingItem headCustomerName col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+											<h3 class="panel-title">
+												<b data-bind="visible:TourState==='Registered'" style="color:orange">Registered</b>
+												<b data-bind="visible:TourState==='Paid'" style="color:lightgreen">Paid</b>
+												<b data-bind="visible:TourState==='Done'" style="color:blue">Done</b>
+											</h3>
+										</div>
+										<div class="panelHeadingItem pull-right" style="padding-right:15px;">
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showFlightDetail">
+												<div class="glyphicon glyphicon-plane"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showHotelDetail">
+												<div class="glyphicon glyphicon-bed"></div>
+											</button>
+											<button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: $parent.showModalDeleteTour">
+												<div class="glyphicon glyphicon-remove"></div>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="panelItem col-xs-12 col-sm-7 col-md-7 col-lg-7">
+											<table class="table table-hover table-bordered">
+												<tbody>
+													<tr>
+														<td><b>Leave date: </b> <span data-bind="text:LeaveDate"></span></td>
+														<td><b>Return date: </b> <span data-bind="text:ReturnDate"></span></td>
+													</tr>
+													<tr>
+														<td>
+															<b>Departure: </b>
+															<span data-bind="text:DepartureAirportCode"></span>
+															(<span data-bind="text:DepartureAirportCity"></span>,
+															<span data-bind="text:DepartureAirportCountry"></span>)
+														</td>
+														<td>
+															<b>Arrival: </b>
+															<span data-bind="text:ArrivalAirportCode"></span>
+															(<span data-bind="text:ArrivalAirportCity"></span>,
+															<span data-bind="text:ArrivalAirportCountry"></span>)
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="panelItem col-xs-12 col-sm-5 col-md-5 col-lg-5">
+											<div>
+												<b>Hotel: </b> <span data-bind="text:HotelName"></span>
+											</div>
+
+											<br />
+											<div>
+												<b>Order date: </b> <span data-bind="text:OrderDate"></span>
+											</div>
+											<div class="alert alert-success">
+												<div style="float: right; margin-top:-10px;"><b>Total price: </b>$<span data-bind="text:Price"></span></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+				</div>
+				<div class="row" data-bind="visible: pageCount()>1">
+					<div class="col-sm-5">
+						<div class="dataTables_info" id="managersTable_info" role="status" aria-live="polite">
+							Showing <span data-bind="text: indexOfFirst"></span> to <span data-bind="text: indexOfLast"></span> of <span data-bind="text: dataCount"></span> entries
+						</div>
+					</div>
+					<div class="col-sm-7">
+						<ul class="pagination">
+							<li class="page-item">
+								<a class="page-link" data-bind="click: previousPage, css: {'disabled': pageIndex()<=0}">Previous</a>
+							</li>
+						</ul>
+						<ul class="pagination" data-bind="foreach: allPages">
+							<li class="page-item" data-bind="css: { active: $data.pageNumber == ($parent.pageIndex()+1) }">
+								<a href="#" class="page-link" data-bind="text: $data.pageNumber, click: function() { $parent.moveToPage($data.pageNumber-1); }"></a>
+							</li>
+						</ul>
+						<ul class="pagination">
+							<li class="page-item">
+								<a class="page-link" data-bind="click: nextPage, css: {'disabled': pageIndex() >= pageCount()-1}">Next</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="personalInfo" class="tab-pane fade">
+            <br />
+			<!-- Edit customer modal-->
+			<div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title text-center"> Edit account info</h4>
+						</div>
+						<div class="modal-body">
+							<div align="center">
+								<div class="form-group">
+									<label for="firstName">First name: </label>
+									<input id="text" type="text" class="form-control" data-bind="value: firstName" placeholder="Enter first name">
+								</div>
+								<div class="form-group">
+									<label for="lastName">Last name</label>
+									<input type="text" class="form-control" data-bind="value: lastName" placeholder="Enter last name">
+								</div>
+								<div class="form-group">
+									<label for="dateOfBirth">Date Of Birth</label>
+									<input type="date" class="form-control" data-bind="value: dateOfBirth" placeholder="Enter date of birth">
+								</div>
+								<div class="form-group">
+									<label for="phoneNumber">Phone Number</label>
+									<input type="text" maxlength="15" class="form-control" data-bind="value: phoneNumber" placeholder="Enter phone number">
+								</div>
+								<div class="form-group">
+									<label for="email">Email</label>
+									<input type="email" maxlength="15" class="form-control" data-bind="value: email" placeholder="Enter email">
+								</div>								
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-warning middle-button" data-bind="click: changeCustomer">Save</button>
+							<button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="panel panel-default" style="margin-bottom: 0;" id="customerDetails">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="panelHeadingItem headCustomerName col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4 text-center">
+                            <h3 class="panel-title">
+                                <b data-bind="text:firstName"></b>&nbsp;
+                                <b data-bind="text:lastName"></b>
+                            </h3>
+                        </div>
+                        <div class="panelHeadingItem pull-right" style="padding-right:15px;">
+                            <button class="btn btn-xs" type="button" style="padding:5px" data-bind="click: showEditCustomerModal">
+                                <div class="glyphicon glyphicon-pencil"></div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <br />
-                <div>
-                    <input id="lastName" class="form-control" placeholder="Last name" data-bind="value: lastName" />
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="panelItem">
+                            <table class="table table-hover table-bordered" style="max-width:800px;" align="center">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Phone number: </b> <span data-bind="text:phoneNumber"></span></td>
+                                        <td><b>Date of birth: </b> <span data-bind="text:dateOfBirth"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Email: </b> <span data-bind="text:email"></span></td>
+                                        <td><b>Discount: </b> <span data-bind="text:discount"></span>%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <br />
-                <div>
-                    <input id="dateOfBirth" class="form-control datepicker" placeholder="Date of birth" type="datetime" data-bind="value: dateOfBirth" />
-                </div>
-                <br />
-                <div>
-                    <input id="phoneNumber" class="form-control" placeholder="Phone number" type="text" data-bind="value: phoneNumber" />
-                </div>
-                <br />
-                <div>
-                    <input id="email" class="form-control" placeholder="Email" type="email" data-bind="value: email" />
-                </div>
-                <br />
-                <div id="editServerErrors" style="display:none; color:red">
-                    <b id="editServerErrorsString" style="color:red">  </b>
-                </div>
-                <br />
             </div>
-            <div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change data</button>
-                </div>
-            </div>
-        </form>
-    </div>
+		</div>
+	</div>
 </div>
 
-<link href="../../Content/themes/base/all.css" rel="stylesheet" />
-<script src="../../Scripts/jquery-ui-1.12.0.js"></script>
-<script>
-    $(document).ready(function () {
-        $(function () {
-            var $j = jQuery.noConflict();
-            $j(".datepicker").datepicker();
-        });
-    });
-</script>
+<script type="text/javascript" src="../../Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
+<script src="../../Scripts/sammy-0.7.5.js"></script>
+<script type="text/javascript" src="../../Scripts/CustomerCabinet/Index.js"></script>
