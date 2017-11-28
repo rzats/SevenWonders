@@ -25,17 +25,6 @@ namespace SevenWonders.WebAPI.Controllers
 
         private HotelShortInfoModel convertToHotelModel(Hotel hotel)
         {
-            var ll = new List<PhotoModel>();
-            ll.Add(new PhotoModel()
-            {
-                Id = 1,
-                PhotoLink = "../../Content/img/Hotels/Hotel10/2.jpg"
-            });
-            ll.Add(new PhotoModel()
-            {
-                Id = 1,
-                PhotoLink = "../../Content/img/Hotels/Hotel10/1.jpg"
-            });
             return new HotelShortInfoModel()
             {
                 Id = hotel.Id,
@@ -48,7 +37,7 @@ namespace SevenWonders.WebAPI.Controllers
                 Country = hotel.City.Country.Name,
                 City = hotel.City.Name,
                 Address = hotel.Adress,
-                HotelPhotos = ll
+                HotelPhotos = hotel.HotelsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.PhotoLink }).ToList(),
             };
         }
     }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace SevenWonders.WebAPI.DTO
+namespace SevenWonders.WebAPI.DTO.Managers
 {
     public class ManagerEditModel
     {

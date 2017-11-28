@@ -231,14 +231,15 @@
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
     <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
-    <Compile Include="DTO\Search\RoomShortInfoModel.cs" />
+    <Compile Include="DTO\Hotels\RoomShortInfoModel.cs" />
+    <Compile Include="DTO\Search\TourForBookingModel.cs" />
     <Compile Include="DTO\Search\TourForSearchModel.cs" />
-    <Compile Include="DTO\Security.cs" />
+    <Compile Include="DTO\Account\Security.cs" />
     <Compile Include="DTO\ToursManagement\TourModel.cs" />
-    <Compile Include="DTO\Utils.cs" />
-    <Compile Include="DTO\WorkWithAutorizedPerson.cs" />
-    <Compile Include="DTO\WorkWithCustomer.cs" />
-    <Compile Include="DTO\WorkWithManager.cs" />
+    <Compile Include="DTO\Account\Utils.cs" />
+    <Compile Include="DTO\Account\WorkWithAutorizedPerson.cs" />
+    <Compile Include="DTO\Account\WorkWithCustomer.cs" />
+    <Compile Include="DTO\Account\WorkWithManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -302,6 +303,7 @@
     <Content Include="Content\CustomersManagement\Index.css" />
     <Content Include="Content\Flights\FlightShortInfo.css" />
     <Content Include="Content\Hotels\HotelShortInfo.css" />
+    <Content Include="Content\Hotels\RoomShortInfo.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\17661561.jpg" />
@@ -421,6 +423,7 @@
     <Content Include="Content\Flights\Index.css" />
     <Content Include="Content\ManagersManagement\Index.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Search\Booking.css" />
     <Content Include="Content\Search\Index.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.min.css" />
@@ -505,6 +508,7 @@
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\Hotels\HotelShortInfo.js" />
+    <Content Include="Scripts\Hotels\RoomShortInfo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -591,6 +595,7 @@
     <Content Include="Views\Flights\FlightShortInfo.html" />
     <Content Include="Views\Flights\Index.html" />
     <Content Include="Views\Hotels\HotelShortInfo.html" />
+    <Content Include="Views\Hotels\RoomShortInfo.html" />
     <Content Include="Views\Search\Booking.html" />
     <Content Include="Views\Search\Index.html" />
     <Content Include="Views\ToursManagement\Index.html" />
@@ -629,7 +634,6 @@
     <Folder Include="Content\img\Hotels\Hotel_9\" />
     <Folder Include="Content\img\Rooms\Room73\" />
     <Folder Include="Content\img\Rooms\Room74\" />
-    <Folder Include="DTO\Rooms\" />
     <Folder Include="Scripts\cldr\" />
     <Folder Include="Scripts\globalize\" />
     <Folder Include="Scripts\KnockoutHelpers\" />

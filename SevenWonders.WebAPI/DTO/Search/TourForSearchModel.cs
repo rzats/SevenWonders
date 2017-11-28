@@ -1,6 +1,5 @@
 ﻿using SevenWonders.WebAPI.DTO.Flights;
 using SevenWonders.WebAPI.DTO.Hotels;
-using SevenWonders.WebAPI.DTO.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

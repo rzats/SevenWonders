@@ -59,7 +59,6 @@ function SearchViewModel() {
     self.submitSearch = function () {
         self.errors = ko.validation.group(self, { deep: true });
         if (self.errors().length === 0) {
-            debugger;
             var href= "#/booking?countryFrom=" + self.CountryFrom()
                 + (self.CityFrom() != undefined ? "&cityFrom=" + self.CityFrom() : "") 
                 + "&countryTo=" + self.CountryTo()

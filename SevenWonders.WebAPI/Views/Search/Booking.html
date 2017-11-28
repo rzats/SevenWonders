@@ -1,4 +1,4 @@
-﻿<h2 class="text-center" id="foundedTours">Choose the best tour for you</h2>
+﻿<link type="text/css" rel="stylesheet" href="../../Content/Search/Booking.css" />
 
 <!-- Hotel info modal -->
 <div class="modal fade" id="hotelInfoModal" role="dialog">
@@ -38,128 +38,153 @@
     </div>
 </div>
 
-
-<div id="toursForSearchTable" data-bind="foreach: tours">
-    <div class="col-md-10 col-md-offset-1 hotelsInfo">
-        <div class="col-md-5" style="margin-top:3%;">
-            <div data-bind="if: Hotel().HotelPhotos.length>0">               
-                <img data-bind="attr: {src:Hotel().HotelPhotos[0].PhotoLink}" class="img-rounded img-responsive" />
+<!-- Room info modal -->
+<div class="modal fade" id="roomInfoModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">
+                    <span data-bind="text: RoomType"></span>
+                </h4>
             </div>
-            <div data-bind="if: Hotel().HotelPhotos.length===0">
-                <img src="../../Content/img/default.png" class="img-responsive" />
-            </div>
-        </div>
-        <div class="col-md-7" style="margin-top:1%;">
-            <div class="row">
-                <div class="col-md-9">
-                    <h3>
-                        <span data-bind="text: Hotel().Name"></span>
-                        <span data-bind="foreach: new Array(Hotel().Rating)">
-                            <span class="glyphicon glyphicon-star ratingStars"></span>
-                        </span>
-                    </h3>
-                    <div>
-                        <span class="glyphicon glyphicon-map-marker toursGlyphicons"></span> <b>Hotel location: </b>
-                        <span data-bind="text: Hotel().Address"></span>
-                    </div>
-                    <div>
-                        <span class="glyphicon glyphicon-cutlery toursGlyphicons"></span> <b>Food type: </b>
-                        <span data-bind="text: Hotel().FoodType"></span>
-                    </div>
-                   <br />  
-                    
-                    <div>
-                        <span class="glyphicon glyphicon-arrow-right toursGlyphicons"></span> <b>Flight: </b>
-                        <span data-bind="text: Flights().LeaveFlightNumber"></span>&nbsp;
-                        <span data-bind="text: Flights().LeaveFlightDepartureCity"></span> -
-                        <span data-bind="text: Flights().LeaveFlightArrivalCity"></span>
-                    </div>
-
-                    <div>
-                        <span class="glyphicon glyphicon-arrow-left toursGlyphicons"></span> <b>Flight: </b>
-                        <span data-bind="text: Flights().ReturnFlightNumber"></span>&nbsp;
-                        <span data-bind="text: Flights().ReturnFlightDepartureCity"></span> -
-                        <span data-bind="text: Flights().ReturnFlightArrivalCity"></span>
-                    </div>
-                    <br />
-
-                    <div>
-                        <span class="glyphicon glyphicon-user toursGlyphicons"></span> <b>People: </b>
-                        <span data-bind="text: People"></span>
-                    </div>
-                    <div>
-                        <span class="glyphicon glyphicon-calendar toursGlyphicons"></span> <b>Leave date: </b>
-                        <span data-bind="text: DepartureDate"></span>
-                    </div>
-                    <div>
-                        <span class="glyphicon glyphicon-calendar toursGlyphicons"></span> <b>Return date: </b>
-                        <span data-bind="text: ArrivaleDate"></span>
-                    </div>                    
-                </div>
-                <div class="col-md-3">
-                    <div>
-                        <h3>
-                            From:
-                            <span data-bind="text: minPrice"></span>$
-                        </h3>
-                    </div>
-                </div>
+            <div class="modal-body">
+                <div id="roomInfo"></div>
             </div>
         </div>
-        <div class="col-md-12"  style="padding-bottom: 10px;">
-            <br />
-            <button type="button" class="btn btn-default" data-bind="click: showFlightDetail" ><span class="glyphicon glyphicon-plane"></span> Flights detail</button>
-            <button type="button" class="btn btn-default" data-bind="click: showHotelDetail"><span class="glyphicon glyphicon-home"></span> Hotel detail</button>
-            <div data-bind="foreach: Rooms">
-                <div class="col-md-12 roomsInfo" style="border:groove; margin-top:1%;">
-                    <div>
-                        <strong data-bind="text: RoomType"></strong>
+    </div>
+</div>
+
+<div id="toursForSearchTable">
+    <div class="text-center" data-bind="if: notFound()==true">
+        <h3>Sorry, but we cant find available tour!</h3>
+        <h3> Try to change some information.</h3>
+    </div>
+    <div data-bind="if: notFound()==false">
+        <h2 class="text-center" id="foundedTours">Choose the best tour for you</h2>
+        <div data-bind="foreach: tours">
+            <div class="col-md-10 col-md-offset-1 hotelsInfo">
+                <div class="col-md-5" style="margin-top:3%;">
+                    <div data-bind="if: Hotel().HotelPhotos.length>0">
+                        <img data-bind="attr: {src:Hotel().HotelPhotos[0].PhotoLink}" class="img-rounded img-responsive" />
                     </div>
-                    <div>
-                        <div class="col-md-3" style="padding-bottom:5px;">
-                            <div data-bind="if: RoomPhotos.length>0">
-                                <img data-bind="attr: {src:RoomPhotos[0].PhotoLink}" class="img-rounded img-responsive" />
-                            </div>
-                            <div data-bind="if: RoomPhotos.length===0">
-                                <img src="../../Content/img/default.png" class="img-responsive" />
-                            </div>
-                        </div>                          
-                        <div class="col-md-3">
+                    <div data-bind="if: Hotel().HotelPhotos.length===0">
+                        <img src="../../Content/img/default.png" class="img-responsive" />
+                    </div>
+                </div>
+                <div class="col-md-7" style="margin-top:1%;">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3>
+                                <span data-bind="text: Hotel().Name"></span>
+                                <span data-bind="foreach: new Array(Hotel().Rating)">
+                                    <span class="glyphicon glyphicon-star ratingStars"></span>
+                                </span>
+                            </h3>
                             <div>
-                                <span class="glyphicon glyphicon-picture"></span><b> View: </b>
-                                <span data-bind="text: WindowView"></span>
+                                <span class="glyphicon glyphicon-map-marker toursGlyphicons"></span> <b>Hotel location: </b>
+                                <span data-bind="text: Hotel().Address"></span>
                             </div>
                             <div>
-                                <span class="glyphicon glyphicon-user"></span><b> Persons max number: </b>
-                                <span data-bind="text: MaxPeople"></span>
+                                <span class="glyphicon glyphicon-cutlery toursGlyphicons"></span> <b>Food type: </b>
+                                <span data-bind="text: Hotel().FoodType"></span>
                             </div>
                             <br />
+
+                            <div>
+                                <span class="glyphicon glyphicon-arrow-right toursGlyphicons"></span> <b>Flight: </b>
+                                <span data-bind="text: Flights().LeaveFlightNumber"></span>&nbsp;
+                                <span data-bind="text: Flights().LeaveFlightDepartureCity"></span> -
+                                <span data-bind="text: Flights().LeaveFlightArrivalCity"></span>
+                            </div>
+
+                            <div>
+                                <span class="glyphicon glyphicon-arrow-left toursGlyphicons"></span> <b>Flight: </b>
+                                <span data-bind="text: Flights().ReturnFlightNumber"></span>&nbsp;
+                                <span data-bind="text: Flights().ReturnFlightDepartureCity"></span> -
+                                <span data-bind="text: Flights().ReturnFlightArrivalCity"></span>
+                            </div>
+                            <br />
+
+                            <div>
+                                <span class="glyphicon glyphicon-user toursGlyphicons"></span> <b>People: </b>
+                                <span data-bind="text: People"></span>
+                            </div>
+                            <div>
+                                <span class="glyphicon glyphicon-calendar toursGlyphicons"></span> <b>Leave date: </b>
+                                <span data-bind="text: DepartureDate"></span>
+                            </div>
+                            <div>
+                                <span class="glyphicon glyphicon-calendar toursGlyphicons"></span> <b>Return date: </b>
+                                <span data-bind="text: ArrivaleDate"></span>
+                            </div>
                         </div>
-                        <div data-bind="if: Equipments().length>0">
-                            <div class="col-md-3">
-                                <span class="glyphicon glyphicon-cog"></span><b> Equipment:</b>
-                                <div class="col-md-offset-1" data-bind="foreach: Equipments()">
-                                    -<span data-bind="text: $data"></span>
+                        <div class="col-md-3">
+                            <div>
+                                <h3>
+                                    From:
+                                    <span data-bind="text: minPrice"></span>$
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-bottom: 10px;">
+                    <br />
+                    <button type="button" class="btn btn-default" data-bind="click: showFlightDetail"><span class="glyphicon glyphicon-plane"></span> Flights detail</button>
+                    <button type="button" class="btn btn-default" data-bind="click: showHotelDetail"><span class="glyphicon glyphicon-home"></span> Hotel detail</button>
+                    <div data-bind="foreach: Rooms">
+                        <div class="col-md-12 roomsInfo" style="border:groove; margin-top:1%;">
+                            <div>
+                                <a class="roomTypeLink" data-bind="text: RoomType, click:showRoomDetail"></a>
+                            </div>
+                            <div>
+                                <div class="col-md-3" style="padding-bottom:5px;">
+                                    <div data-bind="if: RoomPhotos.length>0">
+                                        <img data-bind="attr: {src:RoomPhotos[0].PhotoLink}" class="img-rounded img-responsive" />
+                                    </div>
+                                    <div data-bind="if: RoomPhotos.length===0">
+                                        <img src="../../Content/img/default.png" class="img-responsive" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div data-bind="if: WindowView">
+                                        <span class="glyphicon glyphicon-picture"></span><b> View: </b>
+                                        <span data-bind="text: WindowView"></span>
+                                    </div>
+                                    <div>
+                                        <span class="glyphicon glyphicon-user"></span><b> Persons max number: </b>
+                                        <span data-bind="text: MaxPeople"></span>
+                                    </div>
                                     <br />
                                 </div>
+                                <div data-bind="if: Equipments().length>0">
+                                    <div class="col-md-3">
+                                        <span class="glyphicon glyphicon-cog"></span><b> Equipment:</b>
+                                        <div class="col-md-offset-1" data-bind="foreach: Equipments()">
+                                            -<span data-bind="text: $data"></span>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-bind="if: Equipments().length===0">
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div>
+                                        <span class="glyphicon glyphicon-cutlery"></span><b> Food: </b>
+                                        <input type="checkbox" data-bind="checked: includeFood" />
+                                    </div>
+                                    <div>
+                                        <b>Total price: </b>
+                                        <span data-bind="text: priceForRoom"></span>$
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" data-bind="click: bookTour" type="button">Book</button>
+                                </div>
                             </div>
-                        </div>
-                        <div data-bind="if: Equipments().length===0">
-                            <div class="col-md-3">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div>
-                                <span class="glyphicon glyphicon-cutlery"></span><b> Food: </b>
-                                <input type="checkbox" data-bind="checked: includeFood" />
-                            </div>
-                            <div>
-                                <b>Total price: </b>
-                                <span data-bind="text: priceForRoom"></span>$
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <button class="btn btn-primary" type="button">Book</button>
                         </div>
                     </div>
                 </div>
@@ -172,5 +197,5 @@
 <script type="text/javascript" src="../../Scripts/bootstrap.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout-3.1.0.js"></script>
 <script type="text/javascript" src="../../Scripts/knockout.validation.min.js"></script>
-<script src="../../Scripts/sammy-0.7.5.js"></script>
+<script type="text/javascript" src="../../Scripts/sammy-0.7.5.js"></script>
 <script type="text/javascript" src="../../Scripts/Search/Booking.js"></script>

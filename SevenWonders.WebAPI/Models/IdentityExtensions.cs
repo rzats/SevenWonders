@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace SevenWonders.DAL.Context
+namespace SevenWonders.WebAPI.Models
 {
     public static class IdentityExtensions
     {

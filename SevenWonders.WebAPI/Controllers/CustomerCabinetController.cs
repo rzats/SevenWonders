@@ -1,16 +1,11 @@
 ﻿using Microsoft.Owin.Security;
 using SevenWonders.DAL.Context;
-using SevenWonders.Interfaces;
-using SevenWonders.Models;
+using SevenWonders.WebAPI.DTO.Account;
 using SevenWonders.WebAPI.Models;
-using SevenWonders.WebAPI.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System;
-using Microsoft.Owin.Host.SystemWeb;
-using System.Net;
 
 namespace SevenWonders.WebAPI.Controllers
 {

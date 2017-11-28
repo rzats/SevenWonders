@@ -1,8 +1,6 @@
 ﻿using SevenWonders.DAL.Context;
-using SevenWonders.Models;
 using SevenWonders.WebAPI.DTO.Flights;
 using SevenWonders.WebAPI.DTO.Hotels;
-using SevenWonders.WebAPI.DTO.Rooms;
 using SevenWonders.WebAPI.DTO.Search;
 using SevenWonders.WebAPI.Models;
 using System;
@@ -49,33 +47,87 @@ namespace SevenWonders.WebAPI.Controllers
                         var availableSchedulesArrival = availableSchedules(tempCityTo.Id, tempCityFrom.Id, people, departureDate.AddDays(duration));
                         var availableRooms = this.availableRooms(tempCityTo.Id, people, departureDate, duration);
 
-
-                        var bestScheduleDeparture = availableSchedulesDeparture.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
-                        var bestScheduleArrival = availableSchedulesArrival.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
-
-                        var hotelForTours = availableRooms.GroupBy(x => x.HotelId).ToDictionary(x => x.Key, x => x.ToList());
-                        foreach (var hotelModel in hotelForTours)
+                        if (availableSchedulesDeparture != null && availableSchedulesDeparture.Count > 0
+                            && availableSchedulesArrival != null && availableSchedulesArrival.Count > 0
+                            && availableRooms != null && availableRooms.Count > 0)
                         {
-                            var hotel = db.Hotels.Find(hotelModel.Key.Value);
-                            var newTour = new TourForSearchModel()
+                            var bestScheduleDeparture = availableSchedulesDeparture.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+                            var bestScheduleArrival = availableSchedulesArrival.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+
+                            var hotelForTours = availableRooms.GroupBy(x => x.HotelId).ToDictionary(x => x.Key, x => x.OrderBy(y => y.Price));
+                            foreach (var hotelModel in hotelForTours)
                             {
-                                People = people,
-                                Duration = duration,
-                                DepartureDate = departureDate,
-                                ArrivaleDate = departureDate.AddDays(duration),
-                                DepartureScheduleId = bestScheduleDeparture.Id,
-                                ArrivalScheduleId = bestScheduleArrival.Id,
-                                Hotel = convertToHotelShortInfoModel(hotel),
-                                Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
-                                Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
-                            };
-                            availableTours.Add(newTour);
+                                var hotel = db.Hotels.Find(hotelModel.Key.Value);
+                                var newTour = new TourForSearchModel()
+                                {
+                                    People = people,
+                                    Duration = duration,
+                                    DepartureDate = departureDate,
+                                    ArrivaleDate = departureDate.AddDays(duration),
+                                    DepartureScheduleId = bestScheduleDeparture.Id,
+                                    ArrivalScheduleId = bestScheduleArrival.Id,
+                                    Hotel = convertToHotelShortInfoModel(hotel),
+                                    Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
+                                    Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
+                                };
+                                availableTours.Add(newTour);
+                            }
                         }
                     }
 
                 }
             }
-            return Ok(availableTours);
+            availableTours =
+                availableTours.OrderBy(x => x.People * (x.Flights.LeaveFlightPrice + x.Flights.ReturnFlightPrice) + x.Duration * x.Rooms[0].Price)
+                .ToList();
+            if (availableTours.Count != 0)
+            {
+                return Ok(availableTours);
+            }
+            else return Ok();
+        }
+
+        public IHttpActionResult BookTour([FromBody] TourForBookingModel model)
+        {
+            try
+            {
+                Room room = db.Rooms.Find(model.RoomId);
+                Schedule leaveSchedule = db.Schedule.Find(model.LeaveScheduleId);
+                Schedule returnSchedule = db.Schedule.Find(model.ReturnScheduleId);
+                decimal totalPrice
+                    = model.Duration * (room.Price + model.PersonAmount * (model.WithoutFood ? 0 : room.Hotel.FoodPrice))
+                    + model.PersonAmount * (leaveSchedule.Flight.Price + returnSchedule.Flight.Price);
+                Reservation reservation = new Reservation()
+                {
+                    RoomId = model.RoomId,
+                    PersonAmount = model.PersonAmount,
+                    LeaveScheduleId = model.LeaveScheduleId,
+                    ReturnScheduleId = model.ReturnScheduleId,
+                    LeaveDate = model.LeaveDate,
+                    ReturnDate = model.LeaveDate.AddDays(model.Duration),
+                    IsDeleted = false,
+                    WithoutFood = model.WithoutFood
+                };
+                Tour tour = new Tour()
+                {
+                    Reservation = reservation,
+                    ReservationId = reservation.Id,
+                    CreationDate = DateTime.Now,
+                    TotalPrice = totalPrice,
+                    TourStateId = 1,
+                    IsDeleted = false,
+                    CustomerId = getCustomer(User.Identity.Name).Id
+                };
+
+                db.Reservations.Add(tour.Reservation);
+                db.Tours.Add(tour);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                int i = 1 + 1;
+            }
+            return Ok();
         }
 
         private List<Room> availableRooms(int cityId, int people, DateTime departureDate, int duration)
@@ -87,7 +139,8 @@ namespace SevenWonders.WebAPI.Controllers
                                             && !x.IsDeleted
                                             && !x.Hotel.IsDeleted).ToList();
 
-            var availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && (departureDate >= y.ReturnDate || arrivalDate <= y.LeaveDate))).ToList();
+            var availableRooms = new List<Room>();
+            availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && (departureDate >= y.ReturnDate || arrivalDate <= y.LeaveDate))).ToList();
             return availableRooms.ToList();
         }
         private List<Schedule> availableSchedules(int cityDepartureId, int cityArrivalId, int people, DateTime date)
@@ -107,6 +160,10 @@ namespace SevenWonders.WebAPI.Controllers
             return availableSchedules.ToList();
         }
 
+        private Customer getCustomer(string email)
+        {
+            return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
+        }
         private FlightShortInfoModel convertToFlightShortInfoModel(Schedule leaveSchedule, Schedule returnSchedule, DateTime leaveDate, DateTime returnDate)
         {
             var leaveFlightDepartureTime = leaveDate.ToShortDateString() + " "
@@ -161,12 +218,6 @@ namespace SevenWonders.WebAPI.Controllers
         }
         private HotelShortInfoModel convertToHotelShortInfoModel(Hotel hotel)
         {
-            var ll = new List<PhotoModel>();
-            ll.Add(new PhotoModel()
-            {
-                Id = 1,
-                PhotoLink = "../../Content/img/Hotels/Hotel10/1.jpg"
-            });
             return new HotelShortInfoModel()
             {
                 Id = hotel.Id,
@@ -179,7 +230,7 @@ namespace SevenWonders.WebAPI.Controllers
                 Country = hotel.City.Country.Name,
                 City = hotel.City.Name,
                 Address = hotel.Adress,
-                HotelPhotos = ll,
+                HotelPhotos = hotel.HotelsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.PhotoLink }).ToList(),
                 FoodType = hotel.FoodType.Name,
                 FoodPrice = hotel.FoodPrice
             };

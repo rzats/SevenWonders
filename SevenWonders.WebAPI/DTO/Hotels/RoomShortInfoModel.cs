@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SevenWonders.WebAPI.DTO.Rooms
+namespace SevenWonders.WebAPI.DTO.Hotels
 {
     public class RoomShortInfoModel
     {

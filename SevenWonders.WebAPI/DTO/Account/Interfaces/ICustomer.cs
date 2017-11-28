@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace SevenWonders.Interfaces
+namespace SevenWonders.WebAPI.DTO.Account.Interfaces
 {
     interface ICustomer : IAuthorizedPerson
-    {
-        
+    {       
     }
 }

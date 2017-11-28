@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.Models;
 using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Flights;
 using SevenWonders.WebAPI.Models;
@@ -8,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SevenWonders.WebAPI.Controllers

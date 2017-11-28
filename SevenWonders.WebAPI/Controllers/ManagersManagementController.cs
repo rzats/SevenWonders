@@ -1,18 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.Models;
-using SevenWonders.ViewModels;
 using SevenWonders.WebAPI.DTO;
+using SevenWonders.WebAPI.DTO.Account;
+using SevenWonders.WebAPI.DTO.Managers;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
-namespace SevenWonders.Controllers
+namespace SevenWonders.WebAPI.Controllers
 {
     public class ManagersManagementController : ApiController
     {

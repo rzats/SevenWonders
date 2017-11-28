@@ -9,8 +9,14 @@
             this.partial('/Views/Flights/FlightShortInfo.html');
         });
     });
+    var app3 = $.sammy('#roomInfo', function () {
+        this.get('#/booking', function () {
+            this.partial('/Views/Hotels/RoomShortInfo.html');
+        });
+    });
     app1.run('#/booking');
     app2.run('#/booking');
+    app3.run('#/booking');
 })(jQuery);
 
 function parseUrl() {
@@ -41,7 +47,7 @@ function RoomViewModel(tour) {
     self.includeFood = ko.observable();
     self.priceForRoom = ko.computed(function () {
         if (self.includeFood())
-            return tour.People() * (tour.Flights().LeaveFlightPrice + tour.Flights().ReturnFlightPrice) + tour.Duration() * (self.Price() + tour.Hotel().FoodPrice);           
+            return tour.People() * (tour.Flights().LeaveFlightPrice + tour.Flights().ReturnFlightPrice) + tour.Duration() * (self.Price() + tour.Hotel().FoodPrice * tour.People());           
         else return tour.People() * (tour.Flights().LeaveFlightPrice + tour.Flights().ReturnFlightPrice) + tour.Duration() * self.Price();
     }, self);
 
@@ -55,8 +61,30 @@ function RoomViewModel(tour) {
         self.RoomPhotos(room.RoomsPhotos);
         self.includeFood(true);
     }
+    self.showRoomDetail = function () {
+        roomShortInfoViewModel.updateViewModel(self)
+        $('#roomInfoModal').modal();
+    }
+    self.bookTour = function(){
+        var model = {
+            PersonAmount: tour.People(),
+            LeaveDate: tour.DepartureDate(),
+            Duration: tour.Duration(),
+            RoomId: self.Id(),
+            LeaveScheduleId: tour.DepartureScheduleId(),
+            ReturnScheduleId: tour.ArrivalScheduleId(),
+            WithoutFood: self.includeFood()
+        };
+        $.ajax("../api/Search/BookTour", {
+            type: "post",
+            data: JSON.stringify(model),
+            contentType: "application/json",
+            success: function (result) {
+                debugger;
+            }
+        });
+    }
 }
-
 function TourViewModel() {
     var self = this;
     self.People = ko.observable();
@@ -102,10 +130,11 @@ function TourViewModel() {
         $('#flightInfoModal').modal();
     };
 }
-
 function ToursListViewModel() {
     var self = this;
     self.tours = ko.observableArray([]);
+    self.notFound = ko.observable();
+
     self.loadTours = function () {
         var parameters = parseUrl();
         $.ajax("../api/Search/GetTours", {
@@ -114,17 +143,23 @@ function ToursListViewModel() {
             contentType: "application/json",
             success: function (result) 
             {
-                self.tours([]);
-                result.forEach(function (item, i, result) {
-                    var bits = (item.DepartureDate).split(/\D/);
-                    item.DepartureDate = bits[0] + "-" + bits[1] + "-" + bits[2];
-                    bits = (item.ArrivaleDate).split(/\D/);
-                    item.ArrivaleDate = bits[0] + "-" + bits[1] + "-" + bits[2];
+                if (result === "") {
+                    self.notFound(true);
+                }
+                else {
+                    self.notFound(false);
+                    self.tours([]);
+                    result.forEach(function (item, i, result) {
+                        var bits = (item.DepartureDate).split(/\D/);
+                        item.DepartureDate = bits[0] + "-" + bits[1] + "-" + bits[2];
+                        bits = (item.ArrivaleDate).split(/\D/);
+                        item.ArrivaleDate = bits[0] + "-" + bits[1] + "-" + bits[2];
 
-                    var tour = new TourViewModel();
-                    tour.updateModel(item);
-                    self.tours.push(tour);
-                });                          
+                        var tour = new TourViewModel();
+                        tour.updateModel(item);
+                        self.tours.push(tour);
+                    });
+                }
             }
         });
     }
@@ -139,4 +174,7 @@ function HotelBind() {
 }
 function FlightBind() {
     ko.applyBindings(flightShortInfoViewModel, document.getElementById("flightInfoModal"));
+}
+function RoomBind() {
+    ko.applyBindings(roomShortInfoViewModel, document.getElementById("roomInfoModal"));
 }

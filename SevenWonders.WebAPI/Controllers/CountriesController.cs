@@ -1,18 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using SevenWonders.WebAPI.Models;
-using SevenWonders.Models;
-using SevenWonders.ViewModels;
-using System;
-using System.Collections.Generic;
+﻿using SevenWonders.WebAPI.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using SevenWonders.DAL.Context;
-using SevenWonders.WebAPI.DTO.Cities;
+using SevenWonders.WebAPI.DTO.Countries;
 
-namespace SevenWonders.Controllers
+namespace SevenWonders.WebAPI.Controllers
 {
     public class CountriesController : ApiController
     {
