@@ -18,8 +18,10 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetToursForManager(int pageIndex, int pageSize)
         {
-            //List<Tour> data = db.Tours.Where(t => t.Reservation.Room.Hotel.City.Country.Manager.Id == manager.Id && !t.IsDeleted).ToList();
-            var data = db.Tours.Where(t => !t.IsDeleted);
+            var email = User.Identity.Name;
+            var manager = getManager(email);
+
+            var data = db.Tours.Where(t => t.Reservation.Room.Hotel.City.Country.Manager.Id == manager.Id && !t.IsDeleted);
 
             int dataCount = data.Count();
             data = data.OrderByDescending(x => x.CreationDate)
@@ -151,8 +153,11 @@ namespace SevenWonders.WebAPI.Controllers
 
         private Customer getCustomer(string email)
         {
-            return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
+            return db.Customers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
         }
-
+        private Manager getManager(string email)
+        {
+            return db.Managers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Account;
 using SevenWonders.WebAPI.DTO.Managers;
+using SevenWonders.WebAPI.DTO.Shared;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetManager(int Id)
         {
-            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
+            var countries = db.Coutries.Where(c => !c.IsDeleted && c.ManagerId==null).ToList();
             var managerCountriesIds = countries.Where(x => x.ManagerId == Id).Select(x => x.Id).ToList();
             WorkWithManager workWithManager = new WorkWithManager();
             var manager = workWithManager.GetFullManager(db, Id);

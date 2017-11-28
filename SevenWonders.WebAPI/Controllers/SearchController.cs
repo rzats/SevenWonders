@@ -69,7 +69,7 @@ namespace SevenWonders.WebAPI.Controllers
                                     Hotel = convertToHotelShortInfoModel(hotel),
                                     Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
                                     Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
-                                };
+                            };
                                 availableTours.Add(newTour);
                             }
                         }
@@ -82,11 +82,17 @@ namespace SevenWonders.WebAPI.Controllers
                 .ToList();
             if (availableTours.Count != 0)
             {
-                return Ok(availableTours);
+                return Ok(new
+                {
+                    tours = availableTours,
+                    isCustomer = User.IsInRole("customer")
+                });
             }
             else return Ok();
         }
 
+        [Authorize(Roles = "customer")]
+        [HttpPost]
         public IHttpActionResult BookTour([FromBody] TourForBookingModel model)
         {
             try
@@ -140,7 +146,7 @@ namespace SevenWonders.WebAPI.Controllers
                                             && !x.Hotel.IsDeleted).ToList();
 
             var availableRooms = new List<Room>();
-            availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && (departureDate >= y.ReturnDate || arrivalDate <= y.LeaveDate))).ToList();
+            availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && !(departureDate >= y.ReturnDate) && !(arrivalDate <= y.LeaveDate))).ToList();
             return availableRooms.ToList();
         }
         private List<Schedule> availableSchedules(int cityDepartureId, int cityArrivalId, int people, DateTime date)

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Flights;
+using SevenWonders.WebAPI.DTO.Shared;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;

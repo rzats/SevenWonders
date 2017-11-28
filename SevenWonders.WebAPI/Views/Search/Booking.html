@@ -134,6 +134,24 @@
                     <button type="button" class="btn btn-default" data-bind="click: showFlightDetail"><span class="glyphicon glyphicon-plane"></span> Flights detail</button>
                     <button type="button" class="btn btn-default" data-bind="click: showHotelDetail"><span class="glyphicon glyphicon-home"></span> Hotel detail</button>
                     <div data-bind="foreach: Rooms">
+                        <!-- Booking confirmation modal -->
+                        <div class="modal fade" id="bookingConfirmationModal" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title text-center">Booking confirmation</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5 class="text-center">Are you sure you want to book this tour?</h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-warning middle-button" data-bind="click: bookTour">Submit</button>
+                                        <button type="button" class="btn middle-button" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12 roomsInfo" style="border:groove; margin-top:1%;">
                             <div>
                                 <a class="roomTypeLink" data-bind="text: RoomType, click:showRoomDetail"></a>
@@ -182,7 +200,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-1">
-                                    <button class="btn btn-primary" data-bind="click: bookTour" type="button">Book</button>
+                                    <button class="btn btn-primary" data-bind="click: showBookModal, css: {'disabled': $root.isCustomer()==false}" type="button">Book</button>
                                 </div>
                             </div>
                         </div>

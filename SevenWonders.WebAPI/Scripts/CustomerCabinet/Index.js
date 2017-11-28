@@ -155,7 +155,7 @@ function ToursTableViewModel() {
 	}, self);
 
 	self.loadTable = function () {
-		$.ajax("../api/ToursManagement/GetToursForManager", {
+		$.ajax("../api/ToursManagement/GetToursForCustomer", {
 			type: "get",
 			data: {
 				pageIndex: self.pageIndex(),

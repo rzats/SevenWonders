@@ -65,7 +65,10 @@ function RoomViewModel(tour) {
         roomShortInfoViewModel.updateViewModel(self)
         $('#roomInfoModal').modal();
     }
-    self.bookTour = function(){
+    self.showBookModal = function(){
+        $('#bookingConfirmationModal').modal();
+    }
+    self.bookTour = function () {
         var model = {
             PersonAmount: tour.People(),
             LeaveDate: tour.DepartureDate(),
@@ -80,7 +83,7 @@ function RoomViewModel(tour) {
             data: JSON.stringify(model),
             contentType: "application/json",
             success: function (result) {
-                debugger;
+                $('#bookingConfirmationModal').modal('hide');
             }
         });
     }
@@ -133,6 +136,7 @@ function TourViewModel() {
 function ToursListViewModel() {
     var self = this;
     self.tours = ko.observableArray([]);
+    self.isCustomer = ko.observable();
     self.notFound = ko.observable();
 
     self.loadTours = function () {
@@ -149,7 +153,9 @@ function ToursListViewModel() {
                 else {
                     self.notFound(false);
                     self.tours([]);
-                    result.forEach(function (item, i, result) {
+                    debugger;
+                    self.isCustomer(result.isCustomer);
+                    result.tours.forEach(function (item, i, result) {
                         var bits = (item.DepartureDate).split(/\D/);
                         item.DepartureDate = bits[0] + "-" + bits[1] + "-" + bits[2];
                         bits = (item.ArrivaleDate).split(/\D/);

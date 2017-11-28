@@ -222,7 +222,7 @@
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
-    <Compile Include="DTO\DropDownListItem.cs" />
+    <Compile Include="DTO\Shared\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
     <Compile Include="DTO\Flights\FlightShortInfoModel.cs" />
