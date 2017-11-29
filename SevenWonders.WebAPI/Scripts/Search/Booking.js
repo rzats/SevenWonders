@@ -84,6 +84,7 @@ function RoomViewModel(tour) {
             contentType: "application/json",
             success: function (result) {
                 $('#bookingConfirmationModal').modal('hide');
+                window.location.href = "#/cabinet";
             }
         });
     }

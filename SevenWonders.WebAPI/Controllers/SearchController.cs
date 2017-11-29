@@ -168,7 +168,7 @@ namespace SevenWonders.WebAPI.Controllers
 
         private Customer getCustomer(string email)
         {
-            return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
+            return db.Customers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
         }
         private FlightShortInfoModel convertToFlightShortInfoModel(Schedule leaveSchedule, Schedule returnSchedule, DateTime leaveDate, DateTime returnDate)
         {

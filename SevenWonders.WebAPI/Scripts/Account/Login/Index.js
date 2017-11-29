@@ -13,7 +13,6 @@
                     RememberMe: rememberMe
                 },
             success: function () {
-                window.location.reload(true);
                 window.location.href = "#/home";
             },
             error: function (err) {

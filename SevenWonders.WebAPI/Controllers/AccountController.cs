@@ -85,18 +85,29 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public IHttpActionResult GetUserRole()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == User.Identity.Name);
+                var role = user.Role;
+                return Ok(role.Name);
+            }
+            else return Ok();
+        }
+
         private T GetPersonByEmail<T>(string email) where T : class, IPerson
         {
             DbSet<T> dbSet = db.Set<T>();
             return dbSet.FirstOrDefault(x => x.Email == email);
         }
-
         private IAuthenticationManager AuthenticationManager
         {
             get
             {
                 return HttpContext.Current.GetOwinContext().Authentication;
             }
-        }
+        }       
     }
 }

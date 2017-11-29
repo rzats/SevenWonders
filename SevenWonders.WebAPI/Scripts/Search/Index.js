@@ -81,7 +81,7 @@ function SearchViewModel() {
     });
 }
 var searchViewModel = new SearchViewModel();
-ko.applyBindings(searchViewModel);
+ko.applyBindings(searchViewModel, document.getElementById("searchForm"));
 
 $(document).ready(function () {
     var today = new Date().toISOString().split('T')[0];

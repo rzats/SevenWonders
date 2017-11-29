@@ -178,4 +178,4 @@ function AirportModifyViewModel() {
 }
 
 var airportModifyViewModel = new AirportModifyViewModel();
-ko.applyBindings(airportModifyViewModel)
+ko.applyBindings(airportModifyViewModel, document.getElementById("airportViewModel"));
