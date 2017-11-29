@@ -150,4 +150,4 @@ function CountryModifyViewModel() {
 }
 
 var countryModifyViewModel = new CountryModifyViewModel();
-ko.applyBindings(countryModifyViewModel)
+ko.applyBindings(countryModifyViewModel, document.getElementById("countryViewModel"))

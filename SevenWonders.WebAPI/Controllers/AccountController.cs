@@ -1,16 +1,13 @@
 ﻿using Microsoft.Owin.Security;
 using SevenWonders.DAL.Context;
-using SevenWonders.Interfaces;
-using SevenWonders.Models;
 using SevenWonders.WebAPI.Models;
-using SevenWonders.WebAPI.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System;
-using Microsoft.Owin.Host.SystemWeb;
-
+using SevenWonders.WebAPI.DTO.Account;
+using SevenWonders.WebAPI.DTO.Account.Interfaces;
 
 namespace SevenWonders.WebAPI.Controllers
 {
@@ -88,6 +85,26 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult LogOut()
+        {
+            var AuthenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            AuthenticationManager.SignOut();
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetUserRole()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == User.Identity.Name);
+                var role = user.Role;
+                return Ok(role.Name);
+            }
+            else return Ok();
+        }
+
         private T GetPersonByEmail<T>(string email) where T : class, IPerson
         {
             DbSet<T> dbSet = db.Set<T>();
@@ -100,6 +117,6 @@ namespace SevenWonders.WebAPI.Controllers
             {
                 return HttpContext.Current.GetOwinContext().Authentication;
             }
-        }
+        }       
     }
 }

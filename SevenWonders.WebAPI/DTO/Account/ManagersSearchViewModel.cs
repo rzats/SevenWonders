@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SevenWonders.ViewModels
+namespace SevenWonders.WebAPI.DTO.Account
 {
     public class SearchViewModel
     {

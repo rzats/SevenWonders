@@ -30,6 +30,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void AddAirport([FromBody]AirportModel model)
         {
             if (ModelState.IsValid)
@@ -66,6 +67,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteAirport([FromBody]int id)
         {
             Airport airport = db.Airports.Find(id);

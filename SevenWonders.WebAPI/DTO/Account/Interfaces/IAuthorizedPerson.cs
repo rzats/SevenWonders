@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SevenWonders.Interfaces
+namespace SevenWonders.WebAPI.DTO.Account.Interfaces
 {
     public interface IAuthorizedPerson : IPerson
     {

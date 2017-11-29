@@ -16,12 +16,16 @@ namespace SevenWonders.WebAPI.Controllers
         SevenWondersContext db = new SevenWondersContext();
 
         [HttpGet]
-        public IHttpActionResult GetCities()
+        public IHttpActionResult GetCities(int? countryId = null)
         {
             var cities = db.Cities.Where(x => !x.IsDeleted && !x.Country.IsDeleted).OrderBy(x=>x.Country.Name).ThenBy(x=>x.Name).ToList();
+            if(countryId.HasValue)
+            {
+                cities = cities.Where(x => x.CountryId == countryId).ToList();
+            }
 
             List<CityModel> result = new List<CityModel>();
-            cities.ToList().ForEach(x =>
+            cities.ForEach(x =>
             {
                 result.Add(convertToCityModel(x));
             });
@@ -29,6 +33,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void AddCity([FromBody]CityModel model)
         {
             if (ModelState.IsValid)
@@ -63,6 +68,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteCity([FromBody]int id)
         {
             City city = db.Cities.Find(id);

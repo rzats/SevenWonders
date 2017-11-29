@@ -1,5 +1,7 @@
 ﻿using SevenWonders.DAL.Context;
-using SevenWonders.Models;
+using SevenWonders.WebAPI.DTO.Flights;
+using SevenWonders.WebAPI.DTO.Hotels;
+using SevenWonders.WebAPI.DTO.Search;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -14,347 +16,243 @@ namespace SevenWonders.WebAPI.Controllers
     public class SearchController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
-        public class ReservationModelJson
+
+        [HttpGet]
+        public IHttpActionResult GetTours(
+            int countryFrom,
+            int countryTo,
+            int people,
+            DateTime departureDate,
+            int duration,
+            int? cityFrom=null, 
+            int? cityTo = null)
         {
-            public int PeopleCount;
-            public String LeaveFlight;
-            public String LeaveDate;
-            public String ReturnFlight;
-            public String ReturnDate;
-            public String FoodType;
-            public int AvailableRoom;
-            public String HotelLocation;
+            var citiesFrom = db.Cities.Where(x => x.CountryId == countryFrom && !x.IsDeleted).ToList();
+            if (cityFrom.HasValue)
+                citiesFrom = citiesFrom.Where(x => x.Id == cityFrom).ToList();
+
+            var citiesTo = db.Cities.Where(x => x.CountryId == countryTo && !x.IsDeleted).ToList();
+            if (cityTo.HasValue)
+                citiesTo = citiesTo.Where(x => x.Id == cityTo).ToList();
+
+            var availableTours = new List<TourForSearchModel>();
+
+            foreach (var tempCityFrom in citiesFrom)
+            {
+                foreach (var tempCityTo in citiesTo)
+                {
+                    if (tempCityFrom.Id != tempCityTo.Id)
+                    {
+                        var availableSchedulesDeparture = availableSchedules(tempCityFrom.Id, tempCityTo.Id, people, departureDate);
+                        var availableSchedulesArrival = availableSchedules(tempCityTo.Id, tempCityFrom.Id, people, departureDate.AddDays(duration));
+                        var availableRooms = this.availableRooms(tempCityTo.Id, people, departureDate, duration);
+
+                        if (availableSchedulesDeparture != null && availableSchedulesDeparture.Count > 0
+                            && availableSchedulesArrival != null && availableSchedulesArrival.Count > 0
+                            && availableRooms != null && availableRooms.Count > 0)
+                        {
+                            var bestScheduleDeparture = availableSchedulesDeparture.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+                            var bestScheduleArrival = availableSchedulesArrival.Aggregate((i1, i2) => i1.Flight.Price < i2.Flight.Price ? i1 : i2);
+
+                            var hotelForTours = availableRooms.GroupBy(x => x.HotelId).ToDictionary(x => x.Key, x => x.OrderBy(y => y.Price));
+                            foreach (var hotelModel in hotelForTours)
+                            {
+                                var hotel = db.Hotels.Find(hotelModel.Key.Value);
+                                var newTour = new TourForSearchModel()
+                                {
+                                    People = people,
+                                    Duration = duration,
+                                    DepartureDate = departureDate,
+                                    ArrivaleDate = departureDate.AddDays(duration),
+                                    DepartureScheduleId = bestScheduleDeparture.Id,
+                                    ArrivalScheduleId = bestScheduleArrival.Id,
+                                    Hotel = convertToHotelShortInfoModel(hotel),
+                                    Flights = convertToFlightShortInfoModel(bestScheduleDeparture, bestScheduleArrival, departureDate, departureDate.AddDays(duration)),
+                                    Rooms = hotelModel.Value.Select(x => convertToRoomShortInfoModel(x)).ToList()
+                            };
+                                availableTours.Add(newTour);
+                            }
+                        }
+                    }
+
+                }
+            }
+            availableTours =
+                availableTours.OrderBy(x => x.People * (x.Flights.LeaveFlightPrice + x.Flights.ReturnFlightPrice) + x.Duration * x.Rooms[0].Price)
+                .ToList();
+            if (availableTours.Count != 0)
+            {
+                return Ok(new
+                {
+                    tours = availableTours,
+                    isCustomer = User.IsInRole("customer")
+                });
+            }
+            else return Ok();
         }
-
-        [Authorize]
-        private int FindCustomerId()
-        {
-            int userId = User.Identity.GetUserId<int>();
-            string userEmail = db.Users.Where(p => p.Id == userId).Select(p => p.Email).FirstOrDefault();
-            return db.Customers.Where(p => p.Email == userEmail).Select(p => p.Id).FirstOrDefault();
-
-        }
-
-
 
         [HttpPost]
-        public List<ReservationModel> SearchTours(SearchModel model)
+        [Authorize(Roles = "customer")]
+        public IHttpActionResult BookTour([FromBody] TourForBookingModel model)
         {
-            string error = "Sorry, but there are no tours, which match to your requirements. Try to change some information.";
-            List<Flight> leaveFlights = FlightsSearch(model.CityFrom, model.CityTo, model.DapartureDay, model.PeopleNumber, true, ref error);
-            List<Flight> returnFlights = FlightsSearch(model.CityTo, model.CityFrom, model.DapartureDay.AddDays(model.Duration), model.PeopleNumber, false, ref error);
-            List<Room> rooms = HotelsSearch(model.CityTo, model.DapartureDay, model.DapartureDay.AddDays(model.Duration), model.PeopleNumber, ref error, model.Hotel, model.FoodType);
-
-
-            List<Reservation> reservations = new List<Reservation>();
-            for (int i = 0; i < leaveFlights.Count; ++i)
-                for (int j = 0; j < returnFlights.Count; ++j)
-                    for (int k = 0; k < rooms.Count; ++k)
-                    {
-                        //Reservation tempReservation = new Reservation();
-                        //tempReservation.LeaveDate = model.DapartureDay;
-                        //tempReservation.ReturnDate = model.DapartureDay.AddDays(model.Duration);
-                        //tempReservation.LeaveSchedule = leaveFlights[i];
-                        //tempReservation.PersonAmount = model.PeopleNumber;
-                        //tempReservation.ReturnSchedule= returnFlights[j];
-                        //tempReservation.Room = rooms[k];
-                        //reservations.Add(tempReservation);
-                    }
-
-            List<ReservationModel> resModels = new List<ReservationModel>();
-            for (int i = 0; i < reservations.Count; ++i)
+            try
             {
-                var appropriateReservation = resModels.Where(p => (p.Hotel.Id == reservations[i].Room.HotelId
-                && p.Reservation.LeaveSchedule.Id == reservations[i].LeaveSchedule.Id
-                && p.Reservation.ReturnSchedule.Id == reservations[i].ReturnSchedule.Id)).FirstOrDefault();
-
-                if (appropriateReservation != null)
+                Room room = db.Rooms.Find(model.RoomId);
+                Schedule leaveSchedule = db.Schedule.Find(model.LeaveScheduleId);
+                Schedule returnSchedule = db.Schedule.Find(model.ReturnScheduleId);
+                decimal totalPrice
+                    = model.Duration * (room.Price + model.PersonAmount * (model.WithoutFood ? 0 : room.Hotel.FoodPrice))
+                    + model.PersonAmount * (leaveSchedule.Flight.Price + returnSchedule.Flight.Price);
+                Reservation reservation = new Reservation()
                 {
-                    bool flag = false;
-                    foreach (var item in appropriateReservation.Rooms)
-                    {
-                        //Check if there are such room in list
-                        //it means that these reservations have different flights 
-                        if (item.Id == reservations[i].RoomId)
-                        {
-                            ReservationModel tempReservModel = new ReservationModel();
-                            tempReservModel.Duration = model.Duration;
-                            tempReservModel.Reservation = reservations[i];
-                            tempReservModel.Rooms.Add(reservations[i].Room);
-                            tempReservModel.Hotel = reservations[i].Room.Hotel;
-                            tempReservModel.TotalPrices.Add(0);
-                            tempReservModel.PricesWithoutFood.Add(0);
-                            tempReservModel.FoodInclude.Add(true);
-                            tempReservModel.Food = true;
-                            resModels.Add(tempReservModel);
-                            flag = true;
-                            break;
-                        }
-                    }
-                    //If there  are not such room in list, then we will add it
-                    if (flag == false)
-                    {
-                        appropriateReservation.Rooms.Add(reservations[i].Room);
-                        appropriateReservation.TotalPrices.Add(0);
-                        appropriateReservation.PricesWithoutFood.Add(0);
-                        appropriateReservation.FoodInclude.Add(true);
-                        appropriateReservation.Food = true;
-
-                    }
-                }
-                //if list doesn't contain item with such hotel
-                else
+                    RoomId = model.RoomId,
+                    PersonAmount = model.PersonAmount,
+                    LeaveScheduleId = model.LeaveScheduleId,
+                    ReturnScheduleId = model.ReturnScheduleId,
+                    LeaveDate = model.LeaveDate,
+                    ReturnDate = model.LeaveDate.AddDays(model.Duration),
+                    IsDeleted = false,
+                    WithoutFood = model.WithoutFood
+                };
+                Tour tour = new Tour()
                 {
-                    ReservationModel tempReservModel = new ReservationModel();
-                    tempReservModel.Duration = model.Duration;
-                    tempReservModel.Reservation = reservations[i];
-                    tempReservModel.Rooms.Add(reservations[i].Room);
-                    tempReservModel.Hotel = reservations[i].Room.Hotel;
-                    tempReservModel.TotalPrices.Add(0);
-                    tempReservModel.PricesWithoutFood.Add(0);
-                    tempReservModel.FoodInclude.Add(true);
-                    tempReservModel.Food = true;
-                    resModels.Add(tempReservModel);
-                }
+                    Reservation = reservation,
+                    ReservationId = reservation.Id,
+                    CreationDate = DateTime.Now,
+                    TotalPrice = totalPrice,
+                    TourStateId = 1,
+                    IsDeleted = false,
+                    CustomerId = getCustomer(User.Identity.Name).Id
+                };
+
+                db.Reservations.Add(tour.Reservation);
+                db.Tours.Add(tour);
+                db.SaveChanges();
             }
-            resModels = PricesCalculating(resModels);
-
-            if (model.PriceFrom != 0 || model.PriceTo != 0)
-                resModels = PriceRangeReservations(resModels, model.PriceFrom, model.PriceTo);
-
-            return resModels;
+            catch (Exception ex)
+            {
+                int i = 1 + 1;
+            }
+            return Ok();
         }
 
-        [HttpGet]
-        public List<City> GetCities(int countryId)
+        private List<Room> availableRooms(int cityId, int people, DateTime departureDate, int duration)
         {
-            var cities = db.Cities.Where(c => (c.IsDeleted == false && c.Country.Id == countryId)).OrderBy(p => p.Name);
+            DateTime arrivalDate = departureDate.AddDays(duration);
+            var reservations = db.Tours.Where(x => !x.IsDeleted).Select(x => x.Reservation).Where(x => !x.IsDeleted).ToList();
+            var allRooms = db.Rooms.Where(x => x.Hotel.CityId == cityId
+                                            && x.MaxPeople >= people
+                                            && !x.IsDeleted
+                                            && !x.Hotel.IsDeleted).ToList();
 
-            var responce = cities.ToList();
-            return responce;
+            var availableRooms = new List<Room>();
+            availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && !(departureDate >= y.ReturnDate) && !(arrivalDate <= y.LeaveDate))).ToList();
+            return availableRooms.ToList();
+        }
+        private List<Schedule> availableSchedules(int cityDepartureId, int cityArrivalId, int people, DateTime date)
+        {
+            var reservations = db.Tours.Where(x => !x.IsDeleted).Select(x => x.Reservation).Where(x => !x.IsDeleted).ToList();
+            var allSchedules = db.Schedule.Where(x => x.Flight.DepartureAirport.CityId == cityDepartureId 
+                                            && x.Flight.ArrivalAirport.CityId == cityArrivalId
+                                            && x.DayOfWeek == date.DayOfWeek
+                                            && !x.IsDeleted
+                                            && !x.Flight.IsDeleted
+                                            && !x.Flight.ArrivalAirport.IsDeleted
+                                            && !x.Flight.DepartureAirport.IsDeleted).ToList();
+            var availableSchedules = allSchedules.Where(x => (x.Flight.Airplane.SeatsAmount
+            - reservations.Where(y => y.LeaveDate.Date == date && y.LeaveScheduleId == x.Id).Sum(y => y.PersonAmount)
+            - reservations.Where(y => y.ReturnDate.Date == date && y.ReturnScheduleId == x.Id).Sum(y => y.PersonAmount)) > 0).ToList() ;
+
+            return availableSchedules.ToList();
         }
 
-        [HttpGet]
-        public List<Hotel> GetHotels(int cityId)
+        private Customer getCustomer(string email)
         {
-            var hotels = db.Hotels.Where(c => (c.IsDeleted == false && c.City.Id == cityId))
-                           .OrderBy(p => p.Name);
-
-            return hotels.ToList();
+            return db.Customers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
         }
-
-        private List<ReservationModel> PricesCalculating(List<ReservationModel> list)
+        private FlightShortInfoModel convertToFlightShortInfoModel(Schedule leaveSchedule, Schedule returnSchedule, DateTime leaveDate, DateTime returnDate)
         {
-            for (int i = 0; i < list.Count; ++i)
-            {
-                int hotelId = list[i].Hotel.Id;
-                var extraPrices = db.ExtraPrices.Where(p => p.Hotel.Id == hotelId);
-                for (var j = list[i].Reservation.LeaveDate; j < list[i].Reservation.ReturnDate; j = j.AddDays(1))
-                {
-                    var extraPricesInDay = extraPrices.Where(p => (j >= p.StartDate && j <= p.EndDate)).ToList();
-                    int percent = 0;
-                    if (extraPricesInDay != null && extraPricesInDay.Count != 0)
-                    {
-                        foreach (var item in extraPricesInDay)
-                        {
-                            percent += item.AdditionalPercent;
-                        }
-                    }
-                    for (int k = 0; k < list[i].Rooms.Count; ++k)
-                    {
-                        list[i].TotalPrices[k] += list[i].Rooms[k].Price + list[i].Rooms[k].Price * percent / 100 + list[i].Reservation.PersonAmount * (list[i].Hotel.FoodPrice
-                            + list[i].Reservation.LeaveSchedule.Flight.Price + list[i].Reservation.ReturnSchedule.Flight.Price);
-                        list[i].PricesWithoutFood[k] += list[i].Rooms[k].Price + list[i].Rooms[k].Price * percent / 100 + list[i].Reservation.PersonAmount *
-                            (list[i].Reservation.ReturnSchedule.Flight.Price + list[i].Reservation.ReturnSchedule.Flight.Price);
-                    }
-                    list[i].MinPrice = list[i].PricesWithoutFood.Min();
-                }
-            }
-            return list;
-        }
+            var leaveFlightDepartureTime = leaveDate.ToShortDateString() + " "
+                + leaveSchedule.DepartureTime.ToShortTimeString();
 
-        private List<ReservationModel> PriceRangeReservations(List<ReservationModel> list, int minPrice = 0, int maxPrice = 0)
+            var leaveFlightArrivalTime = "";
+            if (leaveSchedule.ArrivalTime <= leaveSchedule.DepartureTime)
+                leaveFlightArrivalTime = leaveDate.AddDays(1).ToShortDateString() + " "
+                + leaveSchedule.ArrivalTime.ToShortTimeString();
+            else leaveFlightArrivalTime = leaveDate.ToShortDateString() + " "
+               + leaveSchedule.ArrivalTime.ToShortTimeString();
+
+            var returnFlightDepartureTime = returnDate.ToShortDateString() + " "
+                + returnSchedule.DepartureTime.ToShortTimeString();
+
+            var returnFlightArrivalTime = "";
+            if (returnSchedule.ArrivalTime <= returnSchedule.DepartureTime)
+                returnFlightArrivalTime = returnDate.AddDays(1).ToShortDateString() + " "
+                + returnSchedule.ArrivalTime.ToShortTimeString();
+            else returnFlightArrivalTime = returnDate.ToShortDateString() + " "
+               + returnSchedule.ArrivalTime.ToShortTimeString();
+            return new FlightShortInfoModel()
+            {
+                LeaveFlightId = leaveSchedule.Flight.Id,
+                LeaveFlightPrice = leaveSchedule.Flight.Price,
+                LeaveFlightNumber = leaveSchedule.Flight.Number,
+                LeaveFlightAirplaneModel = leaveSchedule.Flight.Airplane.Model,
+                LeaveFlightAirplaneCompany = leaveSchedule.Flight.Airplane.Company,
+                LeaveFlightDepartureAirport = leaveSchedule.Flight.DepartureAirport.Name,
+                LeaveFlightDepartureCity = leaveSchedule.Flight.DepartureAirport.City.Name,
+                LeaveFlightDepartureCountry = leaveSchedule.Flight.DepartureAirport.City.Country.Name,
+                LeaveFlightDepartureTime = DateTime.Parse(leaveFlightDepartureTime),
+                LeaveFlightArrivalAirport = leaveSchedule.Flight.ArrivalAirport.Name,
+                LeaveFlightArrivalCity = leaveSchedule.Flight.ArrivalAirport.City.Name,
+                LeaveFlightArrivalCountry = leaveSchedule.Flight.ArrivalAirport.City.Country.Name,
+                LeaveFlightArrivalTime = DateTime.Parse(leaveFlightArrivalTime),
+
+                ReturnFlightId = returnSchedule.Flight.Id,
+                ReturnFlightPrice = returnSchedule.Flight.Price,
+                ReturnFlightNumber = returnSchedule.Flight.Number,
+                ReturnFlightAirplaneModel = returnSchedule.Flight.Airplane.Model,
+                ReturnFlightAirplaneCompany = returnSchedule.Flight.Airplane.Company,
+                ReturnFlightDepartureAirport = returnSchedule.Flight.DepartureAirport.Name,
+                ReturnFlightDepartureCity = returnSchedule.Flight.DepartureAirport.City.Name,
+                ReturnFlightDepartureCountry = returnSchedule.Flight.DepartureAirport.City.Country.Name,
+                ReturnFlightDepartureTime = DateTime.Parse(returnFlightDepartureTime),
+                ReturnFlightArrivalAirport = returnSchedule.Flight.ArrivalAirport.Name,
+                ReturnFlightArrivalCity = returnSchedule.Flight.ArrivalAirport.City.Name,
+                ReturnFlightArrivalCountry = returnSchedule.Flight.ArrivalAirport.City.Country.Name,
+                ReturnFlightArrivalTime = DateTime.Parse(returnFlightArrivalTime),
+            };
+        }
+        private HotelShortInfoModel convertToHotelShortInfoModel(Hotel hotel)
         {
-            if (list != null && list.Count != 0)
+            return new HotelShortInfoModel()
             {
-                if (maxPrice != 0 && minPrice > maxPrice)
-                {
-                    var temp = minPrice;
-                    minPrice = maxPrice;
-                    maxPrice = temp;
-                }
-                for (int j = 0; j < list.Count; ++j)
-                {
-                    var item = list[j];
-                    for (int i = 0; i < item.PricesWithoutFood.Count; ++i)
-                    {
-                        if (maxPrice != 0)
-                        {
-                            if (item.PricesWithoutFood[i] < minPrice || item.PricesWithoutFood[i] > maxPrice)
-                            {
-                                item.PricesWithoutFood.RemoveAt(i);
-                                item.TotalPrices.RemoveAt(i);
-                                item.Rooms.RemoveAt(i);
-                                i--;
-                            }
-                        }
-                        else
-                        {
-                            if (item.PricesWithoutFood[i] < minPrice)
-                            {
-                                item.PricesWithoutFood.RemoveAt(i);
-                                item.TotalPrices.RemoveAt(i);
-                                item.Rooms.RemoveAt(i);
-                                i--;
-                            }
-                        }
-                    }
-
-                    if (item.PricesWithoutFood.Count == 0)
-                    {
-                        list.Remove(item);
-                        j--;
-                    }
-                    else
-                    {
-                        list[j].MinPrice = list[j].PricesWithoutFood.Min();
-                    }
-                }
-
-            }
-            return list;
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Facilities = hotel.Facilities.Select(x => {
+                    return x.Name;
+                }).ToList(),
+                Description = hotel.Description,
+                Rating = hotel.Rating.Id,
+                Country = hotel.City.Country.Name,
+                City = hotel.City.Name,
+                Address = hotel.Adress,
+                HotelPhotos = hotel.HotelsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.PhotoLink }).ToList(),
+                FoodType = hotel.FoodType.Name,
+                FoodPrice = hotel.FoodPrice
+            };
         }
-
-        private List<Flight> FlightsSearch(int cityFromId, int cityToId, DateTime departureDay, int peopleNumber, bool isLeaveFlight, ref string error)
+        private RoomShortInfoModel convertToRoomShortInfoModel(Room room)
         {
-            var flightsQuery = db.Flights.Where(p => (p.DepartureAirport.CityId == cityFromId && p.ArrivalAirport.CityId == cityToId));
-            List<Flight> flights = flightsQuery.ToList<Flight>(); //all flights that are between inputed cities
-
-            //Check if these flights are on date, which customer selected
-            //If some flight has no departure on selected date, then this flight will be removed from list
-            for (int i = 0; i < flights.Count; ++i)
+            return new RoomShortInfoModel()
             {
-                var temp = flights[i].Id;
-                IEnumerable<Schedule> schedule = db.Schedule.Where(p => (p.IsDeleted == false && p.FlightId == temp)); ;
-                bool check = false;
-                foreach (var item in schedule.ToList())
-                {
-                    if (item.DayOfWeek == departureDay.DayOfWeek)
-                    {
-                        check = true;
-                        break;
-                    }
-                }
-
-                if (check == false)
-                {
-                    flights.RemoveAt(i);
-                }
-            }
-
-            flights = CheckingFlightsSeats(flights, peopleNumber, departureDay, isLeaveFlight);
-
-            if (flights == null || flights.Count == 0)
-            {
-                error = String.Format("Sorry, but we cant find flight from {0} to {1}! Try to change some information.", db.Cities.Find(cityFromId).Name, db.Cities.Find(cityToId).Name);
-                return flights;
-            }
-            return flights;
+                Id = room.Id,
+                RoomType = room.RoomType.Name,
+                MaxPeople = room.MaxPeople,
+                Price = room.Price,
+                WindowView = room.WindowView,
+                Equipments = room.Equipments.Select(x => x.Name).ToList(),
+                RoomPhotos = room.RoomsPhotos.Select(x => new PhotoModel() { Id = x.Id, PhotoLink = x.photoLink }).ToList()
+            };
         }
-
-        private List<Flight> CheckingFlightsSeats(List<Flight> flights, int peopleNumber, DateTime departureDay, bool isLeaveFlights)
-        {
-            for (int i = 0; i < flights.Count; ++i)
-            {
-                int flightId = flights[i].Id;
-
-                IEnumerable<int> temp = db.Reservations.Where(r => (r.IsDeleted == false &&
-                ((r.LeaveSchedule.FlightId == flightId && r.LeaveDate == departureDay)
-                || (r.ReturnSchedule.FlightId ==flightId && r.ReturnDate == departureDay))))
-                .Select(r => r.PersonAmount).ToList();
-
-                int reservedSeats = 0;
-                foreach (var item in temp)
-                {
-                    reservedSeats += item;
-                }
-                //need proxies
-                if (flights[i].Airplane.SeatsAmount - reservedSeats < peopleNumber)
-                {
-                    flights.RemoveAt(i);
-                }
-            }
-            return flights;
-        }
-
-        private List<Room> HotelsSearch(int cityId, DateTime departureDate, DateTime returnDate, int peopleNumber, ref string error, int hotelId = 0, int foodTypeId = 0,
-            List<int> facilities = null, List<int> stars = null)
-        {
-            List<Room> rooms = new List<Room>();
-            var hotelsQuery = db.Hotels.Where(h => (h.IsDeleted == false && h.City.Id == cityId));
-            if (hotelsQuery == null || hotelsQuery.Count() == 0)
-            {
-                error = String.Format("Sorry, but we cant find hotel in {0}! Try to change some information.", db.Cities.Find(cityId).Name);
-                return rooms;
-            }
-            if (hotelId != 0)
-            {
-                hotelsQuery = hotelsQuery.Where(p => p.Id == hotelId);
-            }
-            if (foodTypeId != 0)
-            {
-                hotelsQuery = hotelsQuery.Where(p => p.FoodTypeId == foodTypeId);
-                if (hotelsQuery == null || hotelsQuery.Count() == 0)
-                {
-                    error = String.Format("Sorry, but we cant find hotel in {0} with {1} food type! Try to change some information.", db.Cities.Find(cityId).Name, db.FoodTypes.Find(foodTypeId).Name);
-                    return rooms;
-                }
-            }
-            List<Hotel> hotels = hotelsQuery.ToList<Hotel>();
-
-            for (int i = 0; i < hotels.Count; ++i)
-            {
-                var index = hotels[i].Id;
-                IEnumerable<Room> roomsQuery = db.Rooms.Where(p => ((p.HotelId == index) && (p.IsDeleted == false))); ;
-                foreach (Room item in roomsQuery.ToList())
-                {
-                    var t = db.Reservations.Where(r => r.RoomId == item.Id && r.LeaveDate >= departureDate && r.ReturnDate <= returnDate && r.IsDeleted == false);
-                    if (t.ToList().Count == 0)
-                    {
-                        //Check if room with the same room type and hotelId is already in list 
-                        bool checkRoomType = false;
-                        foreach (var room in rooms)
-                        {
-                            if (room.HotelId == item.HotelId && room.RoomTypeId == item.RoomTypeId)
-                            {
-                                checkRoomType = true;
-                                break;
-                            }
-                        }
-                        if (checkRoomType == false)
-                        {
-                            rooms.Add(item);
-                        }
-                    }
-                }
-            }
-            if (rooms == null || rooms.Count == 0)
-            {
-                error = String.Format("Sorry, but we cant find available rooms in all hotels in {0}! Try to change some information.", db.Cities.Find(cityId).Name);
-                return rooms;
-            }
-
-            int maxPerson = rooms.OrderByDescending(r => r.MaxPeople).FirstOrDefault().MaxPeople;
-            rooms = rooms.Where(r => r.MaxPeople >= peopleNumber).ToList();
-            if (rooms.Count == 0)
-            {
-                error = String.Format("Sorry, but we can book only one tour in one booking. We cant find available room for {0} persons. We can find room for maximum {1} persons!", peopleNumber, maxPerson);
-                return rooms;
-            }
-
-            return rooms;
-        }
-
-
     }
 }

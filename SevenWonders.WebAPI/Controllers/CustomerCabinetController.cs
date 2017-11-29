@@ -1,16 +1,11 @@
 ﻿using Microsoft.Owin.Security;
 using SevenWonders.DAL.Context;
-using SevenWonders.Interfaces;
-using SevenWonders.Models;
+using SevenWonders.WebAPI.DTO.Account;
 using SevenWonders.WebAPI.Models;
-using SevenWonders.WebAPI.ViewModels;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System;
-using Microsoft.Owin.Host.SystemWeb;
-using System.Net;
 
 namespace SevenWonders.WebAPI.Controllers
 {
@@ -25,6 +20,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "customer")]
         public IHttpActionResult EditCustomer(Customer editCustomer)
         {
             if (ModelState.IsValid)
@@ -55,6 +51,14 @@ namespace SevenWonders.WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
+        [HttpGet]
+        public IHttpActionResult IsEmailValid(string email)
+        {
+            var currentCustomer = GetCustomer(User.Identity.Name);
+            bool contain = db.Customers.Any(x => x.Email == email && email != currentCustomer.Email);
+            return Ok(!contain);
+        }
+
         private Customer GetCustomer(string email)
         {
             return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
@@ -66,14 +70,6 @@ namespace SevenWonders.WebAPI.Controllers
             {
                 return HttpContext.Current.GetOwinContext().Authentication;
             }
-        }
-
-        [HttpGet]
-        public IHttpActionResult IsEmailValid(string email)
-        {
-            var currentCustomer = GetCustomer(User.Identity.Name);
-            bool contain = db.Customers.Any(x => x.Email == email && email != currentCustomer.Email);
-            return Ok(!contain);
         }
     }
 }

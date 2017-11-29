@@ -171,4 +171,4 @@ function CityModifyViewModel() {
 }
 
 var cityModifyViewModel = new CityModifyViewModel();
-ko.applyBindings(cityModifyViewModel)
+ko.applyBindings(cityModifyViewModel, document.getElementById("cityViewModel"));

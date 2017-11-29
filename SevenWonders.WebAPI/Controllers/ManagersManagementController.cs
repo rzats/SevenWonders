@@ -1,24 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.Models;
-using SevenWonders.ViewModels;
-using SevenWonders.WebAPI.DTO;
+using SevenWonders.WebAPI.DTO.Account;
+using SevenWonders.WebAPI.DTO.Managers;
+using SevenWonders.WebAPI.DTO.Shared;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
-namespace SevenWonders.Controllers
+namespace SevenWonders.WebAPI.Controllers
 {
     public class ManagersManagementController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IHttpActionResult GetManagers()
         {
             try
@@ -36,7 +34,7 @@ namespace SevenWonders.Controllers
         [HttpGet]
         public IHttpActionResult GetManager(int Id)
         {
-            var countries = db.Coutries.Where(c => !c.IsDeleted).ToList();
+            var countries = db.Coutries.Where(c => !c.IsDeleted && c.ManagerId==null).ToList();
             var managerCountriesIds = countries.Where(x => x.ManagerId == Id).Select(x => x.Id).ToList();
             WorkWithManager workWithManager = new WorkWithManager();
             var manager = workWithManager.GetFullManager(db, Id);
@@ -46,6 +44,7 @@ namespace SevenWonders.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public void AddManager([FromBody]JObject model)
         {
             var manager = model["manager"].ToObject<FullManagerViewModel>();
@@ -75,6 +74,7 @@ namespace SevenWonders.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IHttpActionResult ChangeManagerStatus(int id)
         {
             var workWithCustomer = new WorkWithManager();

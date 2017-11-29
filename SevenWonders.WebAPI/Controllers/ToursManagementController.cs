@@ -18,8 +18,10 @@ namespace SevenWonders.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetToursForManager(int pageIndex, int pageSize)
         {
-            //List<Tour> data = db.Tours.Where(t => t.Reservation.Room.Hotel.City.Country.Manager.Id == manager.Id && !t.IsDeleted).ToList();
-            var data = db.Tours.Where(t => !t.IsDeleted);
+            var email = User.Identity.Name;
+            var manager = getManager(email);
+
+            var data = db.Tours.Where(t => t.Reservation.Room.Hotel.City.Country.Manager.Id == manager.Id && !t.IsDeleted);
 
             int dataCount = data.Count();
             data = data.OrderByDescending(x => x.CreationDate)
@@ -58,6 +60,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteTour([FromBody]int id)
         {
             Tour tour = db.Tours.Find(id);
@@ -69,6 +72,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult PayForTour([FromBody]int id)
         {
             Tour tour = db.Tours.Find(id);
@@ -83,13 +87,12 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult UpdateTours()
         {
-            //int userId = User.Identity.GetUserId<int>();
-            //string managerEmail = db.Users.Where(p => p.Id == userId).Select(p => p.Email).FirstOrDefault();
-            //Manager manager = db.Managers.Where(p => p.Email == managerEmail).FirstOrDefault();
-
-            List<Tour> data = db.Tours.ToList();
+            Manager manager = getManager(User.Identity.Name);
+            List<Tour> data = db.Tours.Where(x=>!x.IsDeleted && x.Reservation.Room.Hotel.City.Country.Manager.Id== manager.Id).ToList();
             foreach (var tour in data)
             {
                 if (!tour.IsDeleted)
@@ -151,8 +154,11 @@ namespace SevenWonders.WebAPI.Controllers
 
         private Customer getCustomer(string email)
         {
-            return db.Customers.FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
+            return db.Customers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
         }
-
+        private Manager getManager(string email)
+        {
+            return db.Managers.FirstOrDefault(x => x.Email == email && !x.IsDeleted);
+        }
     }
 }

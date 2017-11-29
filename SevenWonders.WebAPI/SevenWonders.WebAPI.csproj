@@ -222,24 +222,24 @@
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
-    <Compile Include="DTO\DropDownListItem.cs" />
+    <Compile Include="DTO\Shared\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />
     <Compile Include="DTO\Flights\FlightShortInfoModel.cs" />
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
     <Compile Include="DTO\Hotels\HotelPhotoModel.cs" />
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
-    <Compile Include="DTO\ManagerEditModel.cs" />
-    <Compile Include="DTO\ManagerSerchModel.cs" />
-    <Compile Include="DTO\ReservationModel.cs" />
-    <Compile Include="DTO\SearchFlight.cs" />
-    <Compile Include="DTO\SearchModel.cs" />
-    <Compile Include="DTO\Security.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
+    <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
+    <Compile Include="DTO\Hotels\RoomShortInfoModel.cs" />
+    <Compile Include="DTO\Search\TourForBookingModel.cs" />
+    <Compile Include="DTO\Search\TourForSearchModel.cs" />
+    <Compile Include="DTO\Account\Security.cs" />
     <Compile Include="DTO\ToursManagement\TourModel.cs" />
-    <Compile Include="DTO\Utils.cs" />
-    <Compile Include="DTO\WorkWithAutorizedPerson.cs" />
-    <Compile Include="DTO\WorkWithCustomer.cs" />
-    <Compile Include="DTO\WorkWithManager.cs" />
+    <Compile Include="DTO\Account\Utils.cs" />
+    <Compile Include="DTO\Account\WorkWithAutorizedPerson.cs" />
+    <Compile Include="DTO\Account\WorkWithCustomer.cs" />
+    <Compile Include="DTO\Account\WorkWithManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -303,6 +303,7 @@
     <Content Include="Content\CustomersManagement\Index.css" />
     <Content Include="Content\Flights\FlightShortInfo.css" />
     <Content Include="Content\Hotels\HotelShortInfo.css" />
+    <Content Include="Content\Hotels\RoomShortInfo.css" />
     <Content Include="Content\Images\loader.gif" />
     <Content Include="Content\img\1.jpg" />
     <Content Include="Content\img\17661561.jpg" />
@@ -422,6 +423,8 @@
     <Content Include="Content\Flights\Index.css" />
     <Content Include="Content\ManagersManagement\Index.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Search\Booking.css" />
+    <Content Include="Content\Search\Index.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\Site.css" />
@@ -505,6 +508,7 @@
     <Content Include="Scripts\Flights\Index.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\Hotels\HotelShortInfo.js" />
+    <Content Include="Scripts\Hotels\RoomShortInfo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -567,14 +571,15 @@
     <Content Include="Scripts\knockout-3.1.0.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\knockout.validation.min.js" />
-    <Content Include="Scripts\Login\Index.js" />
+    <Content Include="Scripts\Account\Login\Index.js" />
     <Content Include="Scripts\ManagersManagement\Index.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\Register\Index.js" />
+    <Content Include="Scripts\Account\Register\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
     <Content Include="Scripts\sammy-0.7.5.min.js" />
+    <Content Include="Scripts\Search\Booking.js" />
     <Content Include="Scripts\Search\Index.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
@@ -589,11 +594,12 @@
     <Content Include="Views\CustomerCabinet\Index.html" />
     <Content Include="Views\Flights\FlightShortInfo.html" />
     <Content Include="Views\Flights\Index.html" />
-    <Content Include="Views\Home\HomePage.html" />
     <Content Include="Views\Hotels\HotelShortInfo.html" />
+    <Content Include="Views\Hotels\RoomShortInfo.html" />
+    <Content Include="Views\Search\Booking.html" />
+    <Content Include="Views\Search\Index.html" />
     <Content Include="Views\ToursManagement\Index.html" />
     <Content Include="Web.config" />
-    <Content Include="Scripts\Tours\Index.js" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

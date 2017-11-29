@@ -13,8 +13,8 @@
                     RememberMe: rememberMe
                 },
             success: function () {
-                window.location.reload(true);
                 window.location.href = "#/home";
+                headerViewModel.loadHeader();
             },
             error: function (err) {
                 console.log(err);

@@ -1,152 +1,89 @@
-﻿$(document).ready(function () {
-    getCountries();
+﻿ko.validation.init({
+    insertMessages: false,
+    decorateInputElement: true,
+    messagesOnModified: true,
+    errorClass: 'validationMessage'
 });
 
-function searchTours()
-{
-    var countryFrom = $('#countryFrom').val();
-    var cityFrom = $('#cityFrom').val();
-    var countryTo = $('#countryTo').val();
-    var cityTo = $('#cityTo').val();
-    var departureDay = $('#departureDay').val();
-    var hotel = $('#hotel').val();
-    var foodType = $('#foodType').val();
-    var peopleNumber = $('#peopleNumber').val();
-    var duration = $('#duration').val();
-    var priceFrom = $('#priceFrom').val();
-    var priceTo = $('#priceTo').val();
-        $.ajax({
-        type: "POST",
-        url: "../api/Search/SearchTours",
-        data: {
-            CountryFrom: countryFrom,
-            CountryTo: countryTo,
-            CityFrom: cityFrom,
-            CityTo: cityTo,
-            Hotel: hotel,
-            DapartureDay: departureDay,
-            FoodType: foodType,
-            PeopleNumber: peopleNumber,
-            PriceFrom: priceFrom,
-            PriceTo: priceTo,
-            Duration: duration
-        },
-        success: function(responce)
-        {
-            console.log(responce);
-            window.location.href = "../Home/Tours";
-            initializeToursList(responce);
-        },
-        error: function(err)
-        {
-            alert(err);
+function SearchViewModel() {
+    var self = this;
+    self.Countries = ko.observableArray([]);
+    self.CitiesFrom = ko.observableArray([]);
+    self.CitiesTo = ko.observableArray([]);
+
+    self.CountryFrom = ko.observable().extend({ required: true });;
+	self.CityFrom = ko.observable();
+    self.CountryTo = ko.observable().extend({ required: true });;
+	self.CityTo = ko.observable();
+    self.People = ko.observable().extend({ required: true });;
+    self.DepartureDay = ko.observable().extend({ required: true });;
+    self.Duration = ko.observable().extend({ required: true });;
+
+	self.loadCountries = function () {
+		$.ajax("../api/Countries/GetCountries", {
+			type: "get",
+			contentType: "application/json",
+			success: function (result) {
+                self.Countries(result);
+			}
+		});
+	}
+    self.loadCountries();
+
+    self.loadCityFrom = function () {
+        $.ajax("../api/Cities/GetCities", {
+            type: "get",
+            data: {
+                countryId: self.CountryFrom(),
+            },
+            contentType: "application/json",
+            success: function (result) {
+                self.CitiesFrom(result);
+            }
+        });
+    }
+    self.loadCityTo = function () {
+        $.ajax("../api/Cities/GetCities", {
+            type: "get",
+            data: {
+                countryId: self.CountryTo(),
+            },
+            contentType: "application/json",
+            success: function (result) {
+                self.CitiesTo(result);
+            }
+        });
+    }
+
+    self.errors = ko.observable();
+    self.submitSearch = function () {
+        self.errors = ko.validation.group(self, { deep: true });
+        if (self.errors().length === 0) {
+            var href= "#/booking?countryFrom=" + self.CountryFrom()
+                + (self.CityFrom() != undefined ? "&cityFrom=" + self.CityFrom() : "") 
+                + "&countryTo=" + self.CountryTo()
+                + (self.CityTo() != undefined ? "&cityTo=" + self.CityTo() : "")
+                + "&people=" + self.People()
+                + "&departureDate=" + self.DepartureDay()
+                + "&duration=" + self.Duration()
+            window.location.href = href;
         }
+        else {
+            self.errors.showAllMessages(true);
+        }
+    }
+
+    self.CountryFrom.subscribe(function () {
+        self.loadCityFrom();
+    });
+    self.CountryTo.subscribe(function (s) {
+        self.loadCityTo();
     });
 }
+var searchViewModel = new SearchViewModel();
+ko.applyBindings(searchViewModel, document.getElementById("searchForm"));
 
-function validateForm() {
-    var isValid = true;
-    var countryFrom = document.getElementById('countryFrom');
-    var cityFrom = document.getElementById('cityFrom');
-    var countryTo = document.getElementById('countryTo');
-    var cityTo = document.getElementById('cityTo');
-    var departureDay = document.getElementById('departureDay');
-    if (countryFrom.value == "") {
-        countryFrom.style.borderColor = "red";
-        isValid = false;
-    }
-    else {
-        countryFrom.style.borderStyle = "none";
-    }
-
-    if (cityFrom.value == "" || cityFrom.value == 0) {
-        cityFrom.style.borderColor = "red";
-        isValid = false;
-    }
-    else {
-        cityFrom.style.borderStyle = "none";
-    }
-
-    if (countryTo.value == "") {
-        countryTo.style.borderColor = "red";
-        isValid = false;
-    }
-    else {
-        countryTo.style.borderStyle = "none";
-    }
-
-    if (cityTo.value == "" || cityTo.value == 0) {
-        cityTo.style.borderColor = "red";
-        isValid = false;
-    }
-    else {
-        cityTo.style.borderStyle = "none";
-    }
-
-    if (departureDay.value == "" || departureDay.value == 0) {
-        departureDay.style.borderColor = "red";
-        isValid = false;
-    }
-    else {
-        departureDay.style.borderStyle = "none";
-    }
-
-    if (isValid) {
-        document.getElementById('btnSearch').click();
-    }
-}
-
-function FillCity(countryId, cityField) {
-    $.ajax({
-        url: "../api/Search/GetCities",
-        type: "GET",
-        data: { countryId: countryId },
-        dataType: "JSON",
-        success: function (cities) {
-            console.log(cities);
-            $(cityField).html(""); // clear before appending new list
-            $(cityField).append(
-                    $('<option></option>').val(0).html("Select city"));
-            $.each(cities, function (i, city) {
-                $(cityField).append(
-                    $('<option></option>').val(city.Id).html(city.Name));
-            });
-        },
-        error: function (err) {
-            alert(err);
-        }
-    });
-}
-
-function FillHotel(cityId) {
-    //$('#replaceClientModal').modal('show', { backdrop: 'static' });
-    $.ajax({
-        url: "../api/Search/GetHotels",
-        type: "GET",
-        data: { cityId: cityId },
-        dataType: "JSON",
-        success: function (hotels) {
-            $("#hotel").html(""); // clear before appending new list
-            $("#hotel").append(
-                    $('<option></option>').val(0).html("Select hotel"));
-            $.each(hotels, function (i, hotel) {
-                $("#hotel").append(
-                    $('<option></option>').val(hotel.Id).html(hotel.Name));
-            });
-        }
-    });
-}
-
-function getCountries() {
-    $.ajax({
-        type: "GET",
-        url: "../api/ManagersManagement/GetCountriesForSearch",
-        success: function (result) {
-            $.each(result, function (key, value) {
-                $("#countryFrom").append($("<option></option>").val(value.Id).html(value.Name));
-                $("#countryTo").append($("<option></option>").val(value.Id).html(value.Name));
-            });
-        }
-    })
-}
-
+$(document).ready(function () {
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("DepartureDay")[0].setAttribute('min', today);
+});

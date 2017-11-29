@@ -6,7 +6,7 @@ using Microsoft.Owin.Security;
 using System.Security.Claims;
 using SevenWonders.WebAPI.Models;
 
-namespace SevenWonders.Models
+namespace SevenWonders.WebAPI.DTO.Account
 {
     public class Utils
     {

@@ -1,15 +1,12 @@
-﻿
-using SevenWonders.DAL.Context;
-using SevenWonders.Interfaces;
-using SevenWonders.ViewModels;
-using SevenWonders.WebAPI.Models;
+﻿using SevenWonders.DAL.Context;
+using SevenWonders.WebAPI.DTO.Account.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
 
-namespace SevenWonders.Models
+namespace SevenWonders.WebAPI.DTO.Account
 {
     public abstract class WorkWithAutorizedPerson<T> where T : class, IAuthorizedPerson
     {

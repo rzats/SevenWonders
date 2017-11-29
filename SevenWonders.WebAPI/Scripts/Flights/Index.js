@@ -66,14 +66,14 @@
 		self.idOfDeletedFlight(flight.Id);
 		$('#deleteFlightModal').modal();
 	};
-	self.deleteFlight = function () {		
+    self.deleteFlight = function () {	
 		var id = self.idOfDeletedFlight();
 		$.ajax({
 			type: "POST",
 			url: '../api/Flights/DeleteFlight',
 			data: JSON.stringify(id),
 			contentType: "application/json",
-			success: function (result) {
+            success: function (result) {
 				//check if page is not empty in feature
 				self.dataCount(self.dataCount()-1);
 				if (self.pageIndex() + 1 > self.pageCount()) {
@@ -87,10 +87,10 @@
 	}
 
 	self.showModalEditFlight = function (flight) {
-		MainViewModel.FlightModifyViewModel.editFlight(flight);
+		flightModifyViewModel.editFlight(flight);
 	}
 	self.showModalSchedule = function (flight) {
-		MainViewModel.ScheduleViewModel.initScheduleModel(flight);
+		scheduleViewModel.initScheduleModel(flight);
 	}
 }
 
@@ -217,7 +217,7 @@ function FlightModifyViewModel(FlightsTableViewModel) {
 				data: JSON.stringify(model),
 				contentType: "application/json",
 				success: function (result) {
-					FlightsTableViewModel.loadTable();
+					flightsTableViewModel.loadTable();
 					$('#editFlightModal').modal('hide');
 				}
 			});
@@ -301,11 +301,10 @@ function ScheduleViewModel() {
 	};
 }
 
-var FlightsTableViewModel = new FlightsTableViewModel();
-var MainViewModel = {
-	FlightsTableViewModel: FlightsTableViewModel,
-	FlightModifyViewModel: new FlightModifyViewModel(FlightsTableViewModel),
-	ScheduleViewModel: new ScheduleViewModel()
-};
+var flightsTableViewModel = new FlightsTableViewModel();
+var flightModifyViewModel = new FlightModifyViewModel();
+var scheduleViewModel = new ScheduleViewModel();
 
-ko.applyBindings(MainViewModel);
+ko.applyBindings(flightsTableViewModel, document.getElementById("flightsTable"));
+ko.applyBindings(flightModifyViewModel, document.getElementById("flightModifyViewModel"));
+ko.applyBindings(scheduleViewModel, document.getElementById("scheduleModal"));

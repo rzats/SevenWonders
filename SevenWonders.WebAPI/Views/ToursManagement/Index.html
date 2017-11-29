@@ -38,7 +38,7 @@
 </div>
 
 <div id="mainTable" class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-	<h2 class="text-center">Tours</h2>
+	<h3 class="text-center">Tours</h3>
 	<br />
 
 	<!-- Delete tour modal -->
@@ -164,7 +164,7 @@
 											<div class="alert alert-success">
 												<div data-bind="visible:TourState==='Registered'">
 													<button class="btn btn-warning middle-button" type="button" data-bind="click: $parent.showModalPayTour">Pay</button>
-													<span style="float: right; margin-top:5px"><b>Total price: </b><span data-bind="text:Price"></span></span>
+													<span style="float: right; margin-top:5px"><b>Total price: </b>$<span data-bind="text:Price"></span></span>
 												</div>
 												<div data-bind="visible:TourState!=='Registered'" style="float: right; margin-top:-10px;"><b>Total price: </b>$<span data-bind="text:Price"></span></div>
 											</div>

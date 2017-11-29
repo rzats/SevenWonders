@@ -1,4 +1,4 @@
-﻿namespace SevenWonders.Models
+﻿namespace SevenWonders.WebAPI.DTO.Account
 {
     public class Security
     {

@@ -1,4 +1,4 @@
-﻿using SevenWonders.Interfaces;
+﻿using SevenWonders.WebAPI.DTO.Account.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

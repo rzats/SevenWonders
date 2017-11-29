@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using SevenWonders.DAL.Context;
-using SevenWonders.Models;
-using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Flights;
+using SevenWonders.WebAPI.DTO.Shared;
 using SevenWonders.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SevenWonders.WebAPI.Controllers
@@ -44,6 +41,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void AddFlight([FromBody]EditFlightModel model)
         {
             Airplane airplane = new Airplane()
@@ -69,6 +67,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void EditFlight([FromBody]EditFlightModel model)
         {
             Flight flight = db.Flights.FirstOrDefault(x => x.Id == model.id);
@@ -87,6 +86,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteFlight([FromBody]int id)
         {
             Flight flight = db.Flights.Find(id);
@@ -148,6 +148,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult EditSchedule([FromBody]JObject model)
         {
             var schedules = model["schedule"].ToObject<List<ScheduleItemModel>>();
