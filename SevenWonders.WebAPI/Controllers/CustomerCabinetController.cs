@@ -20,6 +20,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "customer")]
         public IHttpActionResult EditCustomer(Customer editCustomer)
         {
             if (ModelState.IsValid)

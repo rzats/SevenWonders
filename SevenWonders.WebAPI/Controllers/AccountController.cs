@@ -85,6 +85,14 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult LogOut()
+        {
+            var AuthenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            AuthenticationManager.SignOut();
+            return Ok();
+        }
+
         [HttpGet]
         public IHttpActionResult GetUserRole()
         {
@@ -102,6 +110,7 @@ namespace SevenWonders.WebAPI.Controllers
             DbSet<T> dbSet = db.Set<T>();
             return dbSet.FirstOrDefault(x => x.Email == email);
         }
+
         private IAuthenticationManager AuthenticationManager
         {
             get

@@ -16,6 +16,7 @@ namespace SevenWonders.WebAPI.Controllers
         SevenWondersContext db = new SevenWondersContext();
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IHttpActionResult GetManagers()
         {
             try
@@ -43,6 +44,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public void AddManager([FromBody]JObject model)
         {
             var manager = model["manager"].ToObject<FullManagerViewModel>();
@@ -72,6 +74,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IHttpActionResult ChangeManagerStatus(int id)
         {
             var workWithCustomer = new WorkWithManager();

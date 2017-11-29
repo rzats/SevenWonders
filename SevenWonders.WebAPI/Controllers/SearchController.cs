@@ -91,8 +91,8 @@ namespace SevenWonders.WebAPI.Controllers
             else return Ok();
         }
 
-        [Authorize(Roles = "customer")]
         [HttpPost]
+        [Authorize(Roles = "customer")]
         public IHttpActionResult BookTour([FromBody] TourForBookingModel model)
         {
             try

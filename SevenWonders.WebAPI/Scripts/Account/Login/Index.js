@@ -14,6 +14,7 @@
                 },
             success: function () {
                 window.location.href = "#/home";
+                headerViewModel.loadHeader();
             },
             error: function (err) {
                 console.log(err);

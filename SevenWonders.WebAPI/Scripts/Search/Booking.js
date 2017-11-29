@@ -65,8 +65,10 @@ function RoomViewModel(tour) {
         roomShortInfoViewModel.updateViewModel(self)
         $('#roomInfoModal').modal();
     }
-    self.showBookModal = function(){
-        $('#bookingConfirmationModal').modal();
+    self.showBookModal = function () {
+        if (ToursListViewModel.isCustomer()) {
+            $('#bookingConfirmationModal').modal();
+        }
     }
     self.bookTour = function () {
         var model = {
@@ -154,7 +156,6 @@ function ToursListViewModel() {
                 else {
                     self.notFound(false);
                     self.tours([]);
-                    debugger;
                     self.isCustomer(result.isCustomer);
                     result.tours.forEach(function (item, i, result) {
                         var bits = (item.DepartureDate).split(/\D/);

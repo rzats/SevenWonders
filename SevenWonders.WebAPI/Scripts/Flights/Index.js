@@ -66,14 +66,14 @@
 		self.idOfDeletedFlight(flight.Id);
 		$('#deleteFlightModal').modal();
 	};
-	self.deleteFlight = function () {		
+    self.deleteFlight = function () {	
 		var id = self.idOfDeletedFlight();
 		$.ajax({
 			type: "POST",
 			url: '../api/Flights/DeleteFlight',
 			data: JSON.stringify(id),
 			contentType: "application/json",
-			success: function (result) {
+            success: function (result) {
 				//check if page is not empty in feature
 				self.dataCount(self.dataCount()-1);
 				if (self.pageIndex() + 1 > self.pageCount()) {

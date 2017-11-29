@@ -60,6 +60,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteTour([FromBody]int id)
         {
             Tour tour = db.Tours.Find(id);
@@ -71,6 +72,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult PayForTour([FromBody]int id)
         {
             Tour tour = db.Tours.Find(id);
@@ -85,13 +87,12 @@ namespace SevenWonders.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult UpdateTours()
         {
-            //int userId = User.Identity.GetUserId<int>();
-            //string managerEmail = db.Users.Where(p => p.Id == userId).Select(p => p.Email).FirstOrDefault();
-            //Manager manager = db.Managers.Where(p => p.Email == managerEmail).FirstOrDefault();
-
-            List<Tour> data = db.Tours.ToList();
+            Manager manager = getManager(User.Identity.Name);
+            List<Tour> data = db.Tours.Where(x=>!x.IsDeleted && x.Reservation.Room.Hotel.City.Country.Manager.Id== manager.Id).ToList();
             foreach (var tour in data)
             {
                 if (!tour.IsDeleted)

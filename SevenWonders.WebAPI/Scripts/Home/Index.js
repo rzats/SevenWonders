@@ -70,12 +70,10 @@ function HeaderViewModel() {
         return self.Role() == "";
     }, self);
     self.loadHeader = function () {
-        debugger;
         $.ajax("../api/Account/GetUserRole", {
             type: "get",
             contentType: "application/json",
             success: function (result) {
-                debugger;
                 self.Role(result);
             }
         });
@@ -83,7 +81,14 @@ function HeaderViewModel() {
     self.loadHeader();
 
     self.logOut = function () {
-        debugger;
+        $.ajax("../api/Account/LogOut", {
+            type: "post",
+            contentType: "application/json",
+            success: function () {
+                window.location.href = "#/home";
+                headerViewModel.loadHeader();
+            },
+        });
     }
 }
 var headerViewModel = new HeaderViewModel(); 

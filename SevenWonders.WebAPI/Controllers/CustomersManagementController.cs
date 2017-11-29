@@ -27,6 +27,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IHttpActionResult ChangeCustomerStatus(int id)
         {
             var workWithCustomer = new WorkWithCustomer();

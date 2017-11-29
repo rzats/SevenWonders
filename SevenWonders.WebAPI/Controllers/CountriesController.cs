@@ -19,6 +19,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager, admin")]
         public void AddCountry([FromBody]CountryModel model)
         {
             if (ModelState.IsValid)
@@ -51,6 +52,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager, admin")]
         public IHttpActionResult DeleteCountry([FromBody]int id)
         {
             Country country = db.Coutries.Find(id);

@@ -41,6 +41,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void AddFlight([FromBody]EditFlightModel model)
         {
             Airplane airplane = new Airplane()
@@ -66,6 +67,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void EditFlight([FromBody]EditFlightModel model)
         {
             Flight flight = db.Flights.FirstOrDefault(x => x.Id == model.id);
@@ -84,6 +86,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteFlight([FromBody]int id)
         {
             Flight flight = db.Flights.Find(id);
@@ -145,6 +148,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult EditSchedule([FromBody]JObject model)
         {
             var schedules = model["schedule"].ToObject<List<ScheduleItemModel>>();

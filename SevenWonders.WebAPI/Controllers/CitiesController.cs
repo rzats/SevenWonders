@@ -33,6 +33,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public void AddCity([FromBody]CityModel model)
         {
             if (ModelState.IsValid)
@@ -67,6 +68,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteCity([FromBody]int id)
         {
             City city = db.Cities.Find(id);
