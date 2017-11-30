@@ -3,7 +3,6 @@
 <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" id="flightViewModel">
 	<h3 class="text-center">Flights</h3>
 	<br />
-
 	<!-- Schedule flight modal-->
 	<div class="modal fade" id="scheduleModal" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -120,8 +119,8 @@
 				<tbody data-bind="foreach: flights">
 					<tr>
 						<td>
-							<div class="panel panel-default" style="margin-bottom: 0;">
-								<div class="panel-heading col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<div class="row">
 										<div class="panelHeadingItem headCustomerName col-md-4">
 											<h3 class="panel-title">
@@ -142,55 +141,41 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-									</div>
-									<div class="col-xs-12 col-sm-10 col-md-10 col-lg-100 ">
-										<hidden data-bind="value: DepartureAirportId"></hidden>
-										<hidden data-bind="value: ArrivalAirportId"></hidden>
-										<div class="row">
-											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-left:0px;">
-												<dl style="margin-bottom:0px;">
-													<dt>Departure:</dt>
-													<dd>
-														<span data-bind="text: DepartureAirportCode"></span>
-														<span data-bind="text: DepartureAirportName"></span>
-														<span data-bind="text: DepartureAirportCityName"></span>
-														<span data-bind="text: DepartureAirportCountryName"></span>
-													</dd>
-												</dl>
-											</div>
-											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
-												<dl style="margin-bottom:0px;">
-													<dt>Arrival:</dt>
-													<dd>
-														<span data-bind="text: ArrivalAirportCode"></span>
-														<span data-bind="text: ArrivalAirportName"></span>
-														<span data-bind="text: ArrivalAirportCityName"></span>
-														<span data-bind="text: ArrivalAirportCountryName"></span>
-													</dd>
-												</dl>
-											</div>
-										</div>
-										<div class="row">
-											<dl style="margin-bottom:0px;">
-												<dt>Aireplane:</dt>
-												<dd>
-													<span data-bind="text: AirplaneModel"></span>
-													<span> ,</span>
-													<span data-bind="text: AirplaneCompany"></span>
-												<dt>Seats amount:</dt>
-												<dd>
-													<span data-bind="text: AirplaneSeatsAmount"></span>
-												</dd>
-												<dt>Ticket price:</dt>
-												<dd>
-													<span data-bind="text: Price"></span>
-												</dd>
-											</dl>
-										</div>
-									</div>
-								</div>
-							</div>
+                                    <hidden data-bind="value: DepartureAirportId"></hidden>
+                                    <hidden data-bind="value: ArrivalAirportId"></hidden>
+                                    <div class="col-md-4 col-md-offset-2">
+                                        <div class="row">
+                                            <b>Departure:</b>
+                                            <span data-bind="text: DepartureAirportCode"></span>
+                                            <span data-bind="text: DepartureAirportName"></span>
+                                            (<span data-bind="text: DepartureAirportCityName"></span>,
+                                            <span data-bind="text: DepartureAirportCountryName"></span>)
+                                        </div>
+                                        <div class="row">
+                                            <b>Arrival:</b>
+                                            <span data-bind="text: ArrivalAirportCode"></span>
+                                            <span data-bind="text: ArrivalAirportName"></span>
+                                            (<span data-bind="text: ArrivalAirportCityName"></span>,
+                                            <span data-bind="text: ArrivalAirportCountryName"></span>)
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-md-offset-2">
+                                        <div class="row">
+                                            <b>Aireplane:</b>
+                                            <span data-bind="text: AirplaneModel"></span>,
+                                            <span data-bind="text: AirplaneCompany"></span>
+                                        </div>
+                                        <div class="row">
+                                            <b>Sets amount:</b>
+                                            <span data-bind="text: AirplaneSeatsAmount"></span>
+                                        </div>
+                                        <div class="row">
+                                            <b>Ticket price:</b>
+                                            $<span data-bind="text: Price"></span>
+                                        </div>
+                                    </div>
+							    </div>
+                            </div>
 						</td>
 					</tr>
 				</tbody>
