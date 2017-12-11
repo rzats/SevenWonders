@@ -7,7 +7,7 @@ using SevenWonders.WebAPI.DTO.Account;
 
 namespace SevenWonders.WebAPI.Controllers
 {
-    public class CustomersManagementController : ApiController
+    public class CustomersController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
 

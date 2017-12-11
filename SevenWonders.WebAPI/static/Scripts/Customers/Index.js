@@ -4,7 +4,7 @@
 				"processing": false,
 				"serverSide": false,
 				"ajax": {
-					"url": "../api/CustomersManagement/GetCustomers",
+					"url": "../api/Customers/GetCustomers",
 					"method": "GET",
 					"dataSrc": "",
 				},
@@ -40,7 +40,7 @@
 function changeStatus(id) {
 	$.ajax({
 		type: "POST",
-		url: "../api/CustomersManagement/ChangeCustomerStatus/" + id,
+		url: "../api/Customers/ChangeCustomerStatus/" + id,
 		success: function () {
 			var css = '*[data-customer-id="' + id + '"]';
 			if ($(css).text() == "Active") {

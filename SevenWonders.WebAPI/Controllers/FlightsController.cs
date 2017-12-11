@@ -132,7 +132,7 @@ namespace SevenWonders.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetSchedule(int id)
+        public IHttpActionResult GetSchedules(int id)
         {
             Flight flight = db.Flights.Find(id);
 
@@ -197,9 +197,9 @@ namespace SevenWonders.WebAPI.Controllers
         public IHttpActionResult GetFlightsShortInfo(int id)
         {
             var data = db.Tours.FirstOrDefault(x => x.Id == id).Reservation;
-            var flightsForRegistration = convertToFlightShortInfoModel(data);
+            var flights = convertToFlightShortInfoModel(data);
 
-            return Ok(flightsForRegistration);
+            return Ok(flights);
         }
         
         private FlightShortInfoModel convertToFlightShortInfoModel(Reservation reservation)
@@ -268,6 +268,7 @@ namespace SevenWonders.WebAPI.Controllers
                 ArrivalAirportCityName = flight.ArrivalAirport.City.Name,
                 ArrivalAirportCountryName = flight.ArrivalAirport.City.Country.Name,
                 Price = flight.Price,
+                AirplaneId = flight.AirplaneId.Value,
                 AirplaneSeatsAmount = flight.Airplane.SeatsAmount,
                 AirplaneCompany = flight.Airplane.Company,
                 AirplaneModel = flight.Airplane.Model

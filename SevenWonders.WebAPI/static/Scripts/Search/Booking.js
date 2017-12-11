@@ -123,7 +123,7 @@ function TourViewModel() {
             if (room.Price < minRoomPrice)
                 minRoomPrice = room.Price;
         });
-
+        debugger;
         self.minPrice(self.People() * (self.Flights().LeaveFlightPrice + self.Flights().ReturnFlightPrice) + self.Duration() * minRoomPrice);
     }
 
@@ -150,6 +150,7 @@ function ToursListViewModel() {
             contentType: "application/json",
             success: function (result) 
             {
+                debugger;
                 if (result === "") {
                     self.notFound(true);
                 }

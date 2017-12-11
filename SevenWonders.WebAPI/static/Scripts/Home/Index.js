@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
     var app = $.sammy('#mainDiv', function () {
-        this.get('#/', function () {
-            this.app.swap('Click form!');
-        });
         this.get('#/home', function () {
             this.partial('/Views/Search/Index.html');
         });
@@ -19,10 +16,10 @@
             this.partial('/Views/CustomerCabinet/Index.html');
         });
         this.get('#/customers', function () {
-            this.partial('/Views/CustomersManagement/Index.html');
+            this.partial('/Views/Customers/Index.html');
         });
         this.get('#/managers', function () {
-            this.partial('/Views/ManagersManagement/Index.html');
+            this.partial('/Views/Managers/Index.html');
         });
         this.get('#/flights', function () {
             this.partial('/Views/Flights/Index.html');
@@ -37,7 +34,7 @@
             this.partial('/Views/Airports/Index.html');
         });
         this.get('#/tours', function () {
-            this.partial('/Views/ToursManagement/Index.html');
+            this.partial('/Views/Tours/Index.html');
         });
         this.get('#/booking', function () {
             this.partial('/Views/Search/Booking.html');

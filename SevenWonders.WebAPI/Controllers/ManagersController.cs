@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace SevenWonders.WebAPI.Controllers
 {
-    public class ManagersManagementController : ApiController
+    public class ManagersController : ApiController
     {
         SevenWondersContext db = new SevenWondersContext();
 

@@ -12,6 +12,7 @@ namespace SevenWonders.WebAPI.DTO.Flights
         public decimal price { get; set; }
         public int departureAirportId { get; set; }
         public int arrivalAirportId { get; set; }
+        public int airplaneId { get; set; }
         public string airplaneModel { get; set; }
         public string airplaneCompany { get; set; }
         public int seatsAmount { get; set; }

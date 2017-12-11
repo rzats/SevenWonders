@@ -212,13 +212,13 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomerCabinetController.cs" />
-    <Compile Include="Controllers\CustomersManagementController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelsController.cs" />
-    <Compile Include="Controllers\ManagersManagementController.cs" />
+    <Compile Include="Controllers\ManagersController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
-    <Compile Include="Controllers\ToursManagementController.cs" />
+    <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
@@ -229,13 +229,13 @@
     <Compile Include="DTO\Flights\ScheduleItemModel.cs" />
     <Compile Include="DTO\Hotels\HotelPhotoModel.cs" />
     <Compile Include="DTO\Hotels\HotelShortInfoModel.cs" />
-    <Compile Include="DTO\ManagersManagement\ManagerEditModel.cs" />
-    <Compile Include="DTO\ManagersManagement\ManagerSerchModel.cs" />
+    <Compile Include="DTO\Managers\ManagerEditModel.cs" />
+    <Compile Include="DTO\Managers\ManagerSerchModel.cs" />
     <Compile Include="DTO\Hotels\RoomShortInfoModel.cs" />
     <Compile Include="DTO\Search\TourForBookingModel.cs" />
     <Compile Include="DTO\Search\TourForSearchModel.cs" />
     <Compile Include="DTO\Account\Security.cs" />
-    <Compile Include="DTO\ToursManagement\TourModel.cs" />
+    <Compile Include="DTO\Tours\TourModel.cs" />
     <Compile Include="DTO\Account\Utils.cs" />
     <Compile Include="DTO\Account\WorkWithAutorizedPerson.cs" />
     <Compile Include="DTO\Account\WorkWithCustomer.cs" />
@@ -300,7 +300,7 @@
     <Content Include="static\Content\creative.css" />
     <Content Include="static\Content\creative.min.css" />
     <Content Include="static\Content\CustomerCabinet\Index.css" />
-    <Content Include="static\Content\CustomersManagement\Index.css" />
+    <Content Include="static\Content\Customers\Index.css" />
     <Content Include="static\Content\Flights\FlightShortInfo.css" />
     <Content Include="static\Content\Hotels\HotelShortInfo.css" />
     <Content Include="static\Content\Hotels\RoomShortInfo.css" />
@@ -421,7 +421,7 @@
     <Content Include="static\Content\img\tour3.jpg" />
     <Content Include="static\Content\img\tour4.jpeg" />
     <Content Include="static\Content\Flights\Index.css" />
-    <Content Include="static\Content\ManagersManagement\Index.css" />
+    <Content Include="static\Content\Managers\Index.css" />
     <Content Include="static\Content\PagedList.css" />
     <Content Include="static\Content\Search\Booking.css" />
     <Content Include="static\Content\Search\Index.css" />
@@ -473,7 +473,7 @@
     <Content Include="static\Content\themes\base\tabs.css" />
     <Content Include="static\Content\themes\base\theme.css" />
     <Content Include="static\Content\themes\base\tooltip.css" />
-    <Content Include="static\Content\ToursManagement\Index.css" />
+    <Content Include="static\Content\Tours\Index.css" />
     <Content Include="static\Content\vendor\bootstrap\css\bootstrap.css" />
     <Content Include="static\Content\vendor\bootstrap\css\bootstrap.min.css" />
     <Content Include="static\Content\vendor\bootstrap\fonts\glyphicons-halflings-regular.svg" />
@@ -498,7 +498,7 @@
     <Content Include="static\Scripts\Airports\Index.js" />
     <Content Include="static\Scripts\bootstrap.js" />
     <Content Include="static\Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="static\Scripts\CustomersManagement\Index.js">
+    <EmbeddedResource Include="static\Scripts\Customers\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="static\Scripts\Cities\Index.js" />
@@ -571,10 +571,10 @@
     <Content Include="static\Scripts\knockout-3.1.0.js" />
     <Content Include="static\Scripts\knockout.validation.js" />
     <Content Include="static\Scripts\knockout.validation.min.js" />
-    <Content Include="static\Scripts\Account\Login\Index.js" />
-    <Content Include="static\Scripts\ManagersManagement\Index.js" />
+    <Content Include="static\Scripts\Account\Login.js" />
+    <Content Include="static\Scripts\Managers\Index.js" />
     <Content Include="static\Scripts\modernizr-2.6.2.js" />
-    <Content Include="static\Scripts\Account\Register\Index.js" />
+    <Content Include="static\Scripts\Account\Register.js" />
     <Content Include="static\Scripts\respond.js" />
     <Content Include="static\Scripts\respond.min.js" />
     <Content Include="static\Scripts\sammy-0.7.5.js" />
@@ -587,7 +587,7 @@
     <Content Include="static\Scripts\Table.js" />
     <Content Include="static\Scripts\knockout.validation.min.js.map" />
     <None Include="static\Scripts\_references.js" />
-    <Content Include="static\Scripts\ToursManagement\Index.js" />
+    <Content Include="static\Scripts\Tours\Index.js" />
     <Content Include="Views\Airports\Index.html" />
     <Content Include="Views\Cities\Index.html" />
     <Content Include="Views\Countries\Index.html" />
@@ -598,7 +598,7 @@
     <Content Include="Views\Hotels\RoomShortInfo.html" />
     <Content Include="Views\Search\Booking.html" />
     <Content Include="Views\Search\Index.html" />
-    <Content Include="Views\ToursManagement\Index.html" />
+    <Content Include="Views\Tours\Index.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -609,8 +609,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\CustomersManagement\Index.html" />
-    <Content Include="Views\ManagersManagement\Index.html" />
+    <Content Include="Views\Customers\Index.html" />
+    <Content Include="Views\Managers\Index.html" />
     <Content Include="Views\Account\Register.html" />
     <Content Include="Views\Account\Login.html" />
     <Content Include="Views\Home\Contact.html" />

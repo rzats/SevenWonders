@@ -11,7 +11,7 @@ function loadManagersTable() {
 			"destroy": true,
 			"serverSide": false,
 			"ajax": {
-				"url": "../api/ManagersManagement/GetManagers",
+				"url": "../api/Managers/GetManagers",
 				"method": "POST",
 				"dataSrc": "",
 			},
@@ -49,7 +49,7 @@ function loadManagersTable() {
 function changeStatus(id) {
 	$.ajax({
 		type: "POST",
-		url: "../api/ManagersManagement/ChangeManagerStatus/" + id,
+		url: "../api/Managers/ChangeManagerStatus/" + id,
 		success: function () {
 			var css = '*[data-customer-id="' + id + '"]';
 			if ($(css).text() == "Active") {
@@ -71,7 +71,7 @@ function EditManagerHandler(event) {
 	event.preventDefault();
 	idManager = $(this).data("managerid");  
 
-	$.get('../api/ManagersManagement/GetManager', { id: idManager },
+	$.get('../api/Managers/GetManager', { id: idManager },
 		function (html) {
 			$('#id').val(html.Id);
 			$('#firstname').val(html.FirstName);
@@ -145,7 +145,7 @@ function saveEditing(idManager) {
 		};
 	$.ajax({
 		type: "POST",
-		url: "../api/ManagersManagement/AddManager",
+		url: "../api/Managers/AddManager",
 		data: postObject,
 		success: function () {
 			$('#managersTable').DataTable().ajax.reload();
@@ -158,7 +158,7 @@ function saveEditing(idManager) {
 }
 
 function addManager(event) {
-	$.get('../api/ManagersManagement/GetCountries',
+	$.get('../api/Countries/GetCountries',
 		function (html) {
 			$('#id').val(0);
 			$('#firstname').val("");

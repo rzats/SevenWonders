@@ -146,7 +146,8 @@ namespace SevenWonders.WebAPI.Controllers
                                             && !x.Hotel.IsDeleted).ToList();
 
             var availableRooms = new List<Room>();
-            availableRooms = allRooms.Where(x => !reservations.Any(y => y.RoomId == x.Id && !(departureDate >= y.ReturnDate) && !(arrivalDate <= y.LeaveDate))).ToList();
+            availableRooms = allRooms
+                .Where(x => !reservations.Any(y => y.RoomId == x.Id && !(departureDate >= y.ReturnDate) && !(arrivalDate <= y.LeaveDate))).ToList();
             return availableRooms.ToList();
         }
         private List<Schedule> availableSchedules(int cityDepartureId, int cityArrivalId, int people, DateTime date)

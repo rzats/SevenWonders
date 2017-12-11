@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SevenWonders.WebAPI.DTO.ToursManagement
+namespace SevenWonders.WebAPI.DTO.Tours
 {
     public class TourModel
     {

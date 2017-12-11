@@ -1,4 +1,4 @@
-﻿using SevenWonders.WebAPI.DTO.ToursManagement;
+﻿using SevenWonders.WebAPI.DTO.Tours;
 using SevenWonders.WebAPI.Models;
 using SevenWonders.DAL.Context;
 using System;
@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace SevenWonders.WebAPI.Controllers
 {
-    public class ToursManagementController : ApiController
+    public class ToursController : ApiController
     {
         private SevenWondersContext db = new SevenWondersContext();
 
@@ -28,7 +28,6 @@ namespace SevenWonders.WebAPI.Controllers
             .Skip(pageIndex * pageSize)
             .Take(pageSize);
 
-            var KK = data.ToList();
             List<TourModel> tours = new List<TourModel>();
             data.ToList().ForEach(x =>
             {
