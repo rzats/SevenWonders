@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swashbuckle.Application;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -16,6 +17,10 @@ namespace SevenWonders.WebAPI
 
             config.Routes.MapHttpRoute("API Default", "api/{controller}/{action}/{id}",
            new { id = RouteParameter.Optional });
+
+            config
+               .EnableSwagger(c => c.SingleApiVersion("v1", "SevenWonders"))
+               .EnableSwaggerUi();
         }
     }
 }
