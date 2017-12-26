@@ -224,7 +224,9 @@
     <Compile Include="Controllers\ToursController.cs" />
     <Compile Include="DTO\Airports\AirportModel.cs" />
     <Compile Include="DTO\Cities\CityModel.cs" />
+    <Compile Include="DTO\CityRepository.cs" />
     <Compile Include="DTO\Countries\CountryModel.cs" />
+    <Compile Include="DTO\ICityRepository.cs" />
     <Compile Include="DTO\Shared\DropDownListItem.cs" />
     <Compile Include="DTO\Flights\EditFlightModel.cs" />
     <Compile Include="DTO\Flights\FlightModel.cs" />

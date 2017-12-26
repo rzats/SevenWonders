@@ -1,4 +1,5 @@
 ﻿using SevenWonders.DAL.Context;
+using SevenWonders.WebAPI.DTO;
 using SevenWonders.WebAPI.DTO.Cities;
 using SevenWonders.WebAPI.Models;
 using System;
@@ -13,12 +14,22 @@ namespace SevenWonders.WebAPI.Controllers
 {
     public class CitiesController : ApiController
     {
-        SevenWondersContext db = new SevenWondersContext();
+        ICityRepository cities;
+
+        public CitiesController()
+        {
+            cities = new CityRepository();
+        }
+
+        public CitiesController(ICityRepository cr)
+        {
+            cities = cr;
+        }
 
         [HttpGet]
         public IHttpActionResult GetCities(int? countryId = null)
         {
-            var cities = db.Cities.Where(x => !x.IsDeleted && !x.Country.IsDeleted).OrderBy(x=>x.Country.Name).ThenBy(x=>x.Name).ToList();
+            var cities = this.cities.GetCities().Where(x => !x.IsDeleted && !x.Country.IsDeleted).OrderBy(x=>x.Country.Name).ThenBy(x=>x.Name).ToList();
             if(countryId.HasValue)
             {
                 cities = cities.Where(x => x.CountryId == countryId).ToList();
@@ -47,23 +58,23 @@ namespace SevenWonders.WebAPI.Controllers
                         CountryId =model.CountryId,
                         IsDeleted = false
                     };
-                    db.Cities.Add(city);
+                    cities.InsertCity(city);
                 }
                 if (model.Id != 0)
                 {
-                    City city = db.Cities.FirstOrDefault(x => x.Id == model.Id);
+                    City city = cities.GetCities().FirstOrDefault(x => x.Id == model.Id);
                     city.Name = model.Name;
                     city.CountryId = model.CountryId;
-                    db.Entry(city).State = EntityState.Modified;
+                    //db.Entry(city).State = EntityState.Modified;
                 }
-                db.SaveChanges();
+                //db.SaveChanges();
             }
         }
 
         [HttpGet]
         public IHttpActionResult GetCity(int id)
         {
-            City city = db.Cities.FirstOrDefault(x => x.Id == id);
+            City city = cities.GetCities().FirstOrDefault(x => x.Id == id);
             return Ok(city);
         }
 
@@ -71,18 +82,16 @@ namespace SevenWonders.WebAPI.Controllers
         [Authorize(Roles = "manager")]
         public IHttpActionResult DeleteCity([FromBody]int id)
         {
-            City city = db.Cities.Find(id);
+            City city = cities.GetCities().FirstOrDefault(x => x.Id == id);
             city.IsDeleted = true;
 
-            db.Entry(city).State = EntityState.Modified;
-            db.SaveChanges();
             return Ok();
         }
 
         [HttpGet]
         public IHttpActionResult IsNameValid(int id, string name, int countryId)
         {
-            bool contain = db.Cities.Where(x => !x.IsDeleted)
+            bool contain = cities.GetCities().Where(x => !x.IsDeleted)
                 .Any(x => x.Id != id && x.Name == name && x.CountryId==countryId);
 
             return Ok(!contain);
